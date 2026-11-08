@@ -1,8 +1,0 @@
-Gruntfile.js
-tasks
-data
-conf/iobroker.json
-node_modules
-.idea
-.git
-*.md

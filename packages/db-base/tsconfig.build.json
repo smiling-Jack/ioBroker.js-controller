@@ -1,0 +1,23 @@
+// Specialized tsconfig to only compile .ts-files in the src dir
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": false,
+    "checkJs": false,
+    "noEmit": false
+  },
+  "references": [
+    {
+      "path": "../common-db/tsconfig.build.json"
+    },
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.js" // currently, we have js too
+  ],
+  "exclude": [
+    "src/**/*.test.ts",
+    "build/**",
+    "node_modules/**"
+  ]
+}

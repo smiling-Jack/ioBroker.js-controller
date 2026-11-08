@@ -1,0 +1,19 @@
+{
+  "version": "8.0.0-alpha.16-20261107-5f1282043",
+  "command": {
+    "run": {
+      "stream": true
+    },
+    "version": {
+      "allowBranch": [
+        "master",
+        "*.x"
+      ],
+      "ignoreChanges": [
+        "*.md"
+      ],
+      "exact": true
+    }
+  },
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
+}

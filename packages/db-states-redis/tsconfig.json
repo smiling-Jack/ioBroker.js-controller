@@ -1,0 +1,26 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "build/esm",
+    "module": "NodeNext",
+    "rootDir": "src",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "references": [
+    {
+      "path": "../db-base/tsconfig.json"
+    },
+  ],
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "build/**",
+    "node_modules/**"
+  ]
+}

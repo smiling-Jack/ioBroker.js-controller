@@ -1,0 +1,47 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "build/esm",
+    "rootDir": "src",
+    "module": "NodeNext",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "references": [
+    {
+      "path": "../db-objects-file/tsconfig.json"
+    },
+    {
+      "path": "../db-objects-jsonl/tsconfig.json"
+    },
+    {
+      "path": "../db-objects-redis/tsconfig.json"
+    },
+    {
+      "path": "../db-states-file/tsconfig.json"
+    },
+    {
+      "path": "../db-states-jsonl/tsconfig.json"
+    },
+    {
+      "path": "../db-states-redis/tsconfig.json"
+    },
+    {
+      "path": "../common/tsconfig.json"
+    },
+    {
+      "path": "../common-db/tsconfig.json"
+    },
+  ],
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.test.ts",
+    "build/**",
+    "node_modules/**"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+    "name": "@iobroker/types-dev",
+    "private": true,
+    "version": "8.0.0-alpha.16-20261107-5f1282043",
+    "engines": {
+        "node": ">=22.22.2"
+    },
+    "keywords": [
+        "ioBroker"
+    ],
+    "author": "foxriver76 <moritz.heusinger@gmail.com>",
+    "contributors": [
+        "foxriver76 <moritz.heusinger@gmail.com>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ioBroker/ioBroker.js-controller"
+    },
+    "main": "",
+    "types": "index.d.ts",
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "index.d.ts",
+        "config.d.ts",
+        "objects.d.ts",
+        "utils.d.ts",
+        "LICENSE"
+    ]
+}

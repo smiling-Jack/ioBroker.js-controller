@@ -1,0 +1,71 @@
+{
+    "name": "@iobroker/js-controller-adapter",
+    "type": "module",
+    "version": "8.0.0-alpha.16-20261107-5f1282043",
+    "engines": {
+        "node": ">=22.22.2"
+    },
+    "dependencies": {
+        "@alcalzone/pak": "^0.12.0",
+        "@iobroker/db-objects-file": "file:../db-objects-file",
+        "@iobroker/db-objects-jsonl": "file:../db-objects-jsonl",
+        "@iobroker/db-objects-redis": "file:../db-objects-redis",
+        "@iobroker/db-states-file": "file:../db-states-file",
+        "@iobroker/db-states-jsonl": "file:../db-states-jsonl",
+        "@iobroker/db-states-redis": "file:../db-states-redis",
+        "@iobroker/js-controller-common": "file:../common",
+        "@iobroker/js-controller-common-db": "file:../common-db",
+        "@iobroker/plugin-base": "~4.0.0",
+        "deep-clone": "^3.0.3",
+        "fs-extra": "^11.4.1",
+        "jsonwebtoken": "^9.0.3",
+        "node-schedule": "^2.1.2",
+        "node.extend": "^2.0.3",
+        "pidusage": "^4.1.0",
+        "readline": "^1.3.0",
+        "semver": "^7.8.6",
+        "yargs": "^18.2.0"
+    },
+    "keywords": [
+        "ioBroker"
+    ],
+    "author": "bluefox <dogafox@gmail.com>",
+    "contributors": [
+        "bluefox <dogafox@gmail.com>",
+        "Apollon77 <iobroker@fischer-ka.de>",
+        "foxriver76 <moritz.heusinger@gmail.com>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ioBroker/ioBroker.js-controller"
+    },
+    "scripts": {
+        "test": "mocha --node-option import=tsx \"src/lib/adapter/managers/**/*.test.ts\" --exit",
+        "build": "tsc -b tsconfig.build.json && tsc-alias",
+        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./cert ../build/esm --cwd=src && cpy ./cert ../build/cjs --cwd=src && cpy ./**/*.d.ts ../cjs/ --cwd=build/esm/",
+        "build:doc": "typedoc --excludeExternals --excludeProtected --excludePrivate --plugin typedoc-plugin-missing-exports --plugin typedoc-plugin-markdown src/lib/adapter/adapter.ts --out ../controller/doc"
+    },
+    "exports": {
+        ".": {
+            "import": "./build/esm/index.js",
+            "require": "./build/cjs/index.js",
+            "types": "./build/esm/index.d.ts"
+        },
+        "./validator": {
+            "import": "./build/esm/lib/adapter/validator.js",
+            "require": "./build/cjs/lib/adapter/validator.js",
+            "types": "./build/esm/lib/adapter/validator.d.ts"
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "build/cjs/index.js",
+    "module": "build/esm/index.js",
+    "types": "build/esm/index.d.ts",
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "build/"
+    ]
+}

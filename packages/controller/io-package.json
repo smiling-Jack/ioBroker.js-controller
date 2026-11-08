@@ -1,0 +1,1389 @@
+{
+  "common": {
+    "name": "js-controller",
+    "version": "8.0.0",
+    "platform": "Javascript/Node.js",
+    "controller": true,
+    "mode": "daemon",
+    "title": "JS controller",
+    "titleLang": {
+      "en": "JS controller",
+      "de": "JS-Controller",
+      "ru": "Контроллер JS",
+      "pt": "Controlador JS",
+      "nl": "JS-controller",
+      "fr": "Contrôleur JS",
+      "it": "Controller JS",
+      "es": "Controlador JS",
+      "pl": "Kontroler JS",
+      "uk": "Контролер JS",
+      "zh-cn": "JS控制器"
+    },
+    "news": {
+      "8.0.0": {
+        "en": "see CHANGELOG.md",
+        "de": "siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie CHANGELOG.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedi CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
+        "zh-cn": "看到CHANGELOG.md"
+      },
+      "7.2.2": {
+        "en": "see CHANGELOG.md",
+        "de": "siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie CHANGELOG.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedi CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
+        "zh-cn": "看到CHANGELOG.md"
+      },
+      "7.1.2": {
+        "en": "see CHANGELOG.md",
+        "de": "siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie CHANGELOG.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedi CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
+        "zh-cn": "看到CHANGELOG.md"
+      },
+      "7.0.7": {
+        "en": "see CHANGELOG.md",
+        "de": "siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie CHANGELOG.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedi CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
+        "zh-cn": "看到CHANGELOG.md"
+      },
+      "6.0.11": {
+        "en": "see CHANGELOG.md",
+        "de": "siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie CHANGELOG.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedi CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
+        "zh-cn": "看到CHANGELOG.md"
+      },
+      "5.0.17": {
+        "en": "see CHANGELOG.md",
+        "de": "siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie CHANGELOG.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedi CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
+        "zh-cn": "看到CHANGELOG.md"
+      },
+      "4.0.24": {
+        "en": "see CHANGELOG.md",
+        "de": "siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie CHANGELOG.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedi CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
+        "zh-cn": "看到CHANGELOG.md"
+      },
+      "3.3.22": {
+        "en": "see CHANGELOG.md",
+        "de": "siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie CHANGELOG.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedi CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
+        "zh-cn": "看到CHANGELOG.md"
+      },
+      "3.2.16": {
+        "en": "see CHANGELOG.md",
+        "de": "siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie CHANGELOG.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedi CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
+        "zh-cn": "看到CHANGELOG.md"
+      },
+      "3.1.6": {
+        "en": "see CHANGELOG.md",
+        "de": "Siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie CHANGELOG.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedi CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
+        "zh-cn": "看到CHANGELOG.md"
+      },
+      "3.0.20": {
+        "en": "see CHANGELOG.md",
+        "de": "Siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie CHANGELOG.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedi CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
+        "zh-cn": "看到CHANGELOG.md"
+      }
+    },
+    "desc": {
+      "en": "Javascript/Node.js implementation of ioBroker controller",
+      "de": "Javascript/Node.js Implementierung des ioBroker-Controllers",
+      "ru": "Javascript/Node.js реализация контроллера ioBroker",
+      "pt": "Implementação do Javascript/Node.js do controlador ioBroker",
+      "nl": "Javascript/Node.js implementatie van ioBroker-controller",
+      "fr": "Implémentation Javascript/Node.js du contrôleur ioBroker",
+      "it": "Implementazione Javascript/Node.js del controller ioBroker",
+      "es": "Implementación de JavaScript/Node.js del controlador ioBroker",
+      "pl": "Implementacja JavaScript/Node.js kontrolera ioBroker",
+      "uk": "Реалізація контролера ioBroker на Javascript/Node.js",
+      "zh-cn": "Javascript / Node.js实现了ioBroker控制器"
+    },
+    "tier": 1,
+    "messagebox": true,
+    "supportedMessages": {
+      "custom": true
+    },
+    "readme": "https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md",
+    "authors": [
+      "bluefox <bluefox@gmail.com>",
+      "hobbyquaker <hq@ccu.io>",
+      "Apollon77 <iobroker@fischer-ka.de>"
+    ],
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
+    "license": "MIT",
+    "type": "general",
+    "unsafePerm": true,
+    "plugins": {
+      "sentry": {
+        "dsn": "https://ab26a840557947c088448fead588e0c5@sentry.iobroker.net/9",
+        "pathWhitelist": [
+          "@iobroker",
+          "iobroker.js-controller"
+        ]
+      }
+    }
+  },
+  "objects": [
+    {
+      "_id": "_design/system",
+      "type": "design",
+      "language": "javascript",
+      "common": {
+        "name": {
+          "en": "Object's selectors",
+          "de": "Objekt-Selektoren",
+          "ru": "Селекторы объекта",
+          "pt": "Seletores de objetos",
+          "nl": "Objectkiezers",
+          "fr": "Sélecteurs d'objet",
+          "it": "Selettori di oggetti",
+          "es": "Selectores de objeto",
+          "pl": "Selektory obiektów",
+          "uk": "Селектори об'єкта",
+          "zh-cn": "对象的选择器"
+        },
+        "dontDelete": true
+      },
+      "views": {
+        "host": {
+          "map": "function(doc) { if (doc.type === 'host') emit(doc._id, doc) }"
+        },
+        "adapter": {
+          "map": "function(doc) { if (doc.type === 'adapter') emit(doc._id, doc) }"
+        },
+        "instance": {
+          "map": "function(doc) { if (doc.type === 'instance') emit(doc._id, doc) }"
+        },
+        "instanceStats": {
+          "map": "function(doc) { if (doc.type === 'instance') emit(doc._id, parseInt(doc._id.split('.').pop(), 10)) }",
+          "reduce": "_stats"
+        },
+        "meta": {
+          "map": "function(doc) { if (doc.type === 'meta') emit(doc._id, doc) }"
+        },
+        "device": {
+          "map": "function(doc) { if (doc.type === 'device') emit(doc._id, doc) }"
+        },
+        "channel": {
+          "map": "function(doc) { if (doc.type === 'channel') emit(doc._id, doc) }"
+        },
+        "state": {
+          "map": "function(doc) { if (doc.type === 'state') emit(doc._id, doc) }"
+        },
+        "folder": {
+          "map": "function(doc) { if (doc.type === 'folder') emit(doc._id, doc) }"
+        },
+        "enum": {
+          "map": "function(doc) { if (doc.type === 'enum') emit(doc._id, doc) }"
+        },
+        "script": {
+          "map": "function(doc) { if (doc.type === 'script') emit(doc._id, doc) }"
+        },
+        "group": {
+          "map": "function(doc) { if (doc.type === 'group') emit(doc.common.name, doc) }"
+        },
+        "user": {
+          "map": "function(doc) { if (doc.type === 'user') emit(doc.common.name, doc) }"
+        },
+        "config": {
+          "map": "function(doc) { if (doc.type === 'config') emit(doc.common.name, doc) }"
+        },
+        "custom": {
+          "map": "function(doc) { doc.type === 'state' && doc.common && doc.common.custom && emit(doc._id, doc.common.custom) }"
+        },
+        "custom-full": {
+          "map": "function(doc) { doc.type === 'state' && doc.common && doc.common.custom && emit(doc._id, doc) }"
+        },
+        "chart": {
+          "map": "function(doc) { if (doc.type === 'chart') emit(doc._id, doc) }"
+        }
+      },
+      "acl": {
+        "owner": "system.user.admin",
+        "ownerGroup": "system.group.administrator",
+        "object": 1092
+      }
+    },
+    {
+      "_id": "system.group.administrator",
+      "type": "group",
+      "common": {
+        "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPGcgZmlsbD0iY3VycmVudENvbG9yIj4NCiAgICAgICAgPHBhdGggZD0iTTQsMTh2LTAuNjVjMC0wLjM0LDAuMTYtMC42NiwwLjQxLTAuODFDNi4xLDE1LjUzLDguMDMsMTUsMTAsMTVjMC4wMywwLDAuMDUsMCwwLjA4LDAuMDFjMC4xLTAuNywwLjMtMS4zNywwLjU5LTEuOTggQzEwLjQ1LDEzLjAxLDEwLjIzLDEzLDEwLDEzYy0yLjQyLDAtNC42OCwwLjY3LTYuNjEsMS44MkMyLjUxLDE1LjM0LDIsMTYuMzIsMiwxNy4zNVYyMGg5LjI2Yy0wLjQyLTAuNi0wLjc1LTEuMjgtMC45Ny0ySDR6Ii8+DQogICAgICAgIDxwYXRoIGQ9Ik0xMCwxMmMyLjIxLDAsNC0xLjc5LDQtNHMtMS43OS00LTQtNEM3Ljc5LDQsNiw1Ljc5LDYsOFM3Ljc5LDEyLDEwLDEyeiBNMTAsNmMxLjEsMCwyLDAuOSwyLDJzLTAuOSwyLTIsMiBjLTEuMSwwLTItMC45LTItMlM4LjksNiwxMCw2eiIvPg0KICAgICAgICA8cGF0aCBkPSJNMjAuNzUsMTZjMC0wLjIyLTAuMDMtMC40Mi0wLjA2LTAuNjNsMS4xNC0xLjAxbC0xLTEuNzNsLTEuNDUsMC40OWMtMC4zMi0wLjI3LTAuNjgtMC40OC0xLjA4LTAuNjNMMTgsMTFoLTJsLTAuMywxLjQ5IGMtMC40LDAuMTUtMC43NiwwLjM2LTEuMDgsMC42M2wtMS40NS0wLjQ5bC0xLDEuNzNsMS4xNCwxLjAxYy0wLjAzLDAuMjEtMC4wNiwwLjQxLTAuMDYsMC42M3MwLjAzLDAuNDIsMC4wNiwwLjYzbC0xLjE0LDEuMDEgbDEsMS43M2wxLjQ1LTAuNDljMC4zMiwwLjI3LDAuNjgsMC40OCwxLjA4LDAuNjNMMTYsMjFoMmwwLjMtMS40OWMwLjQtMC4xNSwwLjc2LTAuMzYsMS4wOC0wLjYzbDEuNDUsMC40OWwxLTEuNzNsLTEuMTQtMS4wMSBDMjAuNzIsMTYuNDIsMjAuNzUsMTYuMjIsMjAuNzUsMTZ6IE0xNywxOGMtMS4xLDAtMi0wLjktMi0yczAuOS0yLDItMnMyLDAuOSwyLDJTMTguMSwxOCwxNywxOHoiLz4NCiAgICA8L2c+DQo8L3N2Zz4=",
+        "name": {
+          "en": "Administrator",
+          "de": "Administrator",
+          "ru": "Администратор",
+          "pt": "Administrador",
+          "nl": "Beheerder",
+          "fr": "Administrateur",
+          "it": "Amministratore",
+          "es": "Administrador",
+          "pl": "Administrator",
+          "uk": "Адміністратор",
+          "zh-cn": "管理员"
+        },
+        "desc": {
+          "en": "Can do everything with System",
+          "de": "Darf alles mit dem System machen",
+          "ru": "Может делать все с помощью системы",
+          "pt": "Pode fazer tudo com o sistema",
+          "nl": "Kan alles doen met System",
+          "fr": "Peut tout faire avec le système",
+          "it": "Può fare tutto con il sistema",
+          "es": "Puede hacer todo con System",
+          "pl": "Potrafi zrobić wszystko dzięki Systemowi",
+          "uk": "Може робити все з системою",
+          "zh-cn": "可以用系统做任何事情"
+        },
+        "members": [
+          "system.user.admin"
+        ],
+        "dontDelete": true,
+        "acl": {
+          "object": {
+            "list": true,
+            "read": true,
+            "write": true,
+            "delete": true
+          },
+          "state": {
+            "list": true,
+            "read": true,
+            "write": true,
+            "create": true,
+            "delete": true
+          },
+          "users": {
+            "list": true,
+            "read": true,
+            "write": true,
+            "create": true,
+            "delete": true
+          },
+          "other": {
+            "execute": true,
+            "http": true,
+            "sendto": true
+          },
+          "file": {
+            "list": true,
+            "read": true,
+            "write": true,
+            "create": true,
+            "delete": true
+          }
+        }
+      },
+      "acl": {
+        "owner": "system.user.admin",
+        "ownerGroup": "system.group.administrator",
+        "object": 1604
+      }
+    },
+    {
+      "_id": "system.group.user",
+      "type": "group",
+      "common": {
+        "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTIgNmMxLjEgMCAyIC45IDIgMnMtLjkgMi0yIDItMi0uOS0yLTIgLjktMiAyLTJtMCAxMGMyLjcgMCA1LjggMS4yOSA2IDJINmMuMjMtLjcyIDMuMzEtMiA2LTJtMC0xMkM5Ljc5IDQgOCA1Ljc5IDggOHMxLjc5IDQgNCA0IDQtMS43OSA0LTQtMS43OS00LTQtNHptMCAxMGMtMi42NyAwLTggMS4zNC04IDR2MmgxNnYtMmMwLTIuNjYtNS4zMy00LTgtNHoiLz4NCjwvc3ZnPg==",
+        "name": {
+          "en": "User",
+          "de": "Benutzer",
+          "ru": "Пользователь",
+          "pt": "Do utilizador",
+          "nl": "Gebruiker",
+          "fr": "Utilisateur",
+          "it": "Utente",
+          "es": "Usuario",
+          "pl": "Użytkownik",
+          "uk": "Користувач",
+          "zh-cn": "用户"
+        },
+        "desc": {
+          "en": "Cannot modify everything",
+          "de": "Darf nicht alles ändern",
+          "ru": "Не может изменять все",
+          "pt": "Não é possível modificar tudo",
+          "nl": "Kan niet alles wijzigen",
+          "fr": "Impossible de tout modifier",
+          "it": "Non è possibile modificare tutto",
+          "es": "No se puede modificar todo",
+          "pl": "Nie można modyfikować wszystkiego",
+          "uk": "Не може змінювати все",
+          "zh-cn": "用户无法修改所有内容"
+        },
+        "members": [],
+        "dontDelete": true,
+        "acl": {
+          "object": {
+            "list": true,
+            "read": true,
+            "write": false,
+            "delete": false
+          },
+          "state": {
+            "list": true,
+            "read": true,
+            "write": true,
+            "create": true,
+            "delete": false
+          },
+          "users": {
+            "list": true,
+            "read": true,
+            "write": false,
+            "create": false,
+            "delete": false
+          },
+          "other": {
+            "execute": false,
+            "http": true,
+            "sendto": false
+          },
+          "file": {
+            "list": true,
+            "read": true,
+            "write": false,
+            "create": false,
+            "delete": false
+          }
+        }
+      },
+      "acl": {
+        "owner": "system.user.admin",
+        "ownerGroup": "system.group.administrator",
+        "object": 1604
+      }
+    },
+    {
+      "_id": "enum.rooms",
+      "common": {
+        "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTIgNS42OWw1IDQuNVYxOGgtMnYtNkg5djZIN3YtNy44MWw1LTQuNU0xMiAzTDIgMTJoM3Y4aDZ2LTZoMnY2aDZ2LThoM0wxMiAzeiIvPg0KPC9zdmc+",
+        "name": {
+          "en": "Rooms",
+          "de": "Räume",
+          "ru": "Комнаты",
+          "pt": "Quartos",
+          "nl": "Kamers",
+          "fr": "Pièces",
+          "it": "Camere",
+          "es": "Habitaciones",
+          "pl": "Pokoje",
+          "uk": "Кімнати",
+          "zh-cn": "客房"
+        },
+        "desc": {
+          "en": "List of the rooms",
+          "de": "Liste der Räume",
+          "ru": "Список комнат",
+          "pt": "Lista dos quartos",
+          "nl": "Lijst met kamers",
+          "fr": "Liste des chambres",
+          "it": "Elenco delle stanze",
+          "es": "Lista de las habitaciones",
+          "pl": "Lista pokoi",
+          "uk": "Список кімнат",
+          "zh-cn": "房间清单"
+        },
+        "members": [],
+        "dontDelete": true
+      },
+      "type": "enum",
+      "acl": {
+        "owner": "system.user.admin",
+        "ownerGroup": "system.group.administrator",
+        "object": 1911
+      }
+    },
+    {
+      "_id": "enum.functions",
+      "common": {
+        "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNOSAyMWMwIC41NS40NSAxIDEgMWg0Yy41NSAwIDEtLjQ1IDEtMXYtMUg5djF6bTMtMTlDOC4xNCAyIDUgNS4xNCA1IDljMCAyLjM4IDEuMTkgNC40NyAzIDUuNzRWMTdjMCAuNTUuNDUgMSAxIDFoNmMuNTUgMCAxLS40NSAxLTF2LTIuMjZjMS44MS0xLjI3IDMtMy4zNiAzLTUuNzQgMC0zLjg2LTMuMTQtNy03LTd6bTIuODUgMTEuMWwtLjg1LjZWMTZoLTR2LTIuM2wtLjg1LS42QzcuOCAxMi4xNiA3IDEwLjYzIDcgOWMwLTIuNzYgMi4yNC01IDUtNXM1IDIuMjQgNSA1YzAgMS42My0uOCAzLjE2LTIuMTUgNC4xeiIvPg0KPC9zdmc+",
+        "name": {
+          "en": "Functions",
+          "de": "Funktionen",
+          "ru": "функции",
+          "pt": "Funções",
+          "nl": "functies",
+          "fr": "Les fonctions",
+          "it": "funzioni",
+          "es": "Funciones",
+          "pl": "Funkcje",
+          "uk": "функції",
+          "zh-cn": "职能"
+        },
+        "desc": {
+          "en": "List of the functions",
+          "de": "Liste der Funktionen",
+          "ru": "Список функций",
+          "pt": "Lista das funções",
+          "nl": "Lijst met functies",
+          "fr": "Liste des fonctions",
+          "it": "Elenco delle funzioni",
+          "es": "Lista de las funciones",
+          "pl": "Lista funkcji",
+          "uk": "Список функцій",
+          "zh-cn": "功能列表"
+        },
+        "members": [],
+        "dontDelete": true
+      },
+      "type": "enum",
+      "acl": {
+        "owner": "system.user.admin",
+        "ownerGroup": "system.group.administrator",
+        "object": 1911
+      }
+    },
+    {
+      "_id": "system.config",
+      "type": "config",
+      "common": {
+        "name": {
+          "en": "System configuration",
+          "de": "Systemkonfiguration",
+          "ru": "Конфигурация системы",
+          "pt": "Configuração do sistema",
+          "nl": "Systeem configuratie",
+          "fr": "Configuration du système",
+          "it": "Configurazione di sistema",
+          "es": "Configuración del sistema",
+          "pl": "Konfiguracja systemu",
+          "uk": "Конфігурація системи",
+          "zh-cn": "系统配置"
+        },
+        "city": "",
+        "country": "",
+        "language": "",
+        "tempUnit": "°C",
+        "currency": "",
+        "dontDelete": true,
+        "dateFormat": "DD.MM.YYYY",
+        "isFloatComma": true,
+        "licenseConfirmed": false,
+        "defaultHistory": "",
+        "expertMode": false,
+        "tipsDisabled": false,
+        "defaultLogLevel": "info",
+        "activeRepo": [
+          "stable"
+        ],
+        "diag": "extended",
+        "tabs": [
+          "tab-intro",
+          "tab-info",
+          "tab-adapters",
+          "tab-instances",
+          "tab-objects",
+          "tab-log",
+          "tab-scenes",
+          "tab-javascript",
+          "tab-text2command-0",
+          "tab-node-red-0"
+        ]
+      },
+      "native": {},
+      "acl": {
+        "owner": "system.user.admin",
+        "ownerGroup": "system.group.administrator",
+        "object": 1604
+      }
+    },
+    {
+      "_id": "system.repositories",
+      "type": "config",
+      "common": {
+        "name": {
+          "en": "System repositories",
+          "de": "System-Repositories",
+          "ru": "Системные репозитории",
+          "pt": "Repositórios do sistema",
+          "nl": "Systeemrepository's",
+          "fr": "Référentiels système",
+          "it": "Repository di sistema",
+          "es": "Repositorios del sistema",
+          "pl": "Repozytoria systemowe",
+          "uk": "Системні репозиторії",
+          "zh-cn": "系统资料库"
+        },
+        "dontDelete": true
+      },
+      "native": {
+        "repositories": {
+          "stable": {
+            "link": "http://download.iobroker.net/sources-dist.json",
+            "json": null
+          },
+          "beta": {
+            "link": "http://download.iobroker.net/sources-dist-latest.json",
+            "json": null
+          }
+        },
+        "oldRepositories": {
+          "sources": {
+            "link": "conf/sources-dist.json",
+            "json": null
+          },
+          "online": {
+            "link": "https://raw.githubusercontent.com/ioBroker/ioBroker.repositories/master/sources-dist.json",
+            "json": null
+          }
+        }
+      },
+      "acl": {
+        "owner": "system.user.admin",
+        "ownerGroup": "system.group.administrator",
+        "object": 1604
+      }
+    },
+    {
+      "_id": "system.licenses",
+      "type": "config",
+      "common": {
+        "name": {
+          "en": "Licenses from iobroker.net",
+          "de": "Lizenzen von iobroker.net",
+          "ru": "Лицензии от iobroker.net",
+          "pt": "Licenças de iobroker.net",
+          "nl": "Licenties van iobroker.net",
+          "fr": "Licences de iobroker.net",
+          "it": "Licenze da iobroker.net",
+          "es": "Licencias de iobroker.net",
+          "pl": "Licencje z iobroker.net",
+          "zh-cn": "来自 iobroker.net 的许可证"
+        }
+      },
+      "native": {
+        "login": "",
+        "password": "",
+        "licenses": [],
+        "readTime": 0
+      },
+      "acl": {
+        "owner": "system.user.admin",
+        "ownerGroup": "system.group.administrator",
+        "object": 1604
+      }
+    },
+    {
+      "_id": "system.certificates",
+      "type": "config",
+      "common": {
+        "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTIgMUwzIDV2NmMwIDUuNTUgMy44NCAxMC43NCA5IDEyIDUuMTYtMS4yNiA5LTYuNDUgOS0xMlY1bC05LTR6bTAgMTAuOTloN2MtLjUzIDQuMTItMy4yOCA3Ljc5LTcgOC45NFYxMkg1VjYuM2w3LTMuMTF2OC44eiIvPg0KPC9zdmc+",
+        "name": {
+          "en": "System certificates",
+          "de": "Systemzertifikate",
+          "ru": "Системные сертификаты",
+          "pt": "Certificados do sistema",
+          "nl": "Systeem certificaten",
+          "fr": "Certificats système",
+          "it": "Certificati di sistema",
+          "es": "Certificados del sistema",
+          "pl": "Certyfikaty systemowe",
+          "zh-cn": "系统证书"
+        }
+      },
+      "native": {
+        "certificates": {
+          "defaultPrivate": null,
+          "defaultPublic": null
+        }
+      },
+      "acl": {
+        "owner": "system.user.admin",
+        "ownerGroup": "system.group.administrator",
+        "object": 1536
+      }
+    },
+    {
+      "_id": "alias.0",
+      "type": "meta",
+      "common": {
+        "name": {
+          "en": "root folder for Aliases",
+          "de": "Stammordner für Aliase",
+          "ru": "корневая папка для псевдонимов",
+          "pt": "pasta raiz para aliases",
+          "nl": "hoofdmap voor aliassen",
+          "fr": "dossier racine pour les alias",
+          "it": "cartella principale per gli alias",
+          "es": "carpeta raíz para alias",
+          "pl": "folder główny dla aliasów",
+          "zh-cn": "别名的根文件夹"
+        },
+        "type": "meta.folder",
+        "dontDelete": true
+      },
+      "acl": {
+        "owner": "system.user.admin",
+        "ownerGroup": "system.group.administrator",
+        "object": 1604
+      }
+    },
+    {
+      "_id": "0_userdata.0",
+      "type": "meta",
+      "common": {
+        "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPGcgZmlsbD0iY3VycmVudENvbG9yIj4NCiAgICAgICAgPHBhdGggZD0iTTE5LDV2MTRINVY1SDE5IE0xOSwzSDVDMy45LDMsMywzLjksMyw1djE0YzAsMS4xLDAuOSwyLDIsMmgxNGMxLjEsMCwyLTAuOSwyLTJWNUMyMSwzLjksMjAuMSwzLDE5LDNMMTksM3oiLz4NCiAgICAgICAgPHBhdGggZD0iTTE0LDE3SDd2LTJoN1YxN3ogTTE3LDEzSDd2LTJoMTBWMTN6IE0xNyw5SDdWN2gxMFY5eiIvPg0KICAgIDwvZz4NCjwvc3ZnPg==",
+        "name": {
+          "en": "User objects and files root folder",
+          "de": "Stammordner für Benutzerobjekte und Dateien",
+          "ru": "Корневая папка пользовательских объектов и файлов",
+          "pt": "Pasta raiz de objetos e arquivos do usuário",
+          "nl": "Hoofdmap van objecten en bestanden van gebruikers",
+          "fr": "Objets utilisateur et dossier racine des fichiers",
+          "it": "Cartella principale di oggetti e file dell'utente",
+          "es": "Carpeta raíz de objetos y archivos de usuario",
+          "pl": "Folder główny obiektów i plików użytkownika",
+          "uk": "Коренева папка об'єктів користувача та файлів",
+          "zh-cn": "用户对象和文件根文件夹"
+        },
+        "desc": {
+          "en": "Here you can upload your files or create your private objects and states",
+          "de": "Hier können eigene Dateien hochgeladen oder private Objekte und Zustände erstellt werden",
+          "ru": "Здесь вы можете загрузить свои файлы или создать свои личные объекты и состояния",
+          "pt": "Aqui você pode enviar seus arquivos ou criar seus objetos e estados particulares",
+          "nl": "Hier kunt u uw bestanden uploaden of uw privé-objecten en statussen maken",
+          "fr": "Ici, vous pouvez télécharger vos fichiers ou créer vos objets et états privés",
+          "it": "Qui puoi caricare i tuoi file o creare oggetti e stati privati",
+          "es": "Aquí puede cargar sus archivos o crear sus objetos y estados privados",
+          "pl": "Tutaj możesz przesyłać pliki lub tworzyć prywatne obiekty i stany",
+          "uk": "Тут ви можете завантажити свої файли або створити свої приватні об'єкти та стани",
+          "zh-cn": "在这里您可以上传文件或创建私有对象和状态"
+        },
+        "type": "meta.user",
+        "dontDelete": true
+      },
+      "acl": {
+        "owner": "system.user.admin",
+        "ownerGroup": "system.group.administrator",
+        "object": 1604
+      }
+    },
+    {
+      "_id": "0_userdata.0.example_state",
+      "type": "state",
+      "common": {
+        "name": "Example state",
+        "role": "indicator",
+        "def": false,
+        "type": "boolean"
+      },
+      "acl": {
+        "owner": "system.user.admin",
+        "ownerGroup": "system.group.administrator",
+        "object": 1604
+      }
+    }
+  ],
+  "notifications": [
+    {
+      "scope": "system",
+      "name": {
+        "en": "System Notifications",
+        "de": "System-Benachrichtigungen",
+        "ru": "Системные уведомления",
+        "pt": "Notificações do sistema",
+        "nl": "Systeemmeldingen",
+        "fr": "Notifications système",
+        "it": "Notifiche di sistema",
+        "es": "Notificaciones del sistema",
+        "pl": "Powiadomienia systemowe",
+        "uk": "Системні сповіщення",
+        "zh-cn": "系统通知"
+      },
+      "description": {
+        "en": "These notifications are collected by the ioBroker system and point to issues you should check and fix.",
+        "de": "Diese Benachrichtigungen werden vom ioBroker-System erfasst und weisen auf Probleme hin, die überprüft und behoben werden sollten.",
+        "ru": "Эти уведомления собираются системой ioBroker и указывают на проблемы, которые вы должны проверить и исправить.",
+        "pt": "Essas notificações são coletadas pelo sistema ioBroker e apontam para problemas que você deve verificar e corrigir.",
+        "nl": "Deze meldingen worden verzameld door het ioBroker-systeem en wijzen op problemen die u moet controleren en oplossen.",
+        "fr": "Ces notifications sont collectées par le système ioBroker et indiquent des problèmes que vous devez vérifier et résoudre.",
+        "it": "Queste notifiche vengono raccolte dal sistema ioBroker e indicano problemi che dovresti controllare e correggere.",
+        "es": "Estas notificaciones son recopiladas por el sistema ioBroker y señalan problemas que debe verificar y solucionar.",
+        "pl": "Te powiadomienia są zbierane przez system ioBroker i wskazują problemy, które należy sprawdzić i naprawić.",
+        "uk": "Ці сповіщення збираються системою ioBroker і вказують на проблеми, які ви повинні перевірити та виправити.",
+        "zh-cn": "这些通知由ioBroker系统收集，并指出您应检查并修复的问题"
+      },
+      "categories": [
+        {
+          "category": "diskSpaceIssues",
+          "name": {
+            "en": "Issues with insufficient disk space",
+            "de": "Probleme mit unzureichendem Speicherplatz",
+            "ru": "Проблемы с недостаточным дисковым пространством",
+            "pt": "Problemas com espaço insuficiente no disco",
+            "nl": "Problemen met onvoldoende schijfruimte",
+            "fr": "Problèmes liés à un espace disque insuffisant",
+            "it": "Problemi di spazio su disco insufficiente",
+            "es": "Problemas de espacio insuficiente en disco",
+            "pl": "Problemy z niewystarczającą ilością miejsca na dysku",
+            "uk": "Проблеми з нестачею місця на диску",
+            "zh-cn": "磁盘空间不足的问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "Your system is running out of disk space according to the user-defined threshold. Please free space on the disk to avoid problems.",
+            "de": "Ihr System verfügt nicht mehr über den vom Benutzer eingestellten Speicherplatz. Bitte geben Sie Speicherplatz auf der Festplatte frei, um Probleme zu vermeiden.",
+            "ru": "В вашей системе закончилось место на диске в соответствии с заданным пользователем порогом. Во избежание проблем освободите место на диске.",
+            "pt": "O seu sistema está a ficar sem espaço em disco de acordo com o limite definido pelo utilizador. Liberte espaço no disco para evitar problemas.",
+            "nl": "Uw systeem heeft bijna geen schijfruimte meer volgens de door de gebruiker ingestelde drempelwaarde. Maak ruimte vrij op de schijf om problemen te voorkomen.",
+            "fr": "Votre système manque d'espace disque selon le seuil défini par l'utilisateur. Veuillez libérer de l'espace sur le disque pour éviter tout problème.",
+            "it": "Il sistema sta esaurendo lo spazio su disco in base alla soglia definita dall'utente. Liberare spazio sul disco per evitare problemi.",
+            "es": "Su sistema se está quedando sin espacio en disco según el umbral definido por el usuario. Por favor, libere espacio en el disco para evitar problemas.",
+            "pl": "W systemie zaczyna brakować miejsca na dysku zgodnie z progiem zdefiniowanym przez użytkownika. Aby uniknąć problemów, zwolnij miejsce na dysku.",
+            "uk": "У вашій системі закінчується місце на диску відповідно до визначеного користувачем порогового значення. Будь ласка, звільніть місце на диску, щоб уникнути проблем.",
+            "zh-cn": "根据用户定义的阈值，您的系统即将耗尽磁盘空间。请释放磁盘空间，以免出现问题。"
+          },
+          "regex": [],
+          "limit": 1
+        },
+        {
+          "category": "memIssues",
+          "name": {
+            "en": "Issues with RAM availability",
+            "de": "Probleme mit der Arbeitsspeicher-Verfügbarkeit",
+            "ru": "Проблемы с доступностью оперативной памяти",
+            "pt": "Problemas com disponibilidade de RAM",
+            "nl": "Problemen met de beschikbaarheid van RAM",
+            "fr": "Problèmes de disponibilité de la RAM",
+            "it": "Problemi con la disponibilità della RAM",
+            "es": "Problemas con la disponibilidad de RAM",
+            "pl": "Problemy z dostępnością pamięci RAM",
+            "uk": "Проблеми з доступністю оперативної пам'яті",
+            "zh-cn": "RAM可用性问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "Your system is running out of memory. Please check the number of running adapters and processes or if single processes need too many memory.",
+            "de": "Es steht nicht genug Arbeitsspeicher zur Verfügung. Die Anzahl der laufenden Adapter und Prozesse sollte geprüft werden, oder ob einzelne Prozesse zuviel Speicher benötigen.",
+            "ru": "В вашей системе не хватает памяти. Пожалуйста, проверьте количество работающих адаптеров и процессов, или если отдельным процессам требуется слишком много памяти.",
+            "pt": "Seu sistema está ficando sem memória. Verifique o número de adaptadores e processos em execução ou se processos únicos precisam de muita memória.",
+            "nl": "Uw systeem heeft onvoldoende geheugen. Controleer het aantal actieve adapters en processen of als afzonderlijke processen te veel geheugen nodig hebben.",
+            "fr": "Votre système manque de mémoire. Veuillez vérifier le nombre d'adaptateurs et de processus en cours d'exécution ou si des processus uniques nécessitent trop de mémoire.",
+            "it": "Il tuo sistema sta esaurendo la memoria. Controllare il numero di adattatori e processi in esecuzione o se i singoli processi richiedono troppa memoria.",
+            "es": "Su sistema se está quedando sin memoria. Verifique el número de adaptadores y procesos en ejecución o si los procesos individuales necesitan demasiada memoria.",
+            "pl": "W Twoim systemie kończy się pamięć. Sprawdź liczbę działających adapterów i procesów lub czy pojedyncze procesy wymagają zbyt dużej ilości pamięci.",
+            "uk": "Ваша система не має пам'яті. Будь ласка, перевірте кількість запущених адаптерів та процесів, або чи потребують окремі процеси занадто багато пам'яті.",
+            "zh-cn": "您的系统内存不足。请检查正在运行的适配器和进程的数量，或者单个进程是否需要太多内存。"
+          },
+          "regex": [
+            "^Exception-Code: ENOMEM",
+            "buffer allocation failed"
+          ],
+          "limit": 10
+        },
+        {
+          "category": "fsIoErrors",
+          "name": {
+            "en": "Issues with the file system",
+            "de": "Probleme mit dem Dateisystem",
+            "ru": "Проблемы с файловой системой",
+            "pt": "Problemas com o sistema de arquivos",
+            "nl": "Problemen met het bestandssysteem",
+            "fr": "Problèmes avec le système de fichiers",
+            "it": "Problemi con il file system",
+            "es": "Problemas con el sistema de archivos",
+            "pl": "Problemy z systemem plików",
+            "uk": "Проблеми з файловою системою",
+            "zh-cn": "文件系统问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "There is an error with the file system. Maybe the file system is corrupted or wrongly configured. A file system check is required!",
+            "de": "Es liegt ein Fehler im Dateisystem vor. Möglicherweise ist das Dateisystem beschädigt oder falsch konfiguriert. Eine Dateisystemprüfung ist erforderlich!",
+            "ru": "Ошибка файловой системы. Возможно, файловая система повреждена или неправильно настроена. Требуется проверка файловой системы!",
+            "pt": "Ocorreu um erro com o sistema de arquivos. Talvez o sistema de arquivos esteja corrompido ou configurado incorretamente. É necessária uma verificação do sistema de arquivos!",
+            "nl": "Er is een fout opgetreden met het bestandssysteem. Misschien is het bestandssysteem beschadigd of verkeerd geconfigureerd. Een bestandssysteemcontrole is vereist!",
+            "fr": "Il y a une erreur avec le système de fichiers. Le système de fichiers est peut-être corrompu ou mal configuré. Une vérification du système de fichiers est requise!",
+            "it": "C'è un errore con il file system. Forse il file system è danneggiato o configurato in modo errato. È richiesto un controllo del file system!",
+            "es": "Hay un error con el sistema de archivos. Quizás el sistema de archivos está dañado o configurado incorrectamente. Se requiere una verificación del sistema de archivos.",
+            "pl": "Wystąpił błąd w systemie plików. Być może system plików jest uszkodzony lub nieprawidłowo skonfigurowany. Wymagane jest sprawdzenie systemu plików!",
+            "uk": "Помилка файлової системи. Можливо, файлова система пошкоджена або неправильно налаштована. Потрібна перевірка файлової системи!",
+            "zh-cn": "文件系统出错。也许文件系统已损坏或配置错误。需要文件系统检查！"
+          },
+          "regex": [
+            "^Exception-Code: EROFS",
+            "^Exception-Code: EIO",
+            "^Exception-Code: ENXIO",
+            "^Exception-Code: EMFILE",
+            "^Exception-Code: EBADF",
+            "^Exception-Code: ENFILE",
+            "^Unknown system error -117[^,]*, write"
+          ],
+          "limit": 10
+        },
+        {
+          "category": "noDiskSpace",
+          "name": {
+            "en": "Issues with free disk space",
+            "de": "Probleme mit dem freien Speicherplatz",
+            "ru": "Проблемы со свободным местом на диске",
+            "pt": "Problemas com espaço livre em disco",
+            "nl": "Problemen met vrije schijfruimte",
+            "fr": "Problèmes d'espace disque libre",
+            "it": "Problemi con lo spazio libero su disco",
+            "es": "Problemas con el espacio libre en disco",
+            "pl": "Problemy z wolnym miejscem na dysku",
+            "uk": "Проблеми з вільним місцем на диску",
+            "zh-cn": "可用磁盘空间问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "There is not enough disk space left on the storage device. Please clean up some disk space.",
+            "de": "Es steht nicht genügend Speicherplatz auf dem Datenträger zur Verfügung. Bitte bereinigen Sie etwas Speicherplatz.",
+            "ru": "На запоминающем устройстве недостаточно места на диске. Пожалуйста, очистите место на диске.",
+            "pt": "Não há espaço em disco suficiente no dispositivo de armazenamento. Limpe algum espaço em disco.",
+            "nl": "Er is niet genoeg schijfruimte over op het opslagapparaat. Ruim wat schijfruimte op.",
+            "fr": "Il n'y a pas assez d'espace disque sur le périphérique de stockage. Veuillez nettoyer de l'espace disque.",
+            "it": "Spazio su disco insufficiente sul dispositivo di archiviazione. Si prega di pulire un po 'di spazio su disco.",
+            "es": "No queda suficiente espacio en disco en el dispositivo de almacenamiento. Limpie algo de espacio en disco.",
+            "pl": "Za mało miejsca na dysku na urządzeniu magazynującym. Proszę wyczyścić trochę miejsca na dysku.",
+            "uk": "На запам'ятовуючому пристрої недостатньо місця на диску. Будь ласка, очистіть місце на диску.",
+            "zh-cn": "存储设备上没有足够的磁盘空间。请清理一些磁盘空间。"
+          },
+          "regex": [
+            "^Exception-Code: ENOSPC"
+          ],
+          "limit": 10
+        },
+        {
+          "category": "accessErrors",
+          "name": {
+            "en": "Issues with file access rights",
+            "de": "Probleme mit Dateizugriffsrechten",
+            "ru": "Проблемы с правами доступа к файлам",
+            "pt": "Problemas com direitos de acesso a arquivos",
+            "nl": "Problemen met toegangsrechten voor bestanden",
+            "fr": "Problèmes avec les droits d'accès aux fichiers",
+            "it": "Problemi con i diritti di accesso ai file",
+            "es": "Problemas con los derechos de acceso a archivos",
+            "pl": "Problemy z prawami dostępu do plików",
+            "uk": "Проблеми з правами доступу до файлів",
+            "zh-cn": "文件访问权限问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "There is an issue with access rights for files on the system. Running the installation fixer can solve these issues. Alternatively check the relevant directories and files.",
+            "de": "Es liegt ein Problem mit den Zugriffsrechten für Dateien auf dem System vor. Durch Ausführen des Installationsfixers können diese behoben werden. Alternativ müssen die entsprechenden Verzeichnisse und Dateien überprüft werden.",
+            "ru": "Возникла проблема с правами доступа к файлам в системе. Эти проблемы можно решить с помощью средства исправления установки. Или проверьте соответствующие каталоги и файлы.",
+            "pt": "Há um problema com os direitos de acesso para arquivos no sistema. Executar o fixador de instalação pode resolver esses problemas. Como alternativa, verifique os diretórios e arquivos relevantes.",
+            "nl": "Er is een probleem met toegangsrechten voor bestanden op het systeem. Het uitvoeren van de installatie-fixer kan deze problemen oplossen. Als alternatief kunt u de relevante mappen en bestanden controleren.",
+            "fr": "Il y a un problème avec les droits d'accès aux fichiers sur le système. L'exécution du programme d'installation peut résoudre ces problèmes. Vous pouvez également vérifier les répertoires et fichiers concernés.",
+            "it": "Si è verificato un problema con i diritti di accesso per i file sul sistema. L'esecuzione del programma di riparazione dell'installazione può risolvere questi problemi. In alternativa, controlla le directory e i file pertinenti.",
+            "es": "Existe un problema con los derechos de acceso a los archivos del sistema. Ejecutar el reparador de instalación puede resolver estos problemas. Alternativamente, consulte los directorios y archivos relevantes.",
+            "pl": "Wystąpił problem z prawami dostępu do plików w systemie. Uruchomienie narzędzia do naprawy instalacji może rozwiązać te problemy. Alternatywnie sprawdź odpowiednie katalogi i pliki.",
+            "uk": "Є проблема з правами доступу до файлів у системі. Запуск фіксатора встановлення може вирішити ці проблеми. Альтернативно перевірте відповідні каталоги та файли.",
+            "zh-cn": "系统上文件的访问权限存在问题。运行安装修复程序可以解决这些问题。或者，检查相关的目录和文件。"
+          },
+          "regex": [
+            "^Exception-Code: EACCES: (?!(listen|bind) )",
+            "^Exception-Code: EPERM"
+          ],
+          "limit": 10
+        },
+        {
+          "category": "nonExistingFileErrors",
+          "name": {
+            "en": "Issues with non-existing files or directories",
+            "de": "Probleme mit nicht vorhandenen Dateien oder Verzeichnissen",
+            "ru": "Проблемы с несуществующими файлами или каталогами",
+            "pt": "Problemas com arquivos ou diretórios não existentes",
+            "nl": "Problemen met niet-bestaande bestanden of mappen",
+            "fr": "Problèmes avec des fichiers ou des répertoires non existants",
+            "it": "Problemi con file o directory inesistenti",
+            "es": "Problemas con archivos o directorios que no existen",
+            "pl": "Problemy z nieistniejącymi plikami lub katalogami",
+            "uk": "Проблеми з неіснуючими файлами або каталогами",
+            "zh-cn": "文件或目录不存在的问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "A process tries to access a non-existing file or directory.",
+            "de": "Ein Prozess versucht, auf eine nicht vorhandene Datei oder ein nicht vorhandenes Verzeichnis zuzugreifen.",
+            "ru": "Процесс пытается получить доступ к несуществующему файлу или каталогу.",
+            "pt": "Um processo tenta acessar um arquivo ou diretório não existente.",
+            "nl": "Een proces probeert toegang te krijgen tot een niet-bestaand bestand of map.",
+            "fr": "Un processus tente d'accéder à un fichier ou un répertoire inexistant.",
+            "it": "Un processo tenta di accedere a un file o una directory inesistente.",
+            "es": "Un proceso intenta acceder a un archivo o directorio que no existe.",
+            "pl": "Proces próbuje uzyskać dostęp do nieistniejącego pliku lub katalogu.",
+            "uk": "Процес намагається отримати доступ до неіснуючого файлу або каталогу.",
+            "zh-cn": "进程尝试访问不存在的文件或目录。"
+          },
+          "regex": [
+            "^Exception-Code: ENOENT"
+          ],
+          "limit": 10
+        },
+        {
+          "category": "remoteHostErrors",
+          "name": {
+            "en": "Issues with remote servers",
+            "de": "Probleme mit Remote-Servern",
+            "ru": "Проблемы с удаленными серверами",
+            "pt": "Problemas com servidores remotos",
+            "nl": "Problemen met externe servers",
+            "fr": "Problèmes avec les serveurs distants",
+            "it": "Problemi con i server remoti",
+            "es": "Problemas con servidores remotos",
+            "pl": "Problemy ze zdalnymi serwerami",
+            "uk": "Проблеми з віддаленими серверами",
+            "zh-cn": "远程服务器的问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "Issue with remote servers that are expected to be online. Also mounted remote file systems could be unavailable and need to be checked.",
+            "de": "Problem mit Remoteservern, von denen erwartet wird, dass sie online sind. Auch gemountete Remote-Dateisysteme sind möglicherweise nicht verfügbar und müssen überprüft werden.",
+            "ru": "Проблема с удаленными серверами, которые должны быть в сети. Кроме того, смонтированные удаленные файловые системы могут быть недоступны, и их необходимо проверить.",
+            "pt": "Problema com servidores remotos que deveriam estar online. Além disso, os sistemas de arquivos remotos montados podem estar indisponíveis e precisam ser verificados.",
+            "nl": "Probleem met externe servers waarvan wordt verwacht dat ze online zijn. Ook gekoppelde externe bestandssystemen zijn mogelijk niet beschikbaar en moeten worden gecontroleerd.",
+            "fr": "Problème avec les serveurs distants censés être en ligne. Les systèmes de fichiers distants montés peuvent également être indisponibles et doivent être vérifiés.",
+            "it": "Problema con i server remoti che dovrebbero essere online. Anche i file system remoti montati potrebbero non essere disponibili e devono essere controllati.",
+            "es": "Problema con los servidores remotos que se espera que estén en línea. Además, los sistemas de archivos remotos montados pueden no estar disponibles y deben revisarse.",
+            "pl": "Problem ze zdalnymi serwerami, które powinny być w trybie online. Również zamontowane zdalne systemy plików mogą być niedostępne i należy je sprawdzić.",
+            "uk": "Проблема з віддаленими серверами, які повинні бути в мережі. Також можуть бути недоступні змонтовані віддалені файлові системи, які потрібно перевірити.",
+            "zh-cn": "预期会联机的远程服务器出现问题。安装的远程文件系统也可能不可用，需要进行检查。"
+          },
+          "regex": [
+            "^Exception-Code: EHOSTDOWN"
+          ],
+          "limit": 10
+        },
+        {
+          "category": "restartLoop",
+          "name": {
+            "en": "Issues with frequently crashing adapter instances",
+            "de": "Probleme mit häufig abstürzenden Adapterinstanzen",
+            "ru": "Проблемы с частыми сбоями экземпляров адаптера",
+            "pt": "Problemas com falhas frequentes de instâncias do adaptador",
+            "nl": "Problemen met vaak crashende adapterinstanties",
+            "fr": "Problèmes avec les instances d'adaptateur qui plantent fréquemment",
+            "it": "Problemi con le istanze dell'adattatore che si arrestano frequentemente",
+            "es": "Problemas con instancias de adaptador que fallan con frecuencia",
+            "pl": "Problemy z często zawieszającymi się instancjami adaptera",
+            "uk": "Проблеми з частими збоями екземплярів адаптера",
+            "zh-cn": "适配器实例频繁崩溃的问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "An adapter instance is frequently crashing on startup and was stopped because of this. The log file needs to be checked before restarting the instance.",
+            "de": "Eine Adapterinstanz stürzt beim Start häufig ab und wurde aus diesem Grund gestoppt. Die Protokolldatei muss vor dem Neustart der Instanz überprüft werden.",
+            "ru": "Экземпляр адаптера часто дает сбой при запуске и был остановлен из-за этого. Перед перезапуском экземпляра необходимо проверить файл журнала.",
+            "pt": "Uma instância do adaptador frequentemente falha na inicialização e foi interrompida por causa disso. O arquivo de log precisa ser verificado antes de reiniciar a instância.",
+            "nl": "Een adapterinstantie crasht vaak bij het opstarten en is hierdoor gestopt. Het logboekbestand moet worden gecontroleerd voordat het exemplaar opnieuw wordt opgestart.",
+            "fr": "Une instance d'adaptateur plante fréquemment au démarrage et a été arrêtée à cause de cela. Le fichier journal doit être vérifié avant de redémarrer l'instance.",
+            "it": "Un'istanza dell'adattatore si blocca spesso all'avvio ed è stata interrotta per questo motivo. Il file di registro deve essere controllato prima di riavviare l'istanza.",
+            "es": "Una instancia de adaptador falla con frecuencia al iniciarse y se detuvo debido a esto. Es necesario comprobar el archivo de registro antes de reiniciar la instancia.",
+            "pl": "Instancja adaptera często ulega awarii podczas uruchamiania i została z tego powodu zatrzymana. Plik dziennika należy sprawdzić przed ponownym uruchomieniem instancji.",
+            "uk": "Екземпляр адаптера часто дає збій при запуску і був зупинений через це. Перед перезапуском екземпляра необхідно перевірити файл журналу.",
+            "zh-cn": "适配器实例在启动时经常崩溃，因此已被停止。重新启动实例之前，需要检查日志文件。"
+          },
+          "regex": [],
+          "limit": 1
+        },
+        {
+          "category": "fileToJsonl",
+          "name": {
+            "en": "Auto migration to JSONL",
+            "de": "Automatische Migration zu JSONL",
+            "ru": "Автоматическая миграция на JSONL",
+            "pt": "Migração automática para JSONL",
+            "nl": "Automatische migratie naar JSONL",
+            "fr": "Migration automatique vers JSONL",
+            "it": "Migrazione automatica a JSONL",
+            "es": "Migración automática a JSONL",
+            "pl": "Automatyczna migracja do JSONL",
+            "uk": "Автоматична міграція на JSONL",
+            "zh-cn": "自动迁移到 JSONL"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "The used database type in your system was automatically changed from \"file\" to \"jsonl\". This means that a normal downgrade is only possible to js-controller 3.3 or higher! Additionally the database file now have \".jsonl\" as file ending. For further questions please check in our forums.",
+            "de": "Der verwendete Datenbanktyp des Systems wurde automatisch von „file“ auf „jsonl“ geändert. Das bedeutet, dass ein normales Downgrade nur auf js-controller 3.3 oder höher möglich ist! Zusätzlich hat die Datenbankdatei jetzt \".jsonl\" als Dateiendung. Weitere Fragen werden im ioBroker-Forum beantwortet.",
+            "ru": "Используемый тип базы данных в вашей системе был автоматически изменен с \"file\" на \"jsonl\". Это значит, что нормальный даунгрейд возможен только до js-controller 3.3 и выше! Кроме того, файл базы данных теперь имеет расширение «.jsonl». Если у вас возникнут дополнительные вопросы, пожалуйста, посетите наш форум.",
+            "pt": "O tipo de banco de dados usado em seu sistema foi alterado automaticamente de \"file\" para \"jsonl\". Isso significa que um downgrade normal só é possível para js-controller 3.3 ou superior! Além disso, o arquivo de banco de dados agora tem \".jsonl\" como final de arquivo. Para mais perguntas, por favor, verifique em nossos fóruns.",
+            "nl": "Het gebruikte databasetype in uw systeem is automatisch gewijzigd van \"file\" naar \"jsonl\". Dit betekent dat een normale downgrade alleen mogelijk is naar js-controller 3.3 of hoger! Bovendien heeft het databasebestand nu \".jsonl\" als bestandsuitgang. Voor verdere vragen kunt u terecht op onze forums.",
+            "fr": "Le type de base de données utilisé dans votre système a été automatiquement modifié de \"file\" à \"jsonl\". Cela signifie qu'une rétrogradation normale n'est possible que vers js-controller 3.3 ou supérieur ! De plus, le fichier de base de données a maintenant \".jsonl\" comme fin de fichier. Pour d'autres questions, veuillez consulter nos forums.",
+            "it": "Il tipo di database utilizzato nel sistema è stato automaticamente modificato da \"file\" a \"jsonl\". Ciò significa che un normale downgrade è possibile solo a js-controller 3.3 o versioni successive! Inoltre, il file di database ora ha \".jsonl\" come fine del file. Per ulteriori domande, controlla nei nostri forum.",
+            "es": "El tipo de base de datos utilizado en su sistema se cambió automáticamente de \"file\" a \"jsonl\". ¡Esto significa que una degradación normal solo es posible a js-controller 3.3 o superior! Además, el archivo de la base de datos ahora tiene \".jsonl\" como final de archivo. Si tiene más preguntas, consulte nuestros foros.",
+            "pl": "Używany typ bazy danych w twoim systemie został automatycznie zmieniony z \"file\" na \"jsonl\". Oznacza to, że normalny downgrade jest możliwy tylko do js-controller 3.3 lub nowszego! Dodatkowo plik bazy danych ma teraz końcówkę „.jsonl”. W przypadku dalszych pytań odwiedź nasze fora.",
+            "uk": "Використаний тип бази даних у вашій системі був автоматично змінений з «файлу» на «jsonl». Це означає, що звичайне пониження можливе лише до js-controller 3.3 або вище! Крім того, файл бази даних тепер має розширення «.jsonl». Якщо у вас є додаткові питання, будь ласка, зверніться до наших форумів.",
+            "zh-cn": "您系统中使用的数据库类型已自动从“文件”更改为“jsonl”。这意味着只能正常降级到 js-controller 3.3 或更高版本！此外，数据库文件现在以“.jsonl”作为文件结尾。如有更多问题，请查看我们的论坛。"
+          },
+          "regex": [],
+          "limit": 1
+        },
+        {
+          "category": "automaticAdapterUpgradeFailed",
+          "name": {
+            "en": "An adapter could not be updated automatically",
+            "de": "Ein Adapter konnte nicht automatisch aktualisiert werden",
+            "ru": "Не удалось автоматически обновить адаптер",
+            "pt": "Não foi possível atualizar automaticamente um adaptador",
+            "nl": "Een adapter kon niet automatisch worden bijgewerkt",
+            "fr": "Un adaptateur n'a pas pu être mis à jour automatiquement",
+            "it": "Non è stato possibile aggiornare automaticamente un adattatore",
+            "es": "No se ha podido actualizar automáticamente un adaptador",
+            "pl": "Adapter nie mógł zostać zaktualizowany automatycznie",
+            "uk": "Адаптер не вдалося оновити автоматично",
+            "zh-cn": "无法自动更新适配器"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "It was not possible to upgrade one or multiple adapters. The reason is named for each adapter, the error log has the details.",
+            "de": "Es war nicht möglich, einen oder mehrere Adapter zu aktualisieren. Der Grund wird für jeden Adapter genannt, Details stehen im Fehlerprotokoll.",
+            "ru": "Не удалось обновить один или несколько адаптеров. Причина указана для каждого адаптера, подробности см. в журнале ошибок.",
+            "pt": "Não foi possível atualizar um ou vários adaptadores. O motivo é indicado para cada adaptador; os detalhes estão no registo de erros.",
+            "nl": "Het was niet mogelijk om één of meerdere adapters te upgraden. De reden wordt per adapter genoemd, details staan in het foutenlogboek.",
+            "fr": "Il n'a pas été possible de mettre à niveau un ou plusieurs adaptateurs. La raison est indiquée pour chaque adaptateur, les détails se trouvent dans le journal des erreurs.",
+            "it": "Non è stato possibile aggiornare uno o più adattatori. Il motivo è indicato per ogni adattatore, i dettagli sono nel registro degli errori.",
+            "es": "No ha sido posible actualizar uno o varios adaptadores. El motivo se indica para cada adaptador; los detalles están en el registro de errores.",
+            "pl": "Nie można było zaktualizować jednego lub wielu adapterów. Przyczyna jest podana dla każdego adaptera, szczegóły znajdują się w dzienniku błędów.",
+            "uk": "Не вдалося оновити один або декілька адаптерів. Причину вказано для кожного адаптера, подробиці дивіться в журналі помилок.",
+            "zh-cn": "无法升级一个或多个适配器。每个适配器都列出了原因，详细信息请查看错误日志。"
+          },
+          "regex": [],
+          "limit": 10
+        },
+        {
+          "category": "automaticAdapterUpgradeSuccessful",
+          "name": {
+            "en": "An adapter has been automatically upgraded",
+            "de": "Ein Adapter wurde automatisch aktualisiert",
+            "ru": "Адаптер был автоматически обновлен",
+            "pt": "Um adaptador foi automaticamente atualizado",
+            "nl": "Een adapter is automatisch geüpgradeerd",
+            "fr": "Un adaptateur a été automatiquement mis à niveau",
+            "it": "Un adattatore è stato automaticamente aggiornato",
+            "es": "Un adaptador ha sido actualizado automáticamente",
+            "pl": "Adaptator został automatycznie ulepszony",
+            "uk": "Перехідник автоматично модернізований",
+            "zh-cn": "适应人员自动升级。"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "Due to the configured automatic upgrade policy, one or multiple adapters have been upgraded to a new version automatically.",
+            "de": "Durch die konfigurierte automatische Upgrade-Richtlinie wurden ein oder mehrere Adapter automatisch auf eine neue Version aktualisiert.",
+            "ru": "В связи с установленной политикой автоматического обновления были обновлены один или несколько адаптеров к новой версии автоматически.",
+            "pt": "Devido à política de atualização automática configurada, um ou vários adaptadores foram atualizados para uma nova versão automaticamente.",
+            "nl": "Gezien het in beslag genomen automatische upgrade beleid, is een of meerdere adapters geüpgradeerd aan een nieuwe versie automatisch.",
+            "fr": "En raison de la politique de mise à niveau automatique configurée, un ou plusieurs adaptateurs ont été mis à niveau automatiquement dans une nouvelle version.",
+            "it": "A causa del criterio di aggiornamento automatico configurato, uno o più adattatori sono stati aggiornati automaticamente a una nuova versione.",
+            "es": "Debido a la política de actualización automática configurada, uno o varios adaptadores han sido actualizados a una nueva versión automáticamente.",
+            "pl": "W związku z automatyczną aktualizacją, jeden lub wiele adapterów zostało automatycznie zmodernizowanych.",
+            "uk": "У зв'язку з налаштованою автоматичною політикою оновлення, одним або декількома адаптерами було оновлено до нової версії автоматично.",
+            "zh-cn": "由于整套自动升级政策,一个或多个适应者已自动升级为新版本。."
+          },
+          "regex": [],
+          "limit": 10
+        },
+        {
+          "category": "blockedVersions",
+          "name": {
+            "en": "Instance was deactivated",
+            "de": "Instanz wurde deaktiviert",
+            "ru": "Экземпляр был деактивирован",
+            "pt": "A instância foi desativada",
+            "nl": "Instruatie",
+            "fr": "Instance was deactivd",
+            "it": "Il ricorso è stato disattivato",
+            "es": "Se desactiva la instalación",
+            "pl": "Instytucja została deaktywowana",
+            "uk": "Екземпляр було деактивовано",
+            "zh-cn": "案件"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "Installed version was blocklisted by ioBroker team.\nPlease update adapter to official version in repository before enabling it.\nInstance must be enabled manually.",
+            "de": "Die installierte Version wurde vom ioBroker Team zurückgezogen und die Instanz wurde deaktiviert.\nBevor der Adapter wieder aktiviert werden kann, muss er auf die offizielle Version im Repository aktualisiert werden.\nDie Instanz muss danach manuell aktiviert werden.",
+            "ru": "Установленная версия была отозвана назад командой ioBroker.\nПеред включением обновите адаптер до официальной версии в репозитории.\nЭкземпляр должен быть активирован вручную.",
+            "pt": "A versão instalada foi bloqueada pela equipe ioBroker.\nPor favor, atualize o adaptador para versão mais recente ou disponível antes de habilitar.\nA instância deve ser activada manualmente.",
+            "nl": "Installe versie werd geblokkeerd door ioBroker team.\nEen update aan de nieuwe of beschikbare versie voor het instorten.\nInstance moet handmatig zijn.",
+            "fr": "La version installée a été bloquée par l'équipe ioBroker.\nS'il vous plaît mettre l'adaptateur à la version plus récente ou disponible avant de l'activer.\nL'instance doit être activée manuellement.",
+            "it": "La versione installata è stata bloccata dal team ioBroker.\nSi prega di aggiornare l'adattatore alla versione più recente o disponibile prima di abilitarlo.\nL'istanza deve essere abilitata manualmente.",
+            "es": "La versión instalada fue bloqueada por el equipo de ioBroker.\nPor favor, actualice el adaptador a la versión nueva o disponible antes de habilitarlo.\nLa instalación debe ser activada manualmente.",
+            "pl": "Wersja została zablokowana przez zespół ioBroker.\nZastosowanie adapter do nowszej lub dostępnej wersji, zanim można go uzyskać.\nInstytucja musi być poddana ręcznie.",
+            "uk": "Установлену версію було заблоковано командою ioBroker.\nБудь ласка, оновіть адаптер до офіційної версії в репозиторії, перш ніж увімкнути його.\nЕкземпляр потрібно ввімкнути вручну.",
+            "zh-cn": "总的版本被零星球队阻挠。.\n请提供最新资料。.\n必须能够以手工方式进行。."
+          },
+          "regex": [],
+          "limit": 10
+        },
+        {
+          "category": "databaseErrors",
+          "name": {
+            "en": "Issues with the database",
+            "de": "Probleme mit der Datenbank",
+            "ru": "Проблемы с базой данных",
+            "pt": "Questões com a base de dados",
+            "nl": "Problemen met de database",
+            "fr": "Problèmes avec la base de données",
+            "it": "Problemi con il database",
+            "es": "Problemy z bazą danych",
+            "pl": "Instytucja została deaktywowana",
+            "uk": "Проблеми з базою даних",
+            "zh-cn": "数据库的问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "There is an error with the database.\nMaybe the database has internal problems or is misconfigured.",
+            "de": "Es liegt ein Fehler mit der Datenbank vor.\nVielleicht hat die Datenbank interne Probleme oder ist falsch konfiguriert.",
+            "ru": "Возникла ошибка с базой данных.\nВозможно, у базы данных есть внутренние проблемы или она неправильно настроена.",
+            "pt": "Há um erro na base de dados.\nTalvez a base de dados tenha problemas internos ou esteja mal configurada.",
+            "nl": "Misschien heeft de database interne problemen of is verkeerd geconfigureerd.",
+            "fr": "Il y a une erreur dans la base de données.\nPeut-être que la base de données a des problèmes internes ou est mal configurée.",
+            "it": "Forse il database ha problemi interni o è mal configurato.",
+            "es": "Hay un error con la base de datos.\nQuizás la base de datos tiene problemas internos o está mal configurada.",
+            "pl": "Wystąpił błąd z bazą danych.\nMoże baza danych ma wewnętrzne problemy lub jest źle skonfigurowana.",
+            "uk": "Виникла помилка з базою даних.\nМожливо, база даних має внутрішні проблеми або неправильно налаштована.",
+            "zh-cn": "数据库有错误。也许数据库有内部问题或配置错误。"
+          },
+          "regex": [],
+          "limit": 10
+        },
+        {
+          "category": "securityIssues",
+          "name": {
+            "en": "Instance has security issues",
+            "de": "Instanz hat Sicherheitsprobleme",
+            "ru": "Экземпляр имеет проблемы безопасности",
+            "pt": "A instância tem problemas de segurança",
+            "nl": "Instantie heeft beveiligingsproblemen",
+            "fr": "L'instance a des problèmes de sécurité",
+            "it": "L'istanza ha problemi di sicurezza",
+            "es": "La instancia tiene problemas de seguridad",
+            "pl": "Instytucja ma problemy z bezpieczeństwem",
+            "uk": "Екземпляр має проблеми безпеки",
+            "zh-cn": "实例存在安全问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "Instance has problems with security and should be checked.",
+            "de": "Instanz hat Probleme mit der Sicherheit und sollte überprüft werden.",
+            "ru": "Экземпляр имеет проблемы с безопасностью и должен быть проверен.",
+            "pt": "A instância tem problemas de segurança e deve ser verificada.",
+            "nl": "Instantie heeft problemen met beveiliging en moet worden gecontroleerd.",
+            "fr": "L'instance a des problèmes de sécurité et doit être vérifiée.",
+            "it": "L'istanza ha problemi di sicurezza e deve essere controllata.",
+            "es": "La instancia tiene problemas de seguridad y debe ser revisada.",
+            "pl": "Instytucja ma problemy z bezpieczeństwem i powinna zostać sprawdzona.",
+            "uk": "Екземпляр має проблеми з безпекою і повинен бути перевірений.",
+            "zh-cn": "实例存在安全问题，应进行检查。"
+          },
+          "regex": [],
+          "limit": 1
+        },
+        {
+          "category": "packageUpdates",
+          "name": {
+            "en": "OS package updates available",
+            "de": "Betriebssystem-Paket-Updates verfügbar",
+            "ru": "Доступны обновления пакетов ОС",
+            "pt": "Actualizações de pacotes do SO disponíveis",
+            "nl": "OS-pakketupdates beschikbaar",
+            "fr": "Mises à jour du système d'exploitation disponibles",
+            "it": "Aggiornamenti del pacchetto OS disponibili",
+            "es": "Actualizaciones de paquetes del SO disponibles",
+            "pl": "Dostępne aktualizacje pakietów systemu operacyjnego",
+            "uk": "Доступні оновлення пакетів ОС",
+            "zh-cn": "提供操作系统软件包更新"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "Some OS packages can be updated.",
+            "de": "Einige Betriebssystempakete können aktualisiert werden.",
+            "ru": "Некоторые пакеты ОС могут быть обновлены.",
+            "pt": "Alguns pacotes do sistema operativo podem ser actualizados.",
+            "nl": "Sommige OS-pakketten kunnen worden bijgewerkt.",
+            "fr": "Certains paquets du système d'exploitation peuvent être mis à jour.",
+            "it": "Alcuni pacchetti del sistema operativo possono essere aggiornati.",
+            "es": "Algunos paquetes del sistema operativo pueden actualizarse.",
+            "pl": "Niektóre pakiety systemu operacyjnego mogą zostać zaktualizowane.",
+            "uk": "Деякі пакунки ОС можна оновити.",
+            "zh-cn": "某些操作系统软件包可以更新。"
+          },
+          "regex": [],
+          "limit": 1
+        },
+        {
+          "category": "dockerUpdate",
+          "name": {
+            "en": "New Docker image available",
+            "de": "Neues Docker-Image verfügbar",
+            "ru": "Доступен новый образ Docker",
+            "pt": "Nova imagem do Docker disponível",
+            "nl": "Nieuw Docker-image beschikbaar",
+            "fr": "Nouvelle image Docker disponible",
+            "it": "Nuova immagine Docker disponibile",
+            "es": "Nueva imagen Docker disponible",
+            "pl": "Dostępny jest nowy obraz Docker",
+            "uk": "Доступний новий образ Docker",
+            "zh-cn": "提供新的 Docker 映像"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "A new ioBroker Docker image is available on Docker Hub. Consider an upgrade.",
+            "de": "Ein neues ioBroker-Docker-Image ist auf Docker Hub verfügbar. Ziehen Sie ein Upgrade in Betracht.",
+            "ru": "Новый докер-образ ioBroker доступен на Docker Hub. Рассмотрите возможность обновления.",
+            "pt": "Uma nova imagem do ioBroker Docker está disponível no Docker Hub. Considere uma atualização.",
+            "nl": "Een nieuw ioBroker Docker image is beschikbaar op Docker Hub. Overweeg een upgrade.",
+            "fr": "Une nouvelle image Docker de ioBroker est disponible sur Docker Hub. Envisagez une mise à jour.",
+            "it": "Una nuova immagine Docker di ioBroker è disponibile su Docker Hub. Considerate un aggiornamento.",
+            "es": "Una nueva imagen Docker de ioBroker está disponible en Docker Hub. Considere una actualización.",
+            "pl": "Nowy obraz ioBroker Docker jest dostępny na Docker Hub. Warto rozważyć aktualizację.",
+            "uk": "Новий образ ioBroker Docker доступний на Docker Hub. Подумайте про оновлення.",
+            "zh-cn": "Docker Hub 上有新的 ioBroker Docker 映像。请考虑升级。"
+          },
+          "regex": [],
+          "limit": 1
+        },
+        {
+          "category": "systemRebootRequired",
+          "name": {
+            "en": "System reboot required",
+            "de": "Neustart des Systems erforderlich",
+            "ru": "Требуется перезагрузка системы",
+            "pt": "É necessário reiniciar o sistema",
+            "nl": "Systeem opnieuw opstarten vereist",
+            "fr": "Redémarrage du système nécessaire",
+            "it": "È necessario riavviare il sistema",
+            "es": "Es necesario reiniciar el sistema",
+            "pl": "Wymagany restart systemu",
+            "uk": "Потрібне перезавантаження системи",
+            "zh-cn": "需要重启系统"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "Some recent updates require the system to be restarted.",
+            "de": "Einige kürzlich durchgeführte Aktualisierungen erfordern einen Neustart des Systems.",
+            "ru": "Некоторые последние обновления требуют перезагрузки системы.",
+            "pt": "Algumas actualizações recentes requerem um reinício do sistema.",
+            "nl": "Sommige recente updates vereisen een herstart van het systeem.",
+            "fr": "Certaines mises à jour récentes nécessitent un redémarrage du système.",
+            "it": "Alcuni aggiornamenti recenti richiedono il riavvio del sistema.",
+            "es": "Algunas actualizaciones recientes requieren reiniciar el sistema.",
+            "pl": "Niektóre z ostatnich aktualizacji wymagają ponownego uruchomienia systemu.",
+            "uk": "Деякі нещодавні оновлення вимагають перезавантаження системи.",
+            "zh-cn": "最近的一些更新需要重新启动系统。"
+          },
+          "regex": [],
+          "limit": 1
+        },
+        {
+          "category": "numberObjectsLimitExceeded",
+          "name": {
+            "en": "The configured limit of objects for this adapter instance has been exceeded.",
+            "de": "Das konfigurierte Limit an Objekten für diese Adapterinstanz wurde überschritten.",
+            "ru": "Превышен настроенный лимит объектов для данного экземпляра адаптера.",
+            "pt": "O limite configurado de objectos para esta instância de adaptador foi ultrapassado.",
+            "nl": "De geconfigureerde limiet van objecten voor deze instantie van de adapter is overschreden.",
+            "fr": "La limite d'objets configurée pour cette instance d'adaptateur a été dépassée.",
+            "it": "È stato superato il limite di oggetti configurato per questa istanza dell'adattatore.",
+            "es": "Se ha superado el límite configurado de objetos para esta instancia de adaptador.",
+            "pl": "Skonfigurowany limit obiektów dla tej instancji adaptera został przekroczony.",
+            "uk": "Перевищено ліміт об'єктів для цього екземпляра адаптера.",
+            "zh-cn": "The configured limit of objects for this adapter instance has been exceeded."
+          },
+          "severity": "alert",
+          "description": {
+            "en": "This adapter instance has exceeded the configured limit of objects. Too many objects are often caused by misconfigurations or bugs. This can lead to massive performance issues. If this is expected, you can increase the limit for this adapter instance.",
+            "de": "Diese Adapterinstanz hat das konfigurierte Limit an Objekten überschritten. Zu viele Objekte werden oft durch Fehlkonfigurationen oder Bugs verursacht. Dies kann zu massiven Performance-Problemen führen. Wenn dies zu erwarten ist, können Sie das Limit für diese Adapterinstanz erhöhen.",
+            "ru": "Этот экземпляр адаптера превысил установленный лимит объектов. Слишком большое количество объектов часто вызвано неправильной конфигурацией или ошибками. Это может привести к серьезным проблемам с производительностью. Если это ожидаемо, вы можете увеличить лимит для этого экземпляра адаптера.",
+            "pt": "Esta instância do adaptador excedeu o limite configurado de objectos. A existência de demasiados objectos é frequentemente causada por configurações incorrectas ou erros. Isto pode levar a grandes problemas de desempenho. Se isto for expetável, pode aumentar o limite para esta instância do adaptador.",
+            "nl": "Deze instantie van de adapter heeft de geconfigureerde limiet van objecten overschreden. Te veel objecten worden vaak veroorzaakt door verkeerde configuraties of bugs. Dit kan leiden tot enorme prestatieproblemen. Als dit wordt verwacht, kun je de limiet voor deze adapterinstantie verhogen.",
+            "fr": "Cette instance d'adaptateur a dépassé la limite d'objets configurée. Un trop grand nombre d'objets est souvent dû à une mauvaise configuration ou à des bogues. Cela peut entraîner d'importants problèmes de performance. Si cela est prévisible, vous pouvez augmenter la limite de cette instance d'adaptateur.",
+            "it": "L'istanza di questo adattatore ha superato il limite di oggetti configurato. Un numero eccessivo di oggetti è spesso causato da configurazioni errate o da bug. Ciò può causare gravi problemi di prestazioni. Se questo è previsto, è possibile aumentare il limite per questa istanza dell'adattatore.",
+            "es": "Esta instancia de adaptador ha superado el límite configurado de objetos. El exceso de objetos suele deberse a errores o errores de configuración. Esto puede conducir a problemas de rendimiento masivos. Si esto es lo esperado, puedes aumentar el límite para esta instancia de adaptador.",
+            "pl": "Ta instancja adaptera przekroczyła skonfigurowany limit obiektów. Zbyt duża liczba obiektów jest często spowodowana błędną konfiguracją lub błędami. Może to prowadzić do poważnych problemów z wydajnością. Jeśli jest to oczekiwane, można zwiększyć limit dla tej instancji adaptera.",
+            "uk": "Цей екземпляр адаптера перевищив встановлений ліміт об'єктів. Надмірна кількість об'єктів часто спричинена неправильними конфігураціями або помилками. Це може призвести до значних проблем з продуктивністю. Якщо це очікується, ви можете збільшити ліміт для цього екземпляра адаптера.",
+            "zh-cn": "This adapter instance has exceeded the configured limit of objects. Too many objects are often caused by misconfigurations or bugs. This can lead to massive performance issues. If this is expected, you can increase the limit for this adapter instance."
+          },
+          "regex": [],
+          "limit": 1
+        }
+      ]
+    }
+  ]
+}

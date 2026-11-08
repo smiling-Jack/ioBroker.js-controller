@@ -1,0 +1,214 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+    tags: # for automatic releases
+      # normal versions
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      # pre-releases
+      - "v[0-9]+.[0-9]+.[0-9]+-**"
+  pull_request:
+  schedule:
+    - cron: '0 0 * * 0' # weekly
+
+# Cancel previous PR/branch runs when a new commit is pushed
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write  # Required for OIDC
+
+jobs:
+  lint:
+    name: Eslint
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Use Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: NPM install
+        run: npm i --ignore-scripts # install typescript and @types do not `setup first`
+
+      - name: Eslint
+        run: npm run lint
+
+  ci:
+    name: ${{ matrix.os }} on node v${{ matrix.node }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        node: [22, 24, 26]
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Prepare installation (Linux)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: ./.github/actions/install-redis-linux
+
+      - name: Prepare installation (MacOS)
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: |
+          brew update
+          # temporary ignore brew problems
+          brew install redis
+          # `brew services start` only registers a launchd job and returns before the server
+          # listens - and on the runner it reports success while nothing ever comes up, which
+          # showed up much later as ECONNREFUSED 127.0.0.1:6379 in the tests. Start the server
+          # directly, with the built-in defaults instead of the Homebrew config, and wait for it.
+          redis-server --daemonize yes --logfile "$RUNNER_TEMP/redis.log"
+          for _ in $(seq 1 30); do
+            if redis-cli ping 2>/dev/null | grep -q PONG; then
+              echo "Redis is up"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Redis did not answer PING within 30s"
+          cat "$RUNNER_TEMP/redis.log" || true
+          exit 1
+
+      - name: Prepare installation (Windows)
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/tporadowski/redis/releases/download/v5.0.14.1/Redis-x64-5.0.14.1.zip" -OutFile "$env:RUNNER_TEMP\redis.zip" -MaximumRetryCount 10 -RetryIntervalSec 30
+          Expand-Archive -Path "$env:RUNNER_TEMP\redis.zip" -DestinationPath "$env:RUNNER_TEMP\redis"
+          Start-Process -FilePath "$env:RUNNER_TEMP\redis\redis-server.exe" -PassThru
+
+      - name: NPM version
+        run: npm -v
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts # install typescript and @types do not `setup first`
+
+      - name: Build TS files
+        run: npm run build
+
+      - name: Run scripts
+        run: npm run preinstall && npm run install
+
+      - name: Execute Type Tests
+        run: npm run test-types
+
+      - name: Execute Controller Unit Tests
+        run: npm run test-controller
+
+      - name: Execute Adapter Tests
+        run: npm run test-adapter
+
+      - name: Execute Standard Tests
+        run: npm test
+
+      - name: Execute Common Unit Tests
+        run: npm run test-common
+
+      - name: Execute Jsonl Tests
+        run: npm run test-jsonl
+
+      - name: Redis Socket/Sentinel Tests (Linux)
+        if: ${{ matrix.os == 'ubuntu-22.04' }}
+        run: |
+          sudo chmod ogu+x packages/controller/test/redis-socket/setup-socket.sh
+          sudo chmod ogu+x packages/controller/test/redis-sentinel/*.sh
+          packages/controller/test/redis-socket/setup-socket.sh
+          cd packages/controller/test/redis-sentinel
+          ./test-sentinel.sh
+
+  auto-merge:
+    if: |
+      always() &&
+      github.event_name == 'pull_request'
+    needs: [ ci ]
+    runs-on: ubuntu-latest
+    steps:
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.16.4"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: "automated pr"
+          MERGE_FILTER_AUTHOR: "foxriver76"
+          MERGE_FORKS: "false"
+          MERGE_DELETE_BRANCH: "false"
+          UPDATE_LABELS: "automated pr"
+          MERGE_METHOD: "squash"
+
+      - name: Checkout repository
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        uses: actions/checkout@v7
+
+      - name: Use Node.js
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Determine version
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        id: version
+        uses: actions/github-script@v9
+        with:
+          result-encoding: string
+          script: |
+            return require(`${process.env.GITHUB_WORKSPACE}/lerna.json`).version;
+
+      - name: Install dependencies
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        run: npm ci --ignore-scripts # install typescript and @types do not `setup first`
+
+      - name: Build TS files
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        run: npm run build
+
+      - name: Publish npm
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        env:
+          PRERELEASE: ${{ contains(steps.version.outputs.result, '-') }}
+        run: |
+          if [[ "$PRERELEASE" == "true" ]]; then
+            npx lerna publish from-package --yes --dist-tag dev
+          else
+            npx lerna publish from-package --yes
+          fi
+
+      - name: Create Github Release
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        uses: ncipollo/release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag: v${{ steps.version.outputs.result }}
+          name: Release v${{ steps.version.outputs.result }}
+          draft: false
+          prerelease: ${{ contains(steps.version.outputs.result, '-') }}
+          body: "${{ contains(steps.version.outputs.result, '-') && 'nightly release' || 'official release' }}"
+
+      - name: Notify Sentry.io about the release
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        env:
+          VERSION: ${{ steps.version.outputs.result }}
+        run: |
+          npm i -g @sentry/cli
+          export SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
+          export SENTRY_URL=https://sentry.iobroker.net
+          export SENTRY_ORG=iobroker
+          export SENTRY_PROJECT=iobroker-js-controller
+          export SENTRY_VERSION=iobroker.js-controller@${VERSION}
+          sentry-cli releases new $SENTRY_VERSION
+          sentry-cli releases set-commits $SENTRY_VERSION --auto
+          sentry-cli releases finalize $SENTRY_VERSION

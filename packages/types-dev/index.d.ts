@@ -1,0 +1,793 @@
+// Types which are safe to share within this repository AND publicly
+
+import type * as fs from 'node:fs';
+import './objects';
+import type {
+    IoBJson,
+    ObjectsDatabaseOptions as ObjectsDbOptions,
+    StatesDatabaseOptions as StatesDbOptions,
+} from './config';
+import type { Branded } from './utils';
+
+export {}; // avoids exporting AtLeastOne into the global scope
+
+// Requires at least one of the properties of T to be given, whether it's optional or not
+type AtLeastOne<T, Req = { [K in keyof T]-?: T[K] }, Opt = { [K in keyof T]+?: T[K] }> = {
+    [K in keyof Req]: Omit<Opt, K> & { [P in K]: Req[P] };
+}[keyof Req];
+
+/** Type of T but makes specific optional properties required */
+export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
+
+declare global {
+    namespace ioBroker {
+        /** Two-way mapping for state quality ("q" attribute of a state) */
+        interface STATE_QUALITY {
+            /** The default value for a state */
+            GOOD: 0x00;
+            /** General problem */
+            BAD: 0x01;
+            /** The instance cannot establish a connection */
+            CONNECTION_PROBLEM: 0x02;
+            /** Substitute value from controller. Do not set this in adapters */
+            SUBSTITUTE_FROM_CONTROLLER: 0x10;
+            /** Quality for default values */
+            SUBSTITUTE_INITIAL_VALUE: 0x20;
+            /** Substitute value from instance or device */
+            SUBSTITUTE_DEVICE_INSTANCE_VALUE: 0x40;
+            /** Substitute value from a sensor */
+            SUBSTITUTE_SENSOR_VALUE: 0x80;
+            /** General problem by instance */
+            GENERAL_INSTANCE_PROBLEM: 0x11;
+            /** General problem by device */
+            GENERAL_DEVICE_PROBLEM: 0x41;
+            /** General problem by sensor */
+            GENERAL_SENSOR_PROBLEM: 0x81;
+            /** The instance is not connected */
+            INSTANCE_NOT_CONNECTED: 0x12;
+            /** The device is not connected */
+            DEVICE_NOT_CONNECTED: 0x42;
+            /** The sensor is not connected */
+            SENSOR_NOT_CONNECTED: 0x82;
+            /** The device has reported an error */
+            DEVICE_ERROR_REPORT: 0x44;
+            /** The sensor has reported an error */
+            SENSOR_ERROR_REPORT: 0x84;
+        }
+
+        /**
+         * Features which can be checked via `adapter.supportsFeature(...)`.
+         * The runtime list of currently supported features lives in
+         * `@iobroker/js-controller-common` (`SUPPORTED_FEATURES`) and must stay in sync with this type.
+         */
+        type SupportedFeature =
+            | 'ALIAS'
+            | 'ALIAS_SEPARATE_READ_WRITE_ID'
+            | 'ADAPTER_GETPORT_BIND'
+            | 'ADAPTER_DEL_OBJECT_RECURSIVE'
+            | 'ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE'
+            | 'ADAPTER_AUTO_DECRYPT_NATIVE'
+            | 'PLUGINS'
+            | 'CONTROLLER_NPM_AUTO_REBUILD'
+            | 'CONTROLLER_READWRITE_BASE_SETTINGS'
+            | 'CONTROLLER_MULTI_REPO'
+            | 'CONTROLLER_LICENSE_MANAGER'
+            | 'CONTROLLER_OS_PACKAGE_UPGRADE'
+            | 'DEL_INSTANCE_CUSTOM'
+            | 'CUSTOM_FULL_VIEW'
+            | 'ADAPTER_GET_OBJECTS_BY_ARRAY'
+            | 'CONTROLLER_UI_UPGRADE'
+            | 'ADAPTER_WEBSERVER_UPGRADE'
+            | 'CONTROLLER_CMD_EXEC_FILES'
+            | 'CONTROLLER_FEATURE_REQUEST'
+            | 'CONTROLLER_USED_RESOURCES'
+            | 'CONTROLLER_GET_LOGS_LOG_LEVEL'
+            | 'CONTROLLER_SEARCH_LOGS'
+            | 'CONTROLLER_PYTHON_ADAPTERS'
+            | 'CONTROLLER_REPOSITORY_COMPACT'
+            | 'CONTROLLER_CHECK_DOCKER'
+            | 'CONTROLLER_ADAPTER_FILES'
+            | 'CONTROLLER_READ_DISK_DIR'
+            | 'CONTROLLER_DISK_FILES';
+
+        // #region Used resources
+        // ---------------------------------------------------------------------------------------------------
+        // Exclusive resources occupied by adapter instances (serial ports, TCP/UDP ports, USB devices, ...).
+        // These are the resources that cannot be used by more than one instance at the same time.
+        // Each resource type has its own strictly typed payload; extend `UsedResourceDataMap` to add a new one.
+        // ---------------------------------------------------------------------------------------------------
+
+        /** A serial port occupied by an instance */
+        interface SerialPortResourceData {
+            /**
+             * System path or name of the serial port as the adapter opens it, e.g. "/dev/ttyUSB0", a stable
+             * "/dev/serial/by-id/..." link or "COM3"
+             */
+            port: string;
+            /** Baud rate the port is opened with, if known */
+            baudRate?: number;
+            /**
+             * The device `port` resolves to, e.g. "/dev/ttyUSB0" for a "/dev/serial/by-id/..." link or "COM3" for
+             * "\\\\.\\com3". Set by the host on registration and used to recognize the same port under different
+             * names; an adapter does not set it.
+             */
+            device?: string;
+        }
+
+        /** A TCP port occupied by an instance */
+        interface TcpPortResourceData {
+            /** TCP port number */
+            port: number;
+            /** Address the socket is bound to. Default "0.0.0.0" (all interfaces) */
+            bind?: string;
+            /** address family */
+            family?: 4 | 6;
+        }
+
+        /** A UDP port occupied by an instance */
+        interface UdpPortResourceData {
+            /** UDP port number */
+            port: number;
+            /** Address the socket is bound to. Default "0.0.0.0" (all interfaces) */
+            bind?: string;
+            /** address family */
+            family?: 4 | 6;
+        }
+
+        /** A USB device occupied by an instance */
+        interface UsbResourceData {
+            /** System path of the USB device, e.g. "/dev/bus/usb/001/004" or "\\\\.\\COM3" */
+            path: string;
+            /** USB vendor id (hex string), e.g. "10c4" */
+            vendorId?: string;
+            /** USB product id (hex string), e.g. "ea60" */
+            productId?: string;
+        }
+
+        /** A Bluetooth / HCI adapter occupied by an instance */
+        interface BluetoothResourceData {
+            /** HCI device name or index, e.g. "hci0" */
+            hci: string;
+        }
+
+        /** A GPIO pin occupied by an instance */
+        interface GpioResourceData {
+            /**
+             * Line offset of the pin on its GPIO chip. On the main chip of a Raspberry Pi that is the BCM number, so
+             * GPIO 17 is header pin 11. Convert physical header pins, wiringPi numbers or sysfs numbers (which start
+             * at 512 on newer kernels) before registering, otherwise the same pin is not recognized.
+             */
+            pin: number;
+            /**
+             * GPIO chip the pin belongs to, e.g. "gpiochip2" for an I²C port expander. Leave it out for the main chip
+             * of the board; an entry without a chip counts as overlapping with the same pin on any chip, because the
+             * host cannot tell which one was meant.
+             */
+            chip?: string;
+        }
+
+        /**
+         * Maps every known resource type to its strictly typed payload.
+         * To introduce a new resource type, add its `RESOURCE_TYPE: RESOURCE_TYPE_Data` entry here
+         * (this map is intentionally open for module augmentation by adapters that own custom resources).
+         */
+        interface UsedResourceDataMap {
+            serialPort: SerialPortResourceData;
+            tcpPort: TcpPortResourceData;
+            udpPort: UdpPortResourceData;
+            usb: UsbResourceData;
+            bluetooth: BluetoothResourceData;
+            gpio: GpioResourceData;
+        }
+
+        /** Kind of an exclusive resource that can be occupied by only one instance at a time */
+        type UsedResourceType = keyof UsedResourceDataMap;
+
+        /** The type-specific payload for a given resource type (without bookkeeping fields) */
+        type UsedResourceData<T extends UsedResourceType = UsedResourceType> = UsedResourceDataMap[T];
+
+        /**
+         * A registered resource as stored on the host: the discriminating `type`, the type-specific payload
+         * in `data` and the ownership/bookkeeping fields (`instance`, `ts`, `isBlocked`).
+         *
+         * The payload is nested on purpose. If it were merged into this object, a payload key could shadow a
+         * bookkeeping field - an entry could then claim a foreign `instance` or a `type` that does not match
+         * the bucket it is stored in, and would be unreachable for all by-instance operations. Nesting makes
+         * that impossible for every current and future payload type.
+         */
+        type RegisteredResource<T extends UsedResourceType = UsedResourceType> = {
+            [K in T]: {
+                /** Kind of the occupied resource, e.g. "serialPort" */
+                type: K;
+                /** The type-specific payload describing the resource, e.g. `{ port: '/dev/ttyUSB0' }` */
+                data: UsedResourceDataMap[K];
+                /** Instance that occupies the resource, e.g. "mqtt.0" */
+                instance: string;
+                /** Timestamp (ms) when the resource was registered */
+                ts: number;
+                /**
+                 * If true, the instance is running and uses this resource. If false, the instance is not
+                 * running and would maybe occupy this resource when started - "maybe", because its
+                 * configuration can still change before the next start.
+                 */
+                isBlocked: boolean;
+            };
+        }[T];
+        // #endregion
+
+        type StateValue = string | number | boolean | null;
+
+        interface State {
+            /** The value of the state. */
+            val: StateValue;
+
+            /** Direction flag: false for desired value and true for actual value. Default: false. */
+            ack: boolean;
+
+            /** Unix timestamp. Default: current time */
+            ts: number;
+
+            /** Unix timestamp of the last time the value changed */
+            lc: number;
+
+            /** Name of the adapter instance which set the value, e.g. "system.adapter.web.0" */
+            from: string;
+
+            /** The user who set this value */
+            user?: string;
+
+            /** Optional time in seconds after which the state is reset to null */
+            expire?: number;
+
+            /** Optional quality of the state value */
+            q?: STATE_QUALITY[keyof STATE_QUALITY];
+
+            /** Optional comment */
+            c?: string;
+        }
+
+        type SettableState = AtLeastOne<State>;
+
+        interface IdObject {
+            device?: string;
+            channel?: string;
+            state?: string;
+        }
+
+        type Session = {
+            cookie?: {
+                originalMaxAge?: number;
+                maxAge?: number;
+            };
+            [key: string]: any;
+        };
+
+        /** Defines access rights for a single object type */
+        interface ObjectOperationPermissions {
+            /** Whether a user may enumerate objects of this type */
+            list: boolean;
+            /** Whether a user may read objects of this type */
+            read: boolean;
+            /** Whether a user may write objects of this type */
+            write: boolean;
+            /** Whether a user may create objects of this type */
+            create: boolean;
+            /** Whether a user may delete objects of this type */
+            delete: boolean;
+        }
+
+        /** Defines the rights a user or group has to change objects */
+        interface ObjectPermissions {
+            /** The access rights for files */
+            file: ObjectOperationPermissions;
+            /** The access rights for objects */
+            object: ObjectOperationPermissions;
+            /** The access rights for users/groups */
+            users: ObjectOperationPermissions;
+            /** The access rights for states */
+            state?: ObjectOperationPermissions;
+        }
+        /** Defined the complete set of access rights a user has */
+        interface PermissionSet extends ObjectPermissions {
+            /** The name of the user this ACL is for */
+            user: ioBroker.ObjectIDs.User;
+            /** The name of the groups this ACL was merged from */
+            groups: ioBroker.ObjectIDs.Group[];
+            /** The access rights for certain commands */
+            other: {
+                execute: boolean;
+                http: boolean;
+                sendto: boolean;
+            };
+        }
+
+        interface Permission {
+            /** The type of the permission */
+            type: string;
+            /** Defines which kind of operation is required */
+            operation: string;
+        }
+        interface ObjectOrStatePermission extends Permission {
+            type: 'object' | 'file' | 'users' | 'state';
+            operation: 'list' | 'read' | 'write' | 'create' | 'delete';
+        }
+        interface OtherPermission extends Permission {
+            type: 'other';
+            operation: 'execute' | 'http' | 'sendto';
+        }
+        interface CommandsPermissions {
+            // TODO: Are all properties required or is a partial object ok?
+            getObject: ObjectOrStatePermission;
+            getObjects: ObjectOrStatePermission;
+            getObjectView: ObjectOrStatePermission;
+            setObject: ObjectOrStatePermission;
+            subscribeObjects: ObjectOrStatePermission;
+            unsubscribeObjects: ObjectOrStatePermission;
+            getStates: ObjectOrStatePermission;
+            getState: ObjectOrStatePermission;
+            setState: ObjectOrStatePermission;
+            getStateHistory: ObjectOrStatePermission;
+            subscribe: ObjectOrStatePermission;
+            unsubscribe: ObjectOrStatePermission;
+            getVersion: Permission;
+            httpGet: OtherPermission;
+            sendTo: OtherPermission;
+            sendToHost: OtherPermission;
+            readFile: ObjectOrStatePermission;
+            readFile64: ObjectOrStatePermission;
+            writeFile: ObjectOrStatePermission;
+            writeFile64: ObjectOrStatePermission;
+            unlink: ObjectOrStatePermission;
+            rename: ObjectOrStatePermission;
+            mkdir: ObjectOrStatePermission;
+            readDir: ObjectOrStatePermission;
+            chmodFile: ObjectOrStatePermission;
+            authEnabled: Permission;
+            disconnect: Permission;
+            listPermissions: Permission;
+            getUserPermissions: ObjectOrStatePermission;
+        }
+
+        type UserGroup = any; // TODO find out how this looks like
+        // interface UserGroup { }
+
+        /** Contains information about a user */
+        interface User {
+            /** Which groups this user belongs to */
+            groups: UserGroup[];
+            /** Access rights of this user */
+            acl: ObjectPermissions;
+        }
+
+        /** Parameters for adapter.getObjectView */
+        interface GetObjectViewParams {
+            /** First id to include in the return list */
+            startkey?: string;
+            /** Last id to include in the return list */
+            endkey?: string;
+            /** Whether docs should be included in the return list */ // TODO: What are docs?
+            include_docs?: boolean;
+        }
+
+        /** Parameters for adapter.getObjectList */
+        type GetObjectListParams = GetObjectViewParams | undefined;
+
+        type LogLevel = 'silly' | 'debug' | 'info' | 'warn' | 'error';
+        interface Logger {
+            /** log a message with silly level */
+            silly(message: string): void;
+            /** log a message with debug level */
+            debug(message: string): void;
+            /** log a message with info level (default output level for all adapters) */
+            info(message: string): void;
+            /** log a message with warning severity */
+            warn(message: string): void;
+            /** log a message with error severity */
+            error(message: string): void;
+
+            /** Verbosity of the log output */
+            level: LogLevel;
+        }
+
+        /** Log message */
+        interface LogMessage {
+            /** unique ID */
+            _id: number;
+            /** id of the source instance */
+            from: string;
+            /** log level */
+            severity: string;
+            /** timestamp */
+            ts: number;
+            /** actual content */
+            message: string;
+            /**
+             * Set when the producer of this record has already pushed it to the log transporters itself, so
+             * that a host which logs the record a second time - e.g. captured from the output of a child
+             * process - does not push it again and show it twice
+             */
+            alreadyPushed?: boolean;
+        }
+
+        interface Certificates {
+            /** private key file */
+            key: string;
+            /** public certificate */
+            cert: string;
+            /** chained CA certificates */
+            ca?: string;
+        }
+
+        type MessagePayload = any;
+
+        /** Callback information for a passed message */
+        interface MessageCallbackInfo {
+            /** The original message payload */
+            message: MessagePayload;
+            /** ID of this callback */
+            id: number;
+            /** If ack is false, it means the message is a request. If ack is true, it means the message is a response */
+            ack: boolean;
+            /** Timestamp of this message */
+            time: number;
+        }
+
+        interface SendableMessage {
+            /** The command to be executed */
+            command: string;
+            /** The message payload */
+            message: MessagePayload;
+            /** The source of this message */
+            from: string;
+            /**
+             * The user this message is sent on behalf of, if the sender named one (`options.user` of
+             * `sendTo`/`sendToHost`). A socket server such as `admin` or `web` puts the authenticated
+             * user of the connection here, so the receiving instance can check what that user may do
+             * instead of acting with its own rights.
+             *
+             * It is only as trustworthy as `from`: every instance can claim any user here, and all of
+             * them run with full database rights anyway. Trust it when `from` is an instance you trust
+             * to have authenticated the user, and never as a substitute for your own permission check.
+             *
+             * Set from js-controller 7.2.5 on; an older one never sets it. A message that was sent
+             * without a user does not carry the field at all, so the absence of the field means
+             * "nobody was named" - for whichever of the two reasons, and in both cases there is
+             * nothing to check against.
+             */
+            user?: ioBroker.ObjectIDs.User;
+            /** Callback information. This is set when the source expects a response */
+            callback?: MessageCallbackInfo;
+        }
+
+        /** A message being passed between adapter instances */
+        interface Message extends SendableMessage {
+            /** ID of this message */
+            _id: number;
+        }
+
+        type Log = any; // TODO: define this https://github.com/ioBroker/ioBroker.js-controller/blob/master/lib/states/statesInMemServer.js#L873
+
+        type EnumList = string | string[];
+
+        type Plugin = Record<string, any>; // TODO: Add definition
+
+        interface DirectoryEntry {
+            file: string;
+            stats: fs.Stats;
+            isDir: boolean;
+            acl: any; // access control list object
+            modifiedAt: number;
+            createdAt: number;
+        }
+
+        interface GetHistoryOptions {
+            instance?: string;
+            /** Start time in ms */
+            start?: number;
+            /** End time in ms. If not defined, it is "now" */
+            end?: number;
+            /** Step in ms of intervals. Used in aggregate (max, min, average, total, ...)  */
+            step?: number;
+            /** number of values if aggregate is 'onchange' or number of intervals if other aggregate method. Count will be ignored if step is set, else default is 500 if not set */
+            count?: number;
+            /** if `from` field should be included in answer */
+            from?: boolean;
+            /** if `ack` field should be included in answer */
+            ack?: boolean;
+            /** if `q` field should be included in answer */
+            q?: boolean;
+            /** if `id` field should be included in answer */
+            addId?: boolean;
+            /** do not return more entries than limit */
+            limit?: number;
+            /** round result to number of digits after decimal point */
+            round?: number;
+            /** if null values should be included (false), replaced by last not null value (true) or replaced with 0 (0) */
+            ignoreNull?: boolean | 0;
+            /** This number will be returned in answer, so the client can assign the request for it */
+            sessionId?: number;
+            /** aggregate method (Default: 'average') */
+            aggregate?:
+                | 'onchange'
+                | 'minmax'
+                | 'min'
+                | 'max'
+                | 'average'
+                | 'total'
+                | 'count'
+                | 'none'
+                | 'percentile'
+                | 'quantile'
+                | 'integral'
+                | 'integralTotal';
+            /** Returned data is normally sorted ascending by date, this option lets you return the newest instead of the oldest values if the number of returned points is limited */
+            returnNewestEntries?: boolean;
+            /** By default, the additional border values are returned to optimize charting. Set this option to true if this is not wanted (e.g., for script data processing) */
+            removeBorderValues?: boolean;
+            /** when using aggregate method `percentile` defines the percentile level (0..100)(defaults to 50) */
+            percentile?: number;
+            /** when using aggregate method `quantile` defines the quantile level (0..1)(defaults to 0.5) */
+            quantile?: number;
+            /** when using aggregate method `integral` defines the unit in seconds (defaults to 60 seconds). E.g., to get integral in hours for Wh or such, set to 3600. */
+            integralUnit?: number;
+            /** when using aggregate method `integral` defines the interpolation method (defaults to `none`). */
+            integralInterpolation?: 'none' | 'linear';
+            /** If user is set, it will be checked if this user may read the variable */
+            user?: ioBroker.ObjectIDs.User;
+        }
+
+        interface DelObjectOptions {
+            /** Whether all child objects should be deleted as well */
+            recursive?: boolean;
+            user?: ioBroker.ObjectIDs.User;
+        }
+
+        interface ExtendObjectOptionsPreserve {
+            [prop: string]: ExtendObjectOptionsPreserve | boolean | string[];
+        }
+
+        interface ExtendObjectOptions {
+            /** Which properties of the original object should be preserved */
+            preserve?: ExtendObjectOptionsPreserve;
+            user?: ioBroker.ObjectIDs.User;
+            owner?: ioBroker.ObjectIDs.User;
+            ownerGroup?: ioBroker.ObjectIDs.Group;
+        }
+
+        /** Predefined notification scopes and their categories */
+        interface NotificationScopes {
+            system:
+                | 'memIssues'
+                | 'fsIoErrors'
+                | 'noDiskSpace'
+                | 'accessErrors'
+                | 'nonExistingFileErrors'
+                | 'remoteHostErrors'
+                | 'restartLoop'
+                | 'fileToJsonl'
+                | 'numberObjectsLimitExceeded'
+                | 'systemRebootRequired'
+                | 'dockerUpdate'
+                | 'packageUpdates'
+                | 'securityIssues'
+                | 'databaseErrors'
+                | 'blockedVersions'
+                | 'automaticAdapterUpgradeSuccessful'
+                | 'automaticAdapterUpgradeFailed';
+            [other: string]: string;
+        }
+
+        /** Additional context for the notification which can be used by notification processing adapters */
+        interface NotificationContextData {
+            /** Use a `key` specific to the adapter or if a feature is supported by all adapters of a type, the type (e.g. `messaging`) is also fine. */
+            [adapterNameOrAdapterType: string]: unknown;
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+        interface AdapterConfig {
+            // This is a stub to be augmented in every adapter
+        }
+
+        type ReadyHandler = () => void | Promise<void>;
+        type ObjectChangeHandler = (id: string, obj: ioBroker.Object | null | undefined) => void | Promise<void>;
+        type StateChangeHandler = (id: string, obj: State | null | undefined) => void | Promise<void>;
+        type FileChangeHandler = (id: string, fileName: string, size: number | null) => void;
+        type MessageHandler = (obj: Message) => void | Promise<void>;
+        type UnloadHandler = (callback: EmptyCallback) => void | Promise<void>;
+        type ErrorHandler = (err: Error) => boolean;
+
+        type EmptyCallback = () => void;
+        type ErrorCallback = (err?: Error | null) => void;
+        /** Special variant of ErrorCallback for methods where Node.js returns an ErrnoException */
+        type ErrnoCallback = (err?: NodeJS.ErrnoException | null) => void;
+        // TODO: Redefine callbacks as subclass of GenericCallback
+        type GenericCallback<T> = (err?: Error | null, result?: T) => void;
+
+        /** Due to backward compatibility first param can be result or error */
+        type MessageCallback = (response?: MessagePayload) => void;
+
+        type SetObjectCallback = (err?: Error | null, obj?: { id: string }) => void;
+        type SetObjectPromise = Promise<NonNullCallbackReturnTypeOf<SetObjectCallback>>;
+
+        type GetObjectCallback<T extends string = string> = (
+            err?: Error | null,
+            obj?: ObjectIdToObjectType<T> | null,
+        ) => void;
+        type GetObjectPromise<T extends string = string> = Promise<CallbackReturnTypeOf<GetObjectCallback<T>>>;
+
+        type GetEnumCallback = (err?: Error | null, enums?: Record<string, EnumObject>, requestedEnum?: string) => void;
+        type GetEnumsCallback = (
+            err?: Error | null,
+            result?: {
+                [groupName: string]: Record<string, EnumObject>;
+            },
+        ) => void;
+        type GetEnumsPromise = Promise<NonNullCallbackReturnTypeOf<GetEnumsCallback>>;
+
+        type GetObjectsCallback = (err?: Error | null, objects?: Record<string, ioBroker.AnyObject | null>) => void;
+        type GetObjectsPromise = Promise<NonNullCallbackReturnTypeOf<GetObjectsCallback>>;
+
+        type GetObjectsCallbackTyped<T extends ObjectType> = (
+            err?: Error | null,
+            objects?: Record<string, ioBroker.AnyObject & { type: T }>,
+        ) => void;
+        type GetObjectsPromiseTyped<T extends ObjectType> = Promise<
+            NonNullCallbackReturnTypeOf<GetObjectsCallbackTyped<T>>
+        >;
+
+        type FindObjectCallback = (
+            /** If an error happened, this contains the message */
+            err?: Error | null,
+            /** If an object was found, this contains the ID */
+            id?: string,
+            /** If an object was found, this contains the common.name */
+            name?: StringOrTranslated,
+        ) => void;
+
+        // This is a version used by GetDevices/GetChannelsOf/GetStatesOf
+        type GetObjectsCallback3<T extends BaseObject> = (err?: Error | null, result?: T[]) => void;
+
+        type SecondParameterOf<T extends (...args: any[]) => any> = T extends (
+            arg0: any,
+            arg1: infer R,
+            ...args: any[]
+        ) => any
+            ? R
+            : never;
+        /** Infers the return type from a callback-style API and strips out null and undefined */
+        type NonNullCallbackReturnTypeOf<T extends (...args: any[]) => any> = Exclude<
+            SecondParameterOf<T>,
+            null | undefined
+        >;
+        /** Infers the return type from a callback-style API and leaves null and undefined in */
+        type CallbackReturnTypeOf<T extends (...args: any[]) => any> = SecondParameterOf<T>;
+
+        type GetStateCallback = (err?: Error | null, state?: State | null) => void;
+        type GetStatePromise = Promise<CallbackReturnTypeOf<GetStateCallback>>;
+
+        type GetStatesCallback = (err?: Error | null, states?: Record<string, State>) => void;
+        type GetStatesPromise = Promise<NonNullCallbackReturnTypeOf<GetStatesCallback>>;
+
+        type SetStateCallback = (err?: Error | null, id?: string) => void;
+        type SetStatePromise = Promise<NonNullCallbackReturnTypeOf<SetStateCallback>>;
+
+        type SetStateChangedCallback = (err?: Error | null, id?: string, notChanged?: boolean) => void;
+        type SetStateChangedPromise = Promise<NonNullCallbackReturnTypeOf<SetStateChangedCallback>>;
+
+        type DeleteStateCallback = (err?: Error | null, id?: string) => void;
+
+        type GetHistoryResult = Array<State & { id?: string }>;
+        type GetHistoryCallback = (
+            err: Error | null | undefined,
+            result?: GetHistoryResult,
+            step?: number,
+            sessionId?: number,
+        ) => void;
+
+        /** Contains the return values of readDir */
+        interface ReadDirResult {
+            /** Name of the file or directory */
+            file: string;
+            /** File system stats */
+            stats?: {
+                size?: number;
+            };
+            /** Whether this is a directory or a file */
+            isDir: boolean;
+            /** Access rights */
+            acl?: EvaluatedFileACL;
+            /** Date of last modification */
+            modifiedAt?: number;
+            /** Date of creation */
+            createdAt?: number;
+        }
+        type ReadDirCallback = (err?: NodeJS.ErrnoException | null, entries?: ReadDirResult[]) => void;
+        type ReadDirPromise = Promise<ReadDirResult[]>;
+
+        type ReadFileCallback = (
+            err?: NodeJS.ErrnoException | null,
+            data?: Buffer | string | null,
+            mimeType?: string,
+        ) => void;
+        type ReadFilePromise = Promise<{ file: string | Buffer | null; mimeType?: string }>;
+
+        /** Contains the return values of chownFile */
+        interface ChownFileResult {
+            /** The parent directory of the processed file or directory */
+            path: string;
+            /** Name of the file or directory */
+            file: string;
+            /** File system stats */
+            stats?: {
+                size?: number;
+            };
+            /** Whether this is a directory or a file */
+            isDir: boolean;
+            /** Access rights */
+            acl: EvaluatedFileACL;
+            /** Date of last modification */
+            modifiedAt?: number;
+            /** Date of creation */
+            createdAt?: number;
+        }
+        type ChownFileCallback = (err?: NodeJS.ErrnoException | null, processed?: ChownFileResult[]) => void;
+
+        /** Contains the return values of rm */
+        interface RmResult {
+            /** The parent directory of the deleted file or directory */
+            path: string;
+            /** The name of the deleted file or directory */
+            file: string;
+        }
+        type RmCallback = (err?: NodeJS.ErrnoException | null, entries?: RmResult[]) => void;
+
+        type ChownObjectCallback = (err?: NodeJS.ErrnoException | null, list?: ioBroker.Object[]) => void;
+
+        type GetKeysCallback = (err?: Error | null, list?: string[]) => void;
+
+        interface GetObjectViewItem<T extends AnyObject> {
+            /** The ID of this object */
+            id: T['_id'];
+            /** A copy of the object from the DB */
+            value: T;
+        }
+        type GetObjectViewCallback<T extends AnyObject> = (
+            err?: Error | null,
+            result?: { rows: Array<GetObjectViewItem<T>> },
+        ) => void;
+        type GetObjectViewPromise<T extends AnyObject> = Promise<NonNullCallbackReturnTypeOf<GetObjectViewCallback<T>>>;
+
+        interface GetObjectListItem<T extends ioBroker.Object> extends GetObjectViewItem<T> {
+            /** A copy of the object */
+            value: T;
+            /** The same as {@link value} */
+            doc: T;
+        }
+        type GetObjectListCallback<T extends ioBroker.Object> = (
+            err?: Error | null,
+            result?: { rows: GetObjectListItem<T>[] },
+        ) => void;
+        type GetObjectListPromise = Promise<NonNullCallbackReturnTypeOf<GetObjectListCallback<ioBroker.Object>>>;
+
+        type ExtendObjectCallback = (
+            err?: Error | null,
+            result?: { id: string; value: ioBroker.Object },
+            id?: string,
+        ) => void;
+
+        type GetSessionCallback = (session: Session | null) => void;
+
+        type Timeout = Branded<number, 'Timeout'> | null; // or null to not allow native clearTimeout
+        type Interval = Branded<number, 'Interval'> | null; // or null to not allow native clearInterval
+
+        /**
+         * The ioBroker global config
+         */
+        type IoBrokerJson = IoBJson;
+
+        /** Objects DB options from ioBroker.json */
+        type ObjectsDatabaseOptions = ObjectsDbOptions;
+        /** States DB options from ioBroker.json */
+        type StatesDatabaseOptions = StatesDbOptions;
+    } // end namespace ioBroker
+} // end declare global

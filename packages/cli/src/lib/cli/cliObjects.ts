@@ -1,0 +1,810 @@
+import { CLICommand, type CLICommandOptions } from './cliCommand.js';
+
+import * as CLI from './messages.js';
+import { formatValue } from './cliTools.js';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
+
+interface ParsedPropPathAndAssignment {
+    propPath?: string;
+    value: unknown;
+}
+
+/** Command iobroker object ... */
+export class CLIObjects extends CLICommand {
+    /**
+     * @param options The command options including context and parameters
+     */
+    constructor(options: CLICommandOptions) {
+        super(options);
+    }
+
+    /**
+     * Executes a command
+     *
+     * @param args The command arguments (the first is the sub-command)
+     */
+    execute(args: string[]): void {
+        const { callback, showHelp } = this.options;
+        const command = args[0];
+
+        switch (command) {
+            case 'chmod':
+                return this.chmod(args);
+            case 'chown':
+                return this.chown(args);
+            case 'list':
+            case 'l':
+                return this.list(args);
+            case 'get':
+                return this.get(args);
+            case 'set':
+                return this.set(args);
+            case 'extend':
+                return this.extend(args);
+            case 'delete':
+            case 'del':
+                return this.delete(args);
+            case 'getDBVersion':
+                return this.getDBVersion();
+            case 'setDBVersion':
+                return this.setDBVersion();
+            case 'activateSets':
+                return this.activateSets();
+            case 'deactivateSets':
+                return this.deactivateSets();
+            default:
+                CLI.error.unknownCommand('object', command);
+                showHelp();
+                return void callback(3);
+        }
+    }
+
+    /**
+     * Activates the usage of Redis Sets
+     */
+    activateSets(): void {
+        const { callback, dbConnect } = this.options;
+        dbConnect(async params => {
+            const { states, objects } = params;
+
+            const useSetsIndicator = await objects.getMeta('objects.features.useSets');
+
+            if (!useSetsIndicator || !parseInt(useSetsIndicator)) {
+                // all hosts need to be stopped for this
+                if (await tools.isHostRunning(objects, states)) {
+                    console.log('Cannot activate the usage of Redis Sets while one or more hosts are running');
+                    return void callback(EXIT_CODES.CONTROLLER_RUNNING);
+                }
+
+                await objects.activateSets();
+                const noMigrated = await objects.migrateToSets();
+
+                if (noMigrated) {
+                    console.log(`Successfully migrated ${noMigrated} objects to Redis Sets`);
+                }
+                console.log(
+                    `Successfully activated the usage of Redis Sets. Please make sure to only use js-controller 4.0 or higher on all hosts!`,
+                );
+            } else {
+                console.log('Redis Sets are already activated.');
+            }
+            return void callback(EXIT_CODES.NO_ERROR);
+        });
+    }
+
+    /**
+     * Deactivates the usage of Redis Sets
+     */
+    deactivateSets(): void {
+        const { callback, dbConnect } = this.options;
+        dbConnect(async params => {
+            const { objects } = params;
+            const useSetsIndicator = await objects.getMeta('objects.features.useSets');
+
+            if (useSetsIndicator && parseInt(useSetsIndicator)) {
+                await objects.deactivateSets();
+                console.log(`Successfully deactivated the usage of Redis Sets.`);
+            } else {
+                console.log('Redis Sets are already deactivated.');
+            }
+            return void callback(EXIT_CODES.NO_ERROR);
+        });
+    }
+
+    /**
+     * Get the protocol version
+     */
+    getDBVersion(): void {
+        const { callback, dbConnect } = this.options;
+        dbConnect(async params => {
+            const { objects } = params;
+
+            const version = await objects.getProtocolVersion();
+            console.log(`Current Objects DB protocol version: ${version}`);
+            return void callback(EXIT_CODES.NO_ERROR);
+        });
+    }
+
+    /**
+     * Set protocol version
+     */
+    setDBVersion(): void {
+        const { callback, dbConnect } = this.options;
+        dbConnect(async params => {
+            const { objects } = params;
+            const rl = await import('readline-sync');
+
+            let answer = rl.question('Changing the protocol version will restart all hosts! Continue? [N/y]', {
+                limit: /^(yes|y|n|no)$/i,
+                defaultInput: 'no',
+            });
+
+            answer = answer.toLowerCase();
+
+            if (answer !== 'y' && answer !== 'yes') {
+                console.log('Protocol version has not been changed!');
+                return void callback(EXIT_CODES.NO_ERROR);
+            }
+
+            try {
+                await objects.setProtocolVersion(this.options.version!);
+            } catch (e) {
+                console.error(`Cannot update protocol version: ${e.message}`);
+                return void callback(1);
+            }
+            console.log(`Objects DB protocol updated to version ${this.options.version}`);
+            return void callback(EXIT_CODES.NO_ERROR);
+        });
+    }
+
+    /**
+     * Changes access rights for all objects matching the pattern
+     *
+     * @param args The command arguments (object mode, state mode and pattern)
+     */
+    chmod(args: (string | number | undefined)[]): void {
+        const { callback, dbConnect } = this.options;
+        let [modeObject, modeState, pattern] = args.slice(1);
+
+        // Yargs converts numeric string to number, so we can use that to test
+        // Afterwards we parse them ourselves, but with base16
+        if (typeof modeObject !== 'number') {
+            CLI.error.requiredArgumentMissing('mode', 'object chmod 644 system.*');
+            return void callback(1);
+        }
+        modeObject = parseInt(modeObject.toString(), 16);
+
+        if (typeof modeState === 'number') {
+            // a mode for the state was given, convert it
+            modeState = parseInt(modeState.toString(), 16);
+        } else {
+            pattern = modeState;
+            modeState = undefined;
+        }
+
+        if (pattern === undefined) {
+            CLI.error.requiredArgumentMissing('pattern', 'object chmod 644 system.*');
+            return void callback(1);
+        }
+
+        dbConnect(params => {
+            const { objects, states } = params;
+
+            return objects.chmodObject(
+                pattern as string,
+                { user: 'system.user.admin', object: modeObject, state: modeState },
+                (err, processed) => {
+                    // Print the new object rights
+                    return this.printObjectList(objects, states, err?.message, processed);
+                },
+            );
+        });
+    }
+
+    /**
+     * Changes owner for all objects matching the pattern
+     *
+     * @param args The command arguments (user, group and pattern)
+     */
+    chown(args: (string | undefined)[]): void {
+        const { callback, dbConnect } = this.options;
+        let [user, group, pattern] = args.slice(1);
+
+        if (!pattern) {
+            pattern = group;
+            group = undefined;
+        }
+
+        if (!user) {
+            CLI.error.requiredArgumentMissing('user', 'object chown user system.*');
+            return void callback(1);
+        } else if (!user.startsWith('system.user.')) {
+            user = `system.user.${user}`;
+        }
+        if (group && !group.startsWith('system.group.')) {
+            group = `system.group.${group}`;
+        }
+
+        if (!pattern) {
+            CLI.error.requiredArgumentMissing('pattern', 'object chown user system.*');
+            return void callback(1);
+        }
+        dbConnect(params => {
+            const { objects, states } = params;
+
+            return objects.chownObject(
+                pattern,
+                {
+                    user: 'system.user.admin',
+                    owner: user as ioBroker.ObjectIDs.User,
+                    ownerGroup: group as ioBroker.ObjectIDs.Group,
+                },
+                (err, processed) => {
+                    // Print the new object rights
+                    return this.printObjectList(objects, states, err?.message, processed);
+                },
+            );
+        });
+    }
+
+    /**
+     * Lists all objects matching a pattern and their access rights
+     *
+     * @param args The command arguments (the pattern to match)
+     */
+    list(args: string[]): void {
+        const { callback, dbConnect } = this.options;
+        let pattern: { startkey: string; endkey: string } | undefined;
+        if (typeof args[1] === 'string') {
+            pattern = { startkey: args[1].replace('*', ''), endkey: args[1].replace('*', '\u9999') };
+        }
+
+        dbConnect(params => {
+            const { objects, states } = params;
+
+            objects.getObjectList(pattern, { user: 'system.user.admin', sorted: true }, (err, processed) => {
+                this.printObjectList(
+                    objects,
+                    states,
+                    err?.message,
+                    processed && processed.rows && processed.rows.map(r => r.value),
+                ).catch(e => console.error(`Cannot print object list: ${e.message}`));
+                return void callback(EXIT_CODES.NO_ERROR);
+            });
+        });
+    }
+
+    /**
+     * Retrieves an object or its property from the DB and prints it
+     *
+     * @param args The command arguments (the object id and optional property path)
+     */
+    get(args: string[]): void {
+        const { callback, pretty, dbConnect } = this.options;
+        const [id, propPath] = args.slice(1);
+        if (!id) {
+            CLI.error.requiredArgumentMissing('id', 'object get id [propertypath]');
+            return void callback(1);
+        }
+
+        // If propPath is passed, the given property will be retrieved instead.
+        // For example: `"native.something[2].onething"` selects `onething` of the 3rd array element of `object.native.something`.
+
+        dbConnect(params => {
+            const { objects } = params;
+
+            objects.getObject(id, (err, res) => {
+                if (err || !res) {
+                    CLI.error.objectNotFound(id, err?.message);
+                    return void callback(3);
+                }
+                if (typeof propPath === 'string') {
+                    // We want to select a part of the object
+                    try {
+                        res = deepSelectProperty(res, propPath);
+                    } catch {
+                        CLI.error.objectPropertyNotFound(id, propPath);
+                        return void callback(3);
+                    }
+                }
+                console.log(formatValue(res, pretty));
+                return void callback(EXIT_CODES.NO_ERROR);
+            });
+        });
+    }
+
+    /**
+     * Updates an object or its property with the given value
+     *
+     * @param args The command arguments (the object id and the value to set)
+     */
+    set(args: string[]): void {
+        const { callback, dbConnect } = this.options;
+        const id: string = args[1];
+        if (!id) {
+            CLI.error.requiredArgumentMissing('id', 'object set id [propertypath=]value');
+            return void callback(1);
+        }
+
+        const lastArg = args.length >= 2 ? args.slice(2).join(' ') : undefined;
+        const parsedArg = parsePropPathAndAssignment(lastArg!);
+        if (!parsedArg) {
+            CLI.error.invalidPropertyOrValue();
+            return void callback(3);
+        }
+        const { propPath, value } = parsedArg;
+
+        dbConnect(params => {
+            const { objects } = params;
+
+            const doSetObject = (obj: any): void => {
+                objects.setObject(id, obj, (err: Error | null | undefined) => {
+                    if (err) {
+                        CLI.error.cannotUpdateObject(id, err.message);
+                        return void callback(1);
+                    }
+                    CLI.success.objectUpdated(id);
+                    return void callback(EXIT_CODES.NO_ERROR);
+                });
+            };
+            if (!propPath) {
+                // We set the entire object, no need to retrieve it first
+                doSetObject(value);
+            } else {
+                // We want to update a part of the object
+                // Retrieve the object first
+                objects.getObject(id, async (err, res) => {
+                    if (err || !res) {
+                        CLI.error.objectNotFound(id, err?.message);
+                        return void callback(3);
+                    }
+                    try {
+                        deepSetProperty(res, propPath, value);
+                    } catch {
+                        CLI.error.objectPropertyNotFound(id, propPath);
+                        return void callback(3);
+                    }
+
+                    // auto encrypt -> only do that here, no one configures an instance by setting the whole object,
+                    // else it would be copied and probably already encrypted
+                    if (
+                        /^system\.adapter\.(?<adapterName>.+)\.(?<instanceNr>\d+)$/g.test(id) &&
+                        'encryptedNative' in res
+                    ) {
+                        await this._autoEncrypt(objects, res, propPath);
+                    }
+
+                    doSetObject(res);
+                });
+            }
+        });
+    }
+
+    /**
+     * Encrypts the attributes of `encryptedNative` that were set, the same way as `adapter.updateConfig()` does
+     *
+     * An entry of `encryptedNative` may reach into `native`, like `devices.password`, and the set value may be a
+     * single string, a part of `native` or the whole `native`. Only the set value is encrypted, the rest of
+     * `native` is stored encrypted already.
+     *
+     * @param objects - objects db instance
+     * @param res - the instance object, the value is already set in it
+     * @param propPath - path of the changed property
+     */
+    private async _autoEncrypt(objects: ObjectsClient, res: ioBroker.AnyObject, propPath: string): Promise<void> {
+        const keys = 'encryptedNative' in res ? res.encryptedNative : undefined;
+        const native: unknown = res.native;
+        if (!keys?.length || !tools.isObject(native) || (propPath !== 'native' && !propPath.startsWith('native.'))) {
+            return;
+        }
+
+        try {
+            const config = await objects.getObjectAsync('system.config');
+            const secret = config!.native.secret;
+            if (propPath === 'native') {
+                tools.encryptArray({ obj: native, secret, keys });
+            } else {
+                encryptSetValue(native, propPath, secret, keys);
+            }
+        } catch (e) {
+            console.error(`Could not auto-encrypt "${propPath}" of "${res._id}": ${e.message}`);
+        }
+    }
+
+    /**
+     * Extends an object with the given value
+     *
+     * @param args The command arguments (the object id and the value to extend with)
+     */
+    extend(args: string[]): void {
+        const { callback, dbConnect } = this.options;
+        const id: string = args[1];
+        if (!id) {
+            CLI.error.requiredArgumentMissing('id', 'object extend id <json-value>');
+            return void callback(1);
+        }
+
+        const lastArg = args.length >= 2 ? args.slice(2).join(' ') : undefined;
+        const parsedArg = parsePropPathAndAssignment(lastArg!);
+        // extend does not accept a property path, so error when one is passed
+        if (!parsedArg || parsedArg.propPath) {
+            CLI.error.invalidJSONValue();
+            return void callback(3);
+        }
+        const { value } = parsedArg;
+
+        dbConnect(async params => {
+            const { objects } = params;
+
+            try {
+                await objects.extendObject(id, value as any);
+                CLI.success.objectUpdated(id);
+                return void callback(EXIT_CODES.NO_ERROR);
+            } catch (err) {
+                CLI.error.cannotUpdateObject(id, err.message);
+                return void callback(1);
+            }
+        });
+    }
+
+    /**
+     * Collects all objects for specific path
+     *
+     * @param objects class
+     * @param params parameters for getObjectView
+     */
+    async _collectObjects(objects: ObjectsClient, params: ioBroker.GetObjectViewParams): Promise<ioBroker.AnyObject[]> {
+        const types = [
+            'state',
+            'channel',
+            'device',
+            'enum',
+            'instance',
+            'host',
+            'adapter',
+            'meta',
+            'config',
+            'group',
+            'user',
+            'script',
+        ];
+        const result: ioBroker.AnyObject[] = [];
+
+        for (const type of types) {
+            try {
+                const res = await objects.getObjectViewAsync('system', type, params);
+                res.rows.forEach(item => {
+                    if (item.value) {
+                        result.push(item.value);
+                    }
+                });
+            } catch {
+                // ignore
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Delete all object from list sequentially
+     *
+     * @param objects class
+     * @param ids IDs
+     * @param callback Called with the exit code once all objects have been deleted
+     */
+    async _deleteObjects(objects: ObjectsClient, ids: string[], callback: (exitCode: number) => void): Promise<void> {
+        if (!ids || !ids.length) {
+            return tools.maybeCallback(callback, EXIT_CODES.NO_ERROR);
+        }
+        let allEnums;
+
+        try {
+            // cache all enums, else it will be slow to delete many objects
+            allEnums = await tools.getAllEnums(objects);
+        } catch (e) {
+            console.error(`Could not retrieve all enums: ${e.message}`);
+        }
+
+        for (const id of ids) {
+            try {
+                await objects.delObjectAsync(id);
+                await tools.removeIdFromAllEnums(objects, id, allEnums);
+            } catch (e) {
+                console.warn(`Could not delete object or remove "${id}" from enums: ${e.message}`);
+            }
+        }
+        return tools.maybeCallback(callback, EXIT_CODES.NO_ERROR);
+    }
+
+    /**
+     * Deletes an object
+     *
+     * @param args The command arguments (the object id to delete)
+     */
+    delete(args: string[]): void {
+        const { callback, dbConnect } = this.options;
+        const id: string = args[1];
+        if (!id) {
+            CLI.error.requiredArgumentMissing('id', 'object delete id');
+            return void callback(1);
+        }
+
+        dbConnect(async params => {
+            const { objects } = params;
+
+            if (id.endsWith('*')) {
+                const params = {
+                    startkey: id.replace(/\*/g, ''),
+                    endkey: id.replace(/\*/g, '\u9999'),
+                };
+
+                const result = await this._collectObjects(objects, params);
+                if (!result || !result.length) {
+                    console.log('No IDs found for this pattern.');
+                    return void callback(EXIT_CODES.NO_ERROR);
+                }
+                const ids = result.map(item => item._id);
+
+                // if no auto confirmation, ask user
+                if (!this.options.f && this.options.y && !this.options.yes) {
+                    const rl = (await import('node:readline')).createInterface({
+                        input: process.stdin,
+                        output: process.stdout,
+                    });
+                    rl.question(`${result.length} object(s) will be deleted. Are you sure? [y/N]: `, answer => {
+                        rl.close();
+                        if (
+                            answer === 'y' ||
+                            answer === 'yes' ||
+                            answer === 'j' ||
+                            answer === 'ja' ||
+                            answer === 'да' ||
+                            answer === 'д'
+                        ) {
+                            return this._deleteObjects(objects, ids, callback);
+                        }
+                        console.log('Aborted.');
+                        return void callback(3);
+                    });
+                } else {
+                    return this._deleteObjects(objects, ids, callback);
+                }
+            } else {
+                // only one object
+                objects.delObject(id, async err => {
+                    if (err) {
+                        CLI.error.objectNotFound(id, err.message);
+                        callback(3);
+                    } else {
+                        try {
+                            await tools.removeIdFromAllEnums(objects, id);
+                            CLI.success.objectDeleted(id);
+                            callback(EXIT_CODES.NO_ERROR);
+                        } catch (e) {
+                            CLI.error.cannotDeleteObjectFromEnums(id, e.message);
+                            callback(3);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * Prints a list of objects and its access properties
+     *
+     * @param objects objects db
+     * @param states states db
+     * @param err An error (if one occurred)
+     * @param objList The object list to print
+     */
+    async printObjectList(
+        objects: ObjectsClient,
+        states: StatesClient,
+        err: string | undefined,
+        objList?: ioBroker.AnyObject[],
+    ): Promise<void> {
+        // TODO: is this supposed to be here?
+        const { callback } = this.options;
+        if (err) {
+            console.error(err);
+            return void callback(33);
+        }
+        if (objList !== null && objList !== undefined) {
+            const { List } = await import('../setup/setupList.js');
+            const list = new List({
+                states,
+                objects,
+                processExit: callback,
+            });
+            list.showObjectHeader();
+            objList.forEach(list.showObject);
+        }
+        setTimeout(callback, 1_000);
+    }
+}
+
+/**
+ * Reverses a string
+ *
+ * @param str The string to reverse
+ */
+function reverseString(str: string): string {
+    return Array.from(str).reverse().join('');
+}
+
+/**
+ * Normalizes a property path for use in deepSelectProperty and deepSetProperty
+ *
+ * @param path The property path to normalize
+ */
+function normalizePropertyPath(path: string): string {
+    // Basically we want to support paths like "obj[1][2]", but the other methods expect "obj.[1].[2]"
+    // So we need to replace all occurences of square brackets without leading dots
+    // JS Regex only supports negative lookbehind in ES 2018, so we fake it using reversed strings and
+    // negative lookahead
+    const arrayIndexRegex = /(]\d+\[)(?!\.)/g; // Reversing the string reverses the brackets too
+    let ret = reverseString(path);
+    // Append the dot to each bracket, since we're going to reverse it
+    ret = ret.replace(arrayIndexRegex, '$1.');
+    return reverseString(ret);
+}
+
+/**
+ * Selects a property of an object or its sub-objects and returns it if it exists. E.g.
+ * `deepSelectProperty(obj, "common.asdf.qwer")` => `obj.common.asdf.qwer`
+ *
+ * @param object The object to select a property from
+ * @param path The property path to search for
+ */
+function deepSelectProperty(object: ioBroker.AnyObject, path: string): any {
+    /**
+     * @param obj The current (sub-)object being traversed
+     * @param pathArr The remaining property path segments
+     */
+    function _deepSelectProperty(obj: any, pathArr: string[]): unknown {
+        // are we there yet? then return obj
+        if (!pathArr.length) {
+            return obj;
+        }
+        // go deeper
+        let propName = pathArr.shift()!;
+        if (/\[\d+]/.test(propName)) {
+            // this is an array index
+            // @ts-expect-error // TODO: fix it - this is not ts fashion, assigning numbers to the string array here
+            propName = parseInt(propName.slice(1, -1));
+        }
+        return _deepSelectProperty(obj[propName], pathArr);
+    }
+    path = normalizePropertyPath(path);
+    return _deepSelectProperty(object, path.split('.'));
+}
+
+/**
+ * Encrypts the attributes of `encryptedNative` inside a value that was set below `native`
+ *
+ * `encryptArray` encrypts what an entry addresses in all of `native`, but only the set value may be encrypted here:
+ * the rest of `native` is stored encrypted already. So the set value is put into an object of the same shape as
+ * `native` that holds nothing but the set branch, where an array on the way becomes an array of this one element.
+ * `encryptArray` then encrypts exactly what it would encrypt in `native` (including its rule that a path runs through
+ * at most one array), and the encrypted value is written back.
+ *
+ * @param native - `native` of the instance object, with the value already set at `propPath`
+ * @param propPath - the path that was set, like `native.devices[0].password`
+ * @param secret - the system secret to encrypt with
+ * @param keys - the entries of `encryptedNative`
+ */
+function encryptSetValue(native: Record<string, any>, propPath: string, secret: string, keys: string[]): void {
+    // `native.devices[0].password` -> ['devices', '0', 'password']
+    const parts = normalizePropertyPath(propPath)
+        .split('.')
+        .slice(1)
+        .map(part => part.replace(/^\[(\d+)]$/, '$1'));
+
+    const branch: Record<string, any> = {};
+    let parent: any = native;
+    let mirror: any = branch;
+    for (let i = 0; i < parts.length; i++) {
+        const next = parent[parts[i]];
+        const isLast = i === parts.length - 1;
+        if (!isLast && (!next || typeof next !== 'object')) {
+            return;
+        }
+        // the set value itself, or an empty array or object for the way to it
+        const node = isLast ? next : Array.isArray(next) ? [] : {};
+        if (Array.isArray(mirror)) {
+            mirror.push(node);
+        } else {
+            mirror[parts[i]] = node;
+        }
+        if (!isLast) {
+            parent = next;
+            mirror = node;
+        }
+    }
+
+    tools.encryptArray({ obj: branch, secret, keys });
+
+    // read the value back, as a string or an array of strings is replaced by its encrypted copy
+    let value: any = branch;
+    for (const part of parts) {
+        value = Array.isArray(value) ? value[0] : value[part];
+    }
+    parent[parts[parts.length - 1]] = value;
+}
+
+/**
+ * Changes a property of an object or its sub-objects if it exists. Opposite of `deepSelectProperty`.
+ *
+ * @param object The object to replace a property in
+ * @param path The property path to search for
+ * @param value The value to set at the given property path
+ */
+function deepSetProperty(object: ioBroker.AnyObject, path: string, value: any): void {
+    /**
+     * @param obj The current (sub-)object being traversed
+     * @param pathArr The remaining property path segments
+     */
+    function _deepSetProperty(obj: any, pathArr: string[]): void {
+        // are we there yet? then return obj
+        if (pathArr.length === 1) {
+            obj[pathArr[0]] = value;
+            return;
+        }
+        // go deeper
+        let propName = pathArr.shift()!;
+        if (/\[\d+]/.test(propName)) {
+            // this is an array index
+            // @ts-expect-error // TODO: fix it - this is not ts fashion, assigning numbers to the string array here
+            propName = parseInt(propName.slice(1, -1));
+        }
+        _deepSetProperty(obj[propName], pathArr);
+    }
+    path = normalizePropertyPath(path);
+    _deepSetProperty(object, path.split('.'));
+}
+
+/**
+ * Tries to parse a CLI argument that could be used to set an object
+ *
+ * @param arg The CLI argument containing the value to be set
+ */
+function parseCLIValue(arg: string): any {
+    try {
+        // JSON.parse does not allow plain strings
+        return JSON.parse(arg);
+    } catch {
+        // arg is a string
+        return arg;
+    }
+}
+
+/**
+ * Tries to parse a CLI argument of the form [propPath=]value.
+ *
+ * @param arg The CLI argument containing an optional prop path and a JSON value
+ */
+function parsePropPathAndAssignment(arg: string): ParsedPropPathAndAssignment | undefined {
+    const equalsIndex = arg.indexOf('=');
+    if (equalsIndex > -1) {
+        // This might contain a propPath AND a value
+        const propPath = arg.substr(0, equalsIndex);
+        const valueString = arg.substr(equalsIndex + 1);
+        // For partial assignments, allow strings as the value
+        const value = parseCLIValue(valueString);
+        return { propPath, value };
+    }
+    // This is a full assignment, allow only objects
+    try {
+        const value = JSON.parse(arg);
+        if (!tools.isObject(value)) {
+            return undefined;
+        }
+        return { value };
+    } catch {
+        // nope!
+        return undefined;
+    }
+}

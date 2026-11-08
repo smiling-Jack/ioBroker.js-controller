@@ -1,0 +1,638 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/IoBJson",
+  "definitions": {
+    "IoBJson": {
+      "type": "object",
+      "properties": {
+        "system": {
+          "type": "object",
+          "properties": {
+            "memoryLimitMB": {
+              "type": "number",
+              "description": "Do not use more than memory limit mb by ioB process (0 to deactivate)"
+            },
+            "hostname": {
+              "type": "string",
+              "description": "If empty, determine use real hostname"
+            },
+            "statisticsInterval": {
+              "type": "number",
+              "description": "Interval how often the counters for input/output in adapters and controller will be updated in ms"
+            },
+            "// statisticsInterval": {
+              "type": "string"
+            },
+            "checkDiskInterval": {
+              "type": "number",
+              "description": "Interval how often the disk size will be checked in ms"
+            },
+            "// checkDiskInterval": {
+              "type": "string"
+            },
+            "instanceStartInterval": {
+              "type": "number",
+              "description": "Interval to wait between multiple instances starts"
+            },
+            "compact": {
+              "type": "boolean",
+              "description": "Controller will try to start the instances as a part of the same process. No spawn will be done. Only by adapters that support it and have flag compact flag in io-package.json"
+            },
+            "// compact": {
+              "type": "string"
+            },
+            "allowShellCommands": {
+              "type": "boolean",
+              "description": "Allow execution of \"shell\" sendToHost commands"
+            },
+            "// allowShellCommands": {
+              "type": "string"
+            },
+            "memLimitWarn": {
+              "type": "number",
+              "description": "If the available RAM is below this threshold on adapter start, a warning will be logged."
+            },
+            "// memLimitWarn": {
+              "type": "string"
+            },
+            "memLimitError": {
+              "type": "number",
+              "description": "If the available RAM is below this threshold on adapter start, an error will be logged."
+            },
+            "// memLimitError": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "memoryLimitMB",
+            "hostname",
+            "statisticsInterval",
+            "// statisticsInterval",
+            "checkDiskInterval",
+            "// checkDiskInterval",
+            "instanceStartInterval",
+            "compact",
+            "// compact",
+            "allowShellCommands",
+            "// allowShellCommands",
+            "memLimitWarn",
+            "// memLimitWarn",
+            "memLimitError",
+            "// memLimitError"
+          ],
+          "additionalProperties": false,
+          "description": "System-wide controller settings"
+        },
+        "multihostService": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "secure": {
+              "type": "boolean"
+            },
+            "password": {
+              "type": "string"
+            },
+            "persist": {
+              "type": "boolean"
+            },
+            "pairing": {
+              "type": "boolean",
+              "description": "Whether this host offers itself to be attached to a master: it announces itself via mDNS and accepts the `join` command of a master over UDP 50005. Off when absent - ready-made images switch it on, because only the image knows that a device is fresh. Switched off again by the join, and without effect once the host uses a remote database."
+            }
+          },
+          "required": [
+            "enabled",
+            "secure",
+            "password",
+            "persist"
+          ],
+          "additionalProperties": false,
+          "description": "Configuration of the multihost service used to connect several ioBroker hosts"
+        },
+        "objects": {
+          "$ref": "#/definitions/ObjectsDatabaseOptions",
+          "description": "Configuration of the objects database"
+        },
+        "states": {
+          "$ref": "#/definitions/StatesDatabaseOptions",
+          "description": "Configuration of the states database"
+        },
+        "log": {
+          "type": "object",
+          "properties": {
+            "level": {
+              "$ref": "#/definitions/global.ioBroker.LogLevel"
+            },
+            "maxDays": {
+              "type": "number"
+            },
+            "noStdout": {
+              "type": "boolean"
+            },
+            "transport": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "level",
+            "maxDays",
+            "noStdout",
+            "transport"
+          ],
+          "additionalProperties": false,
+          "description": "Logging configuration"
+        },
+        "dataDir": {
+          "type": "string",
+          "description": "Always relative to iobroker.js-controller/"
+        },
+        "// dataDir": {
+          "type": "string",
+          "description": "Comment/hint shown next to the dataDir setting in the JSON config"
+        },
+        "plugins": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "enabled"
+            ],
+            "additionalProperties": {}
+          },
+          "description": "Controller plugins configuration keyed by plugin name"
+        },
+        "// dnsResolution": {
+          "type": "string",
+          "description": "Comment/hint shown next to the dnsResolution setting in the JSON config"
+        },
+        "dnsResolution": {
+          "type": "string",
+          "enum": [
+            "verbatim",
+            "ipv4first"
+          ],
+          "description": "Use 'verbatim' for ipv6 first, else use 'ipv4first'"
+        }
+      },
+      "required": [
+        "system",
+        "multihostService",
+        "objects",
+        "states",
+        "log",
+        "dataDir",
+        "// dataDir",
+        "plugins",
+        "// dnsResolution",
+        "dnsResolution"
+      ],
+      "additionalProperties": false,
+      "description": "The ioBroker global config"
+    },
+    "ObjectsDatabaseOptions": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "jsonl",
+            "file",
+            "redis"
+          ],
+          "description": "Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel]."
+        },
+        "sentinelName": {
+          "type": "string",
+          "description": "Name of the sentinel master to connect to"
+        },
+        "host": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
+          "description": "Host name(s) or IP address(es) of the database server"
+        },
+        "port": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          ],
+          "description": "Port(s) of the database server"
+        },
+        "connectTimeout": {
+          "type": "number",
+          "description": "Maximum time in milliseconds to wait for a connection to be established"
+        },
+        "writeFileInterval": {
+          "type": "number",
+          "description": "Interval in milliseconds between flushing the in-memory database to file"
+        },
+        "dataDir": {
+          "type": "string",
+          "description": "Directory where the database files are stored, relative to the controller dir"
+        },
+        "options": {
+          "$ref": "#/definitions/DatabaseConnectionOptions",
+          "description": "Low-level connection options passed to the database driver"
+        },
+        "backup": {
+          "$ref": "#/definitions/DatabaseBackupOptions",
+          "description": "Backup configuration for the database"
+        },
+        "jsonlOptions": {
+          "$ref": "#/definitions/JsonlOptions",
+          "description": "Options specific to the JSONL database backend"
+        },
+        "noFileCache": {
+          "type": "boolean",
+          "description": "Disable the in-memory file cache for objects"
+        }
+      },
+      "required": [
+        "backup",
+        "connectTimeout",
+        "host",
+        "jsonlOptions",
+        "noFileCache",
+        "options",
+        "port",
+        "type",
+        "writeFileInterval"
+      ],
+      "additionalProperties": false,
+      "description": "Configuration of the objects database connection"
+    },
+    "DatabaseConnectionOptions": {
+      "type": "object",
+      "properties": {
+        "auth_pass": {
+          "type": "string",
+          "description": "Password used to authenticate against the database"
+        },
+        "retry_max_delay": {
+          "type": "number",
+          "description": "Maximum delay in milliseconds between reconnection attempts"
+        },
+        "retry_max_count": {
+          "type": "number",
+          "description": "Maximum number of reconnection attempts"
+        },
+        "tls": {
+          "type": "object",
+          "properties": {
+            "rejectUnauthorized": {
+              "type": "boolean",
+              "description": "Needs to be false with self-signed certs"
+            },
+            "ca": {
+              "type": "string",
+              "description": "The certificate content"
+            },
+            "key": {
+              "type": "string",
+              "description": "The key file content"
+            },
+            "cert": {
+              "type": "string",
+              "description": "The cert file content"
+            }
+          },
+          "additionalProperties": false,
+          "description": "As soon as the tls property is defined, redis will try to connect via tls (currently only for redis)"
+        },
+        "port": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          ]
+        },
+        "host": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "family": {
+          "type": "number",
+          "description": "4 (IPv4) or 6 (IPv6), Defaults to 4."
+        },
+        "path": {
+          "type": "string",
+          "description": "Local domain socket path. If set the port, host and family will be ignored."
+        },
+        "connectionName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string",
+          "description": "If set, client will send AUTH command with the value of this option when connected."
+        },
+        "db": {
+          "type": "number",
+          "description": "Database index to use."
+        },
+        "enableReadyCheck": {
+          "type": "boolean",
+          "description": "When a connection is established to the Redis server, the server might still be loading the database from disk. While loading, the server not respond to any commands. To work around this, when this option is true, ioredis will check the status of the Redis server, and when the Redis server is able to process commands, a ready event will be emitted."
+        },
+        "autoResubscribe": {
+          "type": "boolean",
+          "description": "After reconnected, if the previous connection was in the subscriber mode, client will auto re-subscribe these channels. default: true."
+        },
+        "name": {
+          "type": "string",
+          "description": "default: null."
+        },
+        "sentinels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string"
+              },
+              "port": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "host",
+              "port"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "auth_pass",
+        "retry_max_count"
+      ],
+      "additionalProperties": false
+    },
+    "DatabaseBackupOptions": {
+      "type": "object",
+      "properties": {
+        "disabled": {
+          "type": "boolean"
+        },
+        "files": {
+          "type": "number",
+          "description": "Minimal number of backup files, after the deletion will be executed according to backupTime settings"
+        },
+        "// files": {
+          "type": "string"
+        },
+        "hours": {
+          "type": "number",
+          "description": "All backups older than configured hours will be deleted. But only if the number of files is greater than of backupNumber"
+        },
+        "// hours": {
+          "type": "string"
+        },
+        "period": {
+          "type": "number",
+          "description": "By default, backup every 2 hours. Time is in minutes. To disable backup set the value to 0"
+        },
+        "// period": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string",
+          "description": "Absolute path to the back-up directory or empty to back-up in data directory"
+        },
+        "// path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "disabled",
+        "files",
+        "// files",
+        "hours",
+        "// hours",
+        "period",
+        "// period",
+        "path",
+        "// path"
+      ],
+      "additionalProperties": false
+    },
+    "JsonlOptions": {
+      "type": "object",
+      "properties": {
+        "// autoCompress (1)": {
+          "type": "string"
+        },
+        "// autoCompress (2)": {
+          "type": "string"
+        },
+        "// autoCompress (3)": {
+          "type": "string"
+        },
+        "autoCompress": {
+          "type": "object",
+          "properties": {
+            "sizeFactor": {
+              "type": "number"
+            },
+            "sizeFactorMinimumSize": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "sizeFactor",
+            "sizeFactorMinimumSize"
+          ],
+          "additionalProperties": false,
+          "description": "The JSONL DB is append-only and will contain unnecessary entries after a while. It will be compressed when the uncompressed size is >= size * sizeFactor AND >= sizeFactorMinimumSize Note that too low values here will cause the DB to be rewritten often."
+        },
+        "// ignoreReadErrors": {
+          "type": "string"
+        },
+        "ignoreReadErrors": {
+          "type": "boolean",
+          "const": true,
+          "description": "If single lines in the DB are corrupted, they can be ignored without losing the whole DB."
+        },
+        "// throttleFS (1)": {
+          "type": "string"
+        },
+        "// throttleFS (2)": {
+          "type": "string"
+        },
+        "throttleFS": {
+          "type": "object",
+          "properties": {
+            "// intervalMs": {
+              "type": "string"
+            },
+            "intervalMs": {
+              "type": "number",
+              "description": "Write to the database file no more than every intervalMs milliseconds."
+            },
+            "// maxBufferedCommands": {
+              "type": "string"
+            },
+            "maxBufferedCommands": {
+              "type": "number",
+              "description": "Force writing of buffered commands after so many changes. This reduces memory consumption and data loss in case of a crash."
+            }
+          },
+          "required": [
+            "// intervalMs",
+            "intervalMs",
+            "// maxBufferedCommands",
+            "maxBufferedCommands"
+          ],
+          "additionalProperties": false,
+          "description": "By default, the database immediately writes to the database file. Write access can be reduced using the throttleFS option. Be aware that buffered changes will be lost in case the process crashes"
+        }
+      },
+      "required": [
+        "// autoCompress (1)",
+        "// autoCompress (2)",
+        "// autoCompress (3)",
+        "autoCompress",
+        "// ignoreReadErrors",
+        "ignoreReadErrors",
+        "// throttleFS (1)",
+        "// throttleFS (2)",
+        "throttleFS"
+      ],
+      "additionalProperties": false
+    },
+    "StatesDatabaseOptions": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "jsonl",
+            "file",
+            "redis"
+          ],
+          "description": "Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel]."
+        },
+        "sentinelName": {
+          "type": "string",
+          "description": "Name of the sentinel master to connect to"
+        },
+        "host": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
+          "description": "Host name(s) or IP address(es) of the database server"
+        },
+        "port": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          ],
+          "description": "Port(s) of the database server"
+        },
+        "connectTimeout": {
+          "type": "number",
+          "description": "Maximum time in milliseconds to wait for a connection to be established"
+        },
+        "writeFileInterval": {
+          "type": "number",
+          "description": "Interval in milliseconds between flushing the in-memory database to file"
+        },
+        "dataDir": {
+          "type": "string",
+          "description": "Directory where the database files are stored, relative to the controller dir"
+        },
+        "options": {
+          "$ref": "#/definitions/DatabaseConnectionOptions",
+          "description": "Low-level connection options passed to the database driver"
+        },
+        "backup": {
+          "$ref": "#/definitions/DatabaseBackupOptions",
+          "description": "Backup configuration for the database"
+        },
+        "jsonlOptions": {
+          "$ref": "#/definitions/JsonlOptions",
+          "description": "Options specific to the JSONL database backend"
+        },
+        "maxQueue": {
+          "type": "number",
+          "description": "Limit maximum number of log entries in the list (only read by adapter.ts from the config file)"
+        }
+      },
+      "required": [
+        "backup",
+        "connectTimeout",
+        "host",
+        "jsonlOptions",
+        "maxQueue",
+        "options",
+        "port",
+        "type",
+        "writeFileInterval"
+      ],
+      "additionalProperties": false,
+      "description": "Configuration of the states database connection"
+    },
+    "global.ioBroker.LogLevel": {
+      "type": "string",
+      "enum": [
+        "silly",
+        "debug",
+        "info",
+        "warn",
+        "error"
+      ]
+    }
+  }
+}

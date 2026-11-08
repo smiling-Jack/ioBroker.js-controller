@@ -1,0 +1,35 @@
+{
+  "extends": "@tsconfig/node22/tsconfig.json",
+  "compilerOptions": {
+    // Pass js files through to the build dir
+    // but don't complain about errors
+    "allowJs": true,
+    "checkJs": false,
+    // Monorepo setup with project references
+    "composite": true,
+    "declaration": true, // generate .d.ts files
+    "declarationMap": true, // generate .map files for .d.ts files
+    "sourceMap": true, // generate .map files for .js files
+    "inlineSourceMap": false, // Alternatively, inline the source maps
+    // Don't emit anything by default. This will be turned on in the subprojects
+    "noEmit": true,
+    // Avoid TS errors in external dependencies
+    "skipLibCheck": true,
+    // Enable syntax help for importing JSON files
+    "resolveJsonModule": true,
+    "useUnknownInCatchVariables": false,
+    "pretty": true
+  },
+  "include": [
+    "*.config.mjs",
+    "packages/**/*.js",
+    "packages/**/*.ts",
+    "packages/**/*.mts",
+    "packages/controller/io-package.json",
+    "schemas/**/*.ts",
+    "schemas/**/*.mts"
+  ],
+  "exclude": [
+    "packages/**/build"
+  ]
+}

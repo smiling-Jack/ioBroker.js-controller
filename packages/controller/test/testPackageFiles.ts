@@ -1,0 +1,130 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+
+import * as url from 'node:url';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
+
+describe('Test package.json and io-package.json', () => {
+    it('Test package files', done => {
+        console.log();
+
+        const fileContentIOPackage = fs.readFileSync(`${thisDir}/../io-package.json`, 'utf8');
+        const ioPackage = JSON.parse(fileContentIOPackage);
+
+        const fileContentNPMPackage = fs.readFileSync(`${thisDir}/../package.json`, 'utf8');
+        const npmPackage = JSON.parse(fileContentNPMPackage);
+
+        assert.strictEqual(typeof ioPackage, 'object');
+        assert.strictEqual(typeof npmPackage, 'object');
+
+        assert.ok(ioPackage.common.version, 'ERROR: Version number in io-package.json needs to exist');
+        assert.ok(npmPackage.version, 'ERROR: Version number in package.json needs to exist');
+
+        // package version can have prerelease
+        const npmVersion = npmPackage.version.split('-')[0];
+
+        assert.strictEqual(
+            ioPackage.common.version,
+            npmVersion,
+            'ERROR: Version numbers in package.json and io-package.json needs to match',
+        );
+
+        if (!ioPackage.common.news || !ioPackage.common.news[ioPackage.common.version]) {
+            console.log(
+                'WARNING: No news entry for current version exists in io-package.json, no rollback in Admin possible!',
+            );
+            console.log();
+        }
+
+        assert.ok(npmPackage.author, 'ERROR: Author in package.json needs to exist');
+        assert.ok(ioPackage.common.authors, 'ERROR: Authors in io-package.json needs to exist');
+
+        assert.ok(ioPackage.common.license, 'ERROR: License missing in io-package in common.license');
+
+        if (ioPackage.common.name.indexOf('template') !== 0) {
+            if (Array.isArray(ioPackage.common.authors)) {
+                assert.notStrictEqual(
+                    ioPackage.common.authors.length,
+                    0,
+                    'ERROR: Author in io-package.json needs to be set',
+                );
+                if (ioPackage.common.authors.length === 1) {
+                    assert.notStrictEqual(
+                        ioPackage.common.authors[0],
+                        'my Name <my@email.com>',
+                        'ERROR: Author in io-package.json needs to be a real name',
+                    );
+                }
+            } else {
+                assert.notStrictEqual(
+                    ioPackage.common.authors,
+                    'my Name <my@email.com>',
+                    'ERROR: Author in io-package.json needs to be a real name',
+                );
+            }
+        } else {
+            console.log('WARNING: Testing for set authors field in io-package skipped because template adapter');
+            console.log();
+        }
+        assert.strictEqual(
+            fs.existsSync(`${thisDir}/../README.md`),
+            true,
+            'ERROR: README.md needs to exist! Please create one with description, detail information and changelog. English is mandatory.',
+        );
+        if (!ioPackage.common.titleLang || typeof ioPackage.common.titleLang !== 'object') {
+            console.log('WARNING: titleLang is not existing in io-package.json. Please add');
+            console.log();
+        }
+        if (
+            ioPackage.common.title.indexOf('iobroker') !== -1 ||
+            ioPackage.common.title.indexOf('ioBroker') !== -1 ||
+            ioPackage.common.title.indexOf('adapter') !== -1 ||
+            ioPackage.common.title.indexOf('Adapter') !== -1
+        ) {
+            console.log(
+                'WARNING: title contains Adapter or ioBroker. It is clear anyway, that it is adapter for ioBroker.',
+            );
+            console.log();
+        }
+
+        if (!ioPackage.common.controller && !ioPackage.common.onlyWWW && !ioPackage.common.noConfig) {
+            if (
+                !ioPackage.common.materialize ||
+                !fs.existsSync(`${thisDir}/../admin/index_m.html`) ||
+                !fs.existsSync(`${thisDir}/../gulpfile.js`)
+            ) {
+                console.log('WARNING: Admin3 support is missing! Please add it');
+                console.log();
+            }
+            if (ioPackage.common.materialize) {
+                assert.strictEqual(
+                    fs.existsSync(`${thisDir}/../admin/index_m.html`),
+                    true,
+                    'Admin3 support is enabled in io-package.json, but index_m.html is missing!',
+                );
+            }
+        }
+
+        const licenseFileExists = fs.existsSync(`${thisDir}/../LICENSE`);
+        const fileContentReadme = fs.readFileSync(`${thisDir}/../README.md`, 'utf8');
+        if (fileContentReadme.indexOf('## Changelog') === -1) {
+            console.log('Warning: The README.md should have a section ## Changelog');
+            console.log();
+        }
+        assert.strictEqual(
+            licenseFileExists || fileContentReadme.includes('## License'),
+            true,
+            'A LICENSE must exist as LICENSE file or as part of the README.md',
+        );
+        if (!licenseFileExists) {
+            console.log('Warning: The License should also exist as LICENSE file');
+            console.log();
+        }
+        if (!fileContentReadme.includes('## License')) {
+            console.log('Warning: The README.md should also have a section ## License to be shown in Admin3');
+            console.log();
+        }
+        done();
+    });
+});

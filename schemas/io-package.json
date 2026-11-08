@@ -1,0 +1,2071 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "multilingual": {
+      "type": "object",
+      "required": [
+        "en"
+      ],
+      "patternProperties": {
+        "en|de|ru|pt|nl|fr|it|es|pl|uk|zh-cn": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "iobrokerObject": {
+      "type": "object",
+      "required": [
+        "_id",
+        "type"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "common": {
+          "type": "object"
+        }
+      }
+    },
+    "disallowNodeProcessParams": {
+      "not": {
+        "required": [
+          "nodeProcessParams"
+        ]
+      }
+    },
+    "disallowCompact": {
+      "properties": {
+        "compact": {
+          "description": "Compact mode loads the adapter into a running Node.js process, which a Python adapter can never be part of. The flag is ignored by the controller, so it must not be set to true.",
+          "const": false
+        }
+      }
+    },
+    "pythonRestrictions": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/disallowCompact"
+        },
+        {
+          "$ref": "#/definitions/disallowNodeProcessParams"
+        },
+        {
+          "required": [
+            "main"
+          ],
+          "properties": {
+            "main": {
+              "description": "For Python adapters the main file must follow the layout \"python/<module>/__main__.py\"; the controller starts the module with \"python -m <module>\"",
+              "pattern": "^python[/\\\\](?!\\.\\.?[/\\\\])[^/\\\\]+[/\\\\]__main__\\.py$"
+            }
+          }
+        }
+      ]
+    },
+    "license": {
+      "description": "The license this software is published under.",
+      "type": "string",
+      "enum": [
+        "FSFULLRWD",
+        "diffmark",
+        "CC-BY-NC-SA-4.0",
+        "Advanced-Cryptics-Dictionary",
+        "NGPL",
+        "Arphic-1999",
+        "CC-BY-NC-ND-3.0-IGO",
+        "MirOS",
+        "TermReadKey",
+        "IJG-short",
+        "Multics",
+        "BitTorrent-1.1",
+        "GFDL-1.2-invariants-only",
+        "dtoa",
+        "GFDL-1.2-or-later",
+        "Game-Programming-Gems",
+        "McPhee-slideshow",
+        "LOOP",
+        "Python-2.0.1",
+        "LPPL-1.1",
+        "CC-BY-NC-SA-3.0-DE",
+        "HPND-Netrek",
+        "APSL-1.0",
+        "PolyForm-Noncommercial-1.0.0",
+        "Martin-Birgmeier",
+        "OGL-UK-2.0",
+        "Lucida-Bitmap-Fonts",
+        "pkgconf",
+        "MIT-Wu",
+        "FreeBSD-DOC",
+        "CDLA-Sharing-1.0",
+        "TORQUE-1.1",
+        "MVT-1.1",
+        "SAX-PD-2.0",
+        "CDLA-Permissive-1.0",
+        "HIDAPI",
+        "Inner-Net-2.0",
+        "Xdebug-1.03",
+        "GLWTPL",
+        "Brian-Gladman-3-Clause-no-conversion",
+        "BSD-1-Clause",
+        "OLDAP-2.2.1",
+        "CC-BY-ND-2.0",
+        "AMDPLPA",
+        "HPND-sell-MIT-disclaimer-xserver",
+        "OPL-UK-3.0",
+        "MIT-Modern-Variant",
+        "check-cvs",
+        "JPL-image",
+        "CC-BY-SA-2.0-UK",
+        "PPL",
+        "bzip2-1.0.6",
+        "UCAR",
+        "ASWF-Digital-Assets-1.0",
+        "Sun-PPP-2000",
+        "APAFML",
+        "LAL-1.3",
+        "BSD-2-Clause-pos-unchanged",
+        "DRL-1.1",
+        "SGMLUG-PM",
+        "WTFPL",
+        "ISO-permission",
+        "hyphen-bulgarian",
+        "BSD-3-Clause-Clear",
+        "LZMA-SDK-9.22",
+        "libpng-1.6.35",
+        "OSL-3.0",
+        "DL-DE-BY-2.0",
+        "GD",
+        "RSA-MD",
+        "LPL-1.0",
+        "CNRI-Jython",
+        "MIT-0",
+        "App-s2p",
+        "BSD-2-Clause-pkgconf-disclaimer",
+        "SSPL-1.0",
+        "Glulxe",
+        "BSD-4-Clause-UC",
+        "ICU",
+        "CC-BY-2.5",
+        "LiLiQ-R-1.1",
+        "Adobe-Utopia",
+        "OpenVision",
+        "OLDAP-1.3",
+        "Sendmail-8.23",
+        "mailprio",
+        "Caldera",
+        "O-UDA-1.0",
+        "BSD-Source-Code",
+        "FDK-AAC",
+        "ODbL-1.0",
+        "Fair",
+        "ClArtistic",
+        "CC-BY-4.0",
+        "pnmstitch",
+        "HPND",
+        "NASA-1.3",
+        "Latex2e-translated-notice",
+        "DocBook-DTD",
+        "DRL-1.0",
+        "HPND-sell-regexpr",
+        "ImageMagick",
+        "MPL-2.0",
+        "SCEA",
+        "Leptonica",
+        "Cube",
+        "Zlib",
+        "LGPL-2.0-only",
+        "Plexus",
+        "xzoom",
+        "Abstyles",
+        "NLOD-1.0",
+        "ANTLR-PD-fallback",
+        "iMatix",
+        "MulanPSL-2.0",
+        "GPL-3.0-or-later",
+        "DocBook-Schema",
+        "TMate",
+        "FSL-1.1-ALv2",
+        "CC-BY-NC-SA-2.0-DE",
+        "CC-BY-NC-ND-4.0",
+        "GPL-2.0-only",
+        "SISSL-1.2",
+        "CC-BY-NC-2.5",
+        "CC-BY-NC-2.0",
+        "Unicode-DFS-2015",
+        "Unlicense",
+        "GPL-1.0-only",
+        "magaz",
+        "CERN-OHL-S-2.0",
+        "BlueOak-1.0.0",
+        "CC-BY-NC-SA-2.0-FR",
+        "OCLC-2.0",
+        "SL",
+        "LGPL-2.1-only",
+        "DEC-3-Clause",
+        "APL-1.0",
+        "CC-BY-NC-ND-1.0",
+        "CC-BY-NC-1.0",
+        "Unicode-3.0",
+        "CC-BY-NC-ND-2.0",
+        "AAL",
+        "LiLiQ-P-1.1",
+        "SPL-1.0",
+        "xlock",
+        "C-UDA-1.0",
+        "FSFUL",
+        "BSD-3-Clause-Tso",
+        "BOLA-1.1",
+        "CC0-1.0",
+        "MMIXware",
+        "Intel",
+        "RHeCos-1.1",
+        "Artistic-1.0-Perl",
+        "SMPPL",
+        "GFDL-1.2-no-invariants-only",
+        "OLDAP-2.7",
+        "CMU-Mach-nodoc",
+        "generic-xts",
+        "OSET-PL-2.1",
+        "GPL-2.0-or-later",
+        "PolyForm-Small-Business-1.0.0",
+        "HPND-export-US",
+        "CC-BY-3.0-AT",
+        "GFDL-1.1-no-invariants-only",
+        "Aspell-RU",
+        "GFDL-1.1-or-later",
+        "IBM-pibs",
+        "SMAIL-GPL",
+        "IJG",
+        "LiLiQ-Rplus-1.1",
+        "mpich2",
+        "CC-BY-ND-3.0",
+        "Minpack",
+        "Community-Spec-1.0",
+        "BitTorrent-1.0",
+        "SAX-PD",
+        "OGL-UK-3.0",
+        "OLDAP-2.1",
+        "HP-1986",
+        "snprintf",
+        "Imlib2",
+        "LZMA-SDK-9.11-to-9.20",
+        "Sendmail",
+        "gSOAP-1.3b",
+        "Unlicense-libtelnet",
+        "gnuplot",
+        "OGC-1.0",
+        "etalab-2.0",
+        "EUPL-1.0",
+        "CDLA-Permissive-2.0",
+        "CC-BY-NC-ND-2.5",
+        "ErlPL-1.1",
+        "PDDL-1.0",
+        "TU-Berlin-1.0",
+        "Zimbra-1.4",
+        "CDL-1.0",
+        "MIT-advertising",
+        "Hippocratic-2.1",
+        "HPND-sell-variant-MIT-disclaimer-rev",
+        "W3C-19980720",
+        "CC-BY-SA-3.0-DE",
+        "EUDatagrid",
+        "Zeeff",
+        "OLDAP-2.0.1",
+        "HPND-sell-variant-MIT-disclaimer",
+        "CPL-1.0",
+        "CUA-OPL-1.0",
+        "OSL-1.1",
+        "Xerox",
+        "TTWL",
+        "AMPAS",
+        "DocBook-XML",
+        "MIT",
+        "ESA-PL-strong-copyleft-2.4",
+        "CC-BY-SA-2.0",
+        "DocBook-Stylesheet",
+        "Frameworx-1.0",
+        "copyleft-next-0.3.0",
+        "TPDL",
+        "CC-BY-3.0-DE",
+        "HPND-export2-US",
+        "Zimbra-1.3",
+        "HPND-Intel",
+        "LPL-1.02",
+        "BSD-3-Clause-Open-MPI",
+        "EFL-1.0",
+        "GL2PS",
+        "Cornell-Lossless-JPEG",
+        "FSL-1.1-MIT",
+        "APSL-1.1",
+        "SMLNJ",
+        "OLDAP-2.2.2",
+        "xkeyboard-config-Zinoviev",
+        "X11",
+        "NIST-PD-TNT",
+        "MIT-Festival",
+        "OLDAP-1.4",
+        "Adobe-Display-PostScript",
+        "BSD-Mark-Modifications",
+        "AGPL-3.0-or-later",
+        "wwl",
+        "FSFAP",
+        "Hippocratic-3.0-core",
+        "BSD-3-Clause",
+        "Linux-man-pages-copyleft-var",
+        "Widget-Workshop",
+        "URT-RLE",
+        "NTP",
+        "CC-PDM-1.0",
+        "CERN-OHL-1.1",
+        "libutil-David-Nugent",
+        "UMich-Merit",
+        "zlib-acknowledgement",
+        "Catharon",
+        "IEC-Code-Components-EULA",
+        "BSD-4.3RENO",
+        "python-ldap",
+        "OFL-1.0-no-RFN",
+        "CC-PDDC",
+        "ThirdEye",
+        "Furuseth",
+        "BSD-3-Clause-LBNL",
+        "OFL-1.0",
+        "Baekmuk",
+        "BSD-3-Clause-No-Military-License",
+        "ANTLR-PD",
+        "YPL-1.1",
+        "OGTSL",
+        "MPL-2.0-no-copyleft-exception",
+        "OPL-1.0",
+        "checkmk",
+        "CC-BY-NC-SA-2.0",
+        "VSL-1.0",
+        "HPND-export-US-modify",
+        "CATOSL-1.1",
+        "GFDL-1.1-no-invariants-or-later",
+        "CAL-1.0-Combined-Work-Exception",
+        "Vixie-Cron",
+        "GFDL-1.3-no-invariants-or-later",
+        "libpng-2.0",
+        "CPAL-1.0",
+        "GPL-3.0-only",
+        "ISC-Veillard",
+        "PSF-2.0",
+        "SOFA",
+        "W3C",
+        "Linux-OpenIB",
+        "Intel-ACPI",
+        "LPD-document",
+        "xinetd",
+        "BSD-3-Clause-No-Nuclear-License",
+        "BUSL-1.1",
+        "UPL-1.0",
+        "VOSTROM",
+        "Graphics-Gems",
+        "OLDAP-2.8",
+        "NIST-Software",
+        "OSL-2.0",
+        "libselinux-1.0",
+        "Bitstream-Charter",
+        "Spencer-94",
+        "MIT-CMU",
+        "OSSP",
+        "fwlw",
+        "ECL-1.0",
+        "NPL-1.0",
+        "CC-BY-NC-SA-2.5",
+        "HDF5",
+        "Sendmail-Open-Source-1.1",
+        "Motosoto",
+        "dvipdfm",
+        "Latex2e",
+        "Info-ZIP",
+        "BSL-1.0",
+        "HPND-Pbmplus",
+        "CC-BY-NC-3.0",
+        "DOC",
+        "NBPL-1.0",
+        "Gutmann",
+        "Artistic-2.0",
+        "TCL",
+        "gtkbook",
+        "GFDL-1.3-or-later",
+        "GFDL-1.1-invariants-only",
+        "Glide",
+        "CNRI-Python-GPL-Compatible",
+        "Caldera-no-preamble",
+        "TekHVC",
+        "HPND-SMC",
+        "OLDAP-2.0",
+        "GFDL-1.1-invariants-or-later",
+        "RPL-1.1",
+        "UnRAR",
+        "Elastic-2.0",
+        "CC-BY-SA-2.5",
+        "BSD-4.3TAHOE",
+        "Entessa",
+        "OpenPBS-2.3",
+        "CAPEC-tou",
+        "Apache-1.0",
+        "hdparm",
+        "MS-RL",
+        "radvd",
+        "Bahyph",
+        "CPOL-1.02",
+        "bcrypt-Solar-Designer",
+        "Interbase-1.0",
+        "BSD-2-Clause-Darwin",
+        "D-FSL-1.0",
+        "LGPLLR",
+        "TCP-wrappers",
+        "blessing",
+        "HPND-Markus-Kuhn",
+        "Jam",
+        "X11-swapped",
+        "WTFNMFPL",
+        "W3C-20150513",
+        "FSFULLRSD",
+        "Unicode-DFS-2016",
+        "GFDL-1.3-no-invariants-only",
+        "APSL-1.2",
+        "OFFIS",
+        "CC-BY-NC-ND-3.0",
+        "Sleepycat",
+        "MIT-testregex",
+        "YPL-1.0",
+        "SISSL",
+        "HPND-MIT-disclaimer",
+        "CryptoSwift",
+        "Rdisc",
+        "SGI-B-1.1",
+        "Parity-6.0.0",
+        "TU-Berlin-2.0",
+        "atc-game",
+        "OpenSSL",
+        "BSD-4-Clause-Shortened",
+        "Libpng",
+        "EPICS",
+        "NICTA-1.0",
+        "Vim",
+        "AML",
+        "Artistic-dist",
+        "Clips",
+        "Giftware",
+        "Kazlib",
+        "JPNIC",
+        "HP-1989",
+        "CC-BY-ND-4.0",
+        "OSL-1.0",
+        "softSurfer",
+        "OLDAP-2.6",
+        "Eurosym",
+        "Sun-PPP",
+        "SSH-OpenSSH",
+        "NOSL",
+        "CC-BY-3.0-AU",
+        "BSD-Systemics",
+        "BSD-3-Clause-flex",
+        "Xfig",
+        "Mup",
+        "Mackerras-3-Clause-acknowledgment",
+        "TOSL",
+        "EPL-1.0",
+        "XFree86-1.1",
+        "SWL",
+        "HPND-INRIA-IMAG",
+        "JSON",
+        "WordNet",
+        "BSD-Advertising-Acknowledgement",
+        "CC-BY-2.0",
+        "Adobe-2006",
+        "MakeIndex",
+        "APSL-2.0",
+        "OFL-1.1-no-RFN",
+        "SNIA",
+        "Ruby-pty",
+        "ZPL-1.1",
+        "BSD-3-Clause-OpenWebUI",
+        "GFDL-1.1-only",
+        "LGPL-3.0-only",
+        "MIT-feh",
+        "CrystalStacker",
+        "CC-BY-1.0",
+        "CERN-OHL-1.2",
+        "FSFAP-no-warranty-disclaimer",
+        "Noweb",
+        "Buddy",
+        "NTIA-PD",
+        "xpp",
+        "CAL-1.0",
+        "LPPL-1.3a",
+        "Ruby",
+        "CDDL-1.1",
+        "Unicode-TOU",
+        "ADSL",
+        "LGPL-2.0-or-later",
+        "any-OSI",
+        "Parity-7.0.0",
+        "Knuth-CTAN",
+        "Python-2.0",
+        "OLDAP-1.1",
+        "CC-BY-ND-2.5",
+        "MS-PL",
+        "NTP-0",
+        "CC-BY-NC-SA-3.0-IGO",
+        "SGI-OpenGL",
+        "CECILL-1.1",
+        "ISC",
+        "MulanPSL-1.0",
+        "HaskellReport",
+        "SHL-0.51",
+        "BSD-Source-beginning-file",
+        "ALGLIB-Documentation",
+        "Kastrup",
+        "EUPL-1.2",
+        "ZPL-2.0",
+        "MS-LPL",
+        "CC-BY-3.0-NL",
+        "CERN-OHL-W-2.0",
+        "HPND-doc",
+        "SGP4",
+        "NRL",
+        "Bugroff",
+        "NCSA",
+        "CC-BY-NC-3.0-IGO",
+        "Linux-man-pages-copyleft-2-para",
+        "IPL-1.0",
+        "Apache-2.0",
+        "DL-DE-ZERO-2.0",
+        "CC-BY-NC-ND-3.0-DE",
+        "any-OSI-perl-modules",
+        "MIT-STK",
+        "IPA",
+        "CC-BY-SA-3.0",
+        "PADL",
+        "Borceux",
+        "CC-BY-SA-1.0",
+        "GFDL-1.2-no-invariants-or-later",
+        "UnixCrypt",
+        "AML-glslang",
+        "Spencer-86",
+        "SHL-0.5",
+        "AGPL-3.0-only",
+        "BSD-3-Clause-HP",
+        "CC-BY-ND-3.0-DE",
+        "HPND-UC-export-US",
+        "NLPL",
+        "BSD-3-Clause-Modification",
+        "FDK-MPEG-H",
+        "SugarCRM-1.1.3",
+        "Spencer-99",
+        "CECILL-2.0",
+        "CECILL-C",
+        "ODC-By-1.0",
+        "CECILL-2.1",
+        "AGPL-1.0-or-later",
+        "Artistic-1.0-cl8",
+        "CC-BY-SA-3.0-AT",
+        "BSD-2-Clause-Views",
+        "OFL-1.0-RFN",
+        "OSL-2.1",
+        "XSkat",
+        "CC-BY-ND-1.0",
+        "QPL-1.0-INRIA-2004",
+        "GFDL-1.3-only",
+        "CC-BY-3.0-US",
+        "ECL-2.0",
+        "CC-BY-2.5-AU",
+        "HPND-merchantability-variant",
+        "threeparttable",
+        "Naumen",
+        "psutils",
+        "MITNFA",
+        "jove",
+        "Xnet",
+        "CC-SA-1.0",
+        "Artistic-1.0",
+        "RPSL-1.0",
+        "libtiff",
+        "Boehm-GC-without-fee",
+        "Pixar",
+        "CECILL-1.0",
+        "OFL-1.1",
+        "SGI-B-1.0",
+        "MPL-1.1",
+        "0BSD",
+        "SunPro",
+        "OSC-1.0",
+        "NLOD-2.0",
+        "Brian-Gladman-2-Clause",
+        "HPND-Kevlin-Henney",
+        "NCGL-UK-2.0",
+        "RSCPL",
+        "PHP-3.01",
+        "HPND-Fenneberg-Livingston",
+        "lsof",
+        "CC-BY-NC-4.0",
+        "SSLeay-standalone",
+        "TPL-1.0",
+        "CC-BY-NC-SA-3.0",
+        "LPPL-1.0",
+        "UCL-1.0",
+        "InnoSetup",
+        "CECILL-B",
+        "CC-BY-SA-2.1-JP",
+        "cve-tou",
+        "AMD-newlib",
+        "BSD-3-Clause-No-Nuclear-Warranty",
+        "BSD-2-Clause",
+        "CC-BY-NC-SA-1.0",
+        "BSD-Inferno-Nettverk",
+        "mplus",
+        "Saxpath",
+        "CC-BY-NC-SA-2.0-UK",
+        "Ferguson-Twofish",
+        "LAL-1.2",
+        "TTYP0",
+        "MPL-1.0",
+        "BSD-Systemics-W3Works",
+        "OLDAP-1.2",
+        "AGPL-1.0-only",
+        "NetCDF",
+        "PostgreSQL",
+        "ESA-PL-permissive-2.4",
+        "HPND-DEC",
+        "OGL-Canada-2.0",
+        "BSD-3-Clause-acpica",
+        "AFL-2.1",
+        "MPEG-SSG",
+        "OML",
+        "LPPL-1.3c",
+        "OCCT-PL",
+        "man2html",
+        "Zed",
+        "FSFULLR",
+        "GCR-docs",
+        "CFITSIO",
+        "AdaCore-doc",
+        "OLDAP-2.2",
+        "EPL-2.0",
+        "GFDL-1.3-invariants-only",
+        "HPND-sell-variant-critical-systems",
+        "ASWF-Digital-Assets-1.1",
+        "LGPL-3.0-or-later",
+        "NCBI-PD",
+        "ESA-PL-weak-copyleft-2.4",
+        "Aladdin",
+        "HPND-export-US-acknowledgement",
+        "OLDAP-2.3",
+        "FTL",
+        "HTMLTIDY",
+        "GPL-1.0-or-later",
+        "PHP-3.0",
+        "Qhull",
+        "OpenMDW-1.0",
+        "3D-Slicer-1.0",
+        "SimPL-2.0",
+        "AFL-1.2",
+        "CC-BY-3.0-IGO",
+        "HPND-UC",
+        "BSD-Source-Code-no-disclaimer",
+        "OLDAP-2.4",
+        "FBM",
+        "Mackerras-3-Clause",
+        "Bitstream-Vera",
+        "OpenSSL-standalone",
+        "Soundex",
+        "metamail",
+        "CC-BY-SA-3.0-IGO",
+        "Unlicense-libwhirlpool",
+        "Symlinks",
+        "SGI-B-2.0",
+        "MIT-Khronos-old",
+        "psfrag",
+        "OPUBL-1.0",
+        "curl",
+        "Beerware",
+        "Wsuipa",
+        "MIPS",
+        "Crossword",
+        "Informatica",
+        "NPOSL-3.0",
+        "HPND-sell-variant",
+        "MIT-Click",
+        "MTLL",
+        "BSD-3-Clause-Attribution",
+        "NIST-PD-fallback",
+        "CNRI-Python",
+        "EFL-2.0",
+        "CDDL-1.0",
+        "ulem",
+        "EUPL-1.1",
+        "FreeImage",
+        "Newsletr",
+        "JasPer-2.0",
+        "BSD-Protection",
+        "OAR",
+        "Barr",
+        "TrustedQSL",
+        "CC-BY-NC-3.0-DE",
+        "OGDL-Taiwan-1.0",
+        "mpi-permissive",
+        "X11-no-permit-persons",
+        "NCL",
+        "AFL-3.0",
+        "LPPL-1.2",
+        "Adobe-Glyph",
+        "OGL-UK-1.0",
+        "CC-BY-3.0",
+        "BSD-ask-to-endorse",
+        "Brian-Gladman-3-Clause",
+        "NAIST-2003",
+        "GFDL-1.2-invariants-or-later",
+        "BSD-4-Clause",
+        "NIST-PD",
+        "TGPPL-1.0",
+        "AFL-1.1",
+        "CERN-OHL-P-2.0",
+        "BSD-3-Clause-No-Nuclear-License-2014",
+        "Ubuntu-font-1.0",
+        "Cronyx",
+        "BSD-Source-alt-GPL",
+        "Nokia",
+        "CC-BY-SA-4.0",
+        "swrule",
+        "MMPL-1.0.1",
+        "HPND-doc-sell",
+        "copyleft-next-0.3.1",
+        "BSD-2-Clause-Patent",
+        "OLDAP-2.5",
+        "Condor-1.1",
+        "Dotseqn",
+        "DSDP",
+        "w3m",
+        "X11-distribute-modifications-variant",
+        "ssh-keyscan",
+        "ZPL-2.1",
+        "Zend-2.0",
+        "OFL-1.1-RFN",
+        "BSD-Attribution-HPND-disclaimer",
+        "SSH-short",
+        "MIT-enna",
+        "AFL-2.0",
+        "Apache-1.1",
+        "RPL-1.5",
+        "COIL-1.0",
+        "Linux-man-pages-1-para",
+        "ParaType-Free-Font-1.3",
+        "SchemeReport",
+        "Afmparse",
+        "ngrep",
+        "SUL-1.0",
+        "Linux-man-pages-copyleft",
+        "GFDL-1.3-invariants-or-later",
+        "CMU-Mach",
+        "OLFL-1.3",
+        "Boehm-GC",
+        "LGPL-2.1-or-later",
+        "Watcom-1.0",
+        "GFDL-1.2-only",
+        "eGenix",
+        "QPL-1.0",
+        "BSD-2-Clause-first-lines",
+        "BSD-3-Clause-Sun",
+        "NPL-1.1",
+        "MIT-open-group",
+        "TAPR-OHL-1.0"
+      ]
+    }
+  },
+  "type": "object",
+  "required": [
+    "common"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "description": "JSON schema for validation",
+      "type": "string"
+    },
+    "common": {
+      "required": [
+        "name",
+        "version",
+        "platform",
+        "tier",
+        "titleLang",
+        "news",
+        "desc",
+        "mode",
+        "licenseInformation"
+      ],
+      "additionalProperties": false,
+      "description": "Contains all common instance attributes",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name of the adapter without ioBroker",
+          "type": "string",
+          "pattern": "^(?![i|I][o|O][b|B][r|R][o|O][k|K][e|E][r|R])"
+        },
+        "version": {
+          "description": "Current adapter version",
+          "type": "string",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+        },
+        "platform": {
+          "description": "Language the adapter is written in. \"Javascript/Node.js\" is the default; \"Python\" makes the controller start the adapter from the virtual environment maintained by the py-controller adapter",
+          "type": "string",
+          "enum": [
+            "Javascript/Node.js",
+            "Python"
+          ]
+        },
+        "title": {
+          "description": "Longer name of adapter DEPRECATED: For admin version >= 5 this property is no longer required",
+          "type": "string"
+        },
+        "titleLang": {
+          "description": "Longer name of adapter in all supported languages like {en: 'Adapter', de: 'adapter', ru: 'Драйвер'}",
+          "$ref": "#/definitions/multilingual"
+        },
+        "news": {
+          "description": "Short form of changelog in all supported languages",
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 20,
+          "patternProperties": {
+            "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$": {
+              "$ref": "#/definitions/multilingual"
+            }
+          },
+          "additionalProperties": false
+        },
+        "desc": {
+          "description": "Description, object for multilingual description",
+          "$ref": "#/definitions/multilingual"
+        },
+        "defaultObjectsWarnLimit": {
+          "description": "The custom limit for the maximum number of objects an adapter instance can create. If exceeded, a warning will be shown in the admin UI. The system default is 5000.",
+          "type": "integer"
+        },
+        "messagebox": {
+          "description": "true if messagebox supported. Hence, the adapter can receive sendTo messages. Up from controller v5, please use common.supportedMessages.custom = true",
+          "type": "boolean"
+        },
+        "blockedVersions": {
+          "description": "Array which lists all blocked versions. Blocked versions will not be started. Use semver notation to specify the version ranges. The information is always used from the io-package.json in the GitHub repository.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "supportedMessages": {
+          "description": "Object which defines, if the adapter supports receiving messages via sendTo. Additionally, it defines if specific messages are supported.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "custom": {
+              "description": "If custom messages are supported (same as legacy messagebox)",
+              "type": "boolean"
+            },
+            "deviceManager": {
+              "description": "If adapter supports the device manager and thus responds to the corresponding messages",
+              "type": "boolean"
+            },
+            "notifications": {
+              "description": "If notification handling is supported, for information, see https://github.com/foxriver76/ioBroker.notification-manager#requirements-for-messaging-adapters",
+              "type": "boolean"
+            },
+            "stopInstance": {
+              "description": "If adapter supports signal stopInstance. Use number if you need more than 1000 ms for stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM). (Same as legacy `supportStopInstance`)",
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number",
+                  "multipleOf": 1,
+                  "minimum": 1000
+                }
+              ]
+            },
+            "getHistory": {
+              "description": "If adapter supports getHistory message. (Same as legacy `getHistory`, to avoid problems, set both flags in parallel for now)",
+              "type": "boolean"
+            }
+          }
+        },
+        "readme": {
+          "description": "Url of the ReadMe file",
+          "type": "string"
+        },
+        "adminUI": {
+          "description": "Type of the admin UI",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "config"
+          ],
+          "properties": {
+            "custom": {
+              "description": "UI type of custom tab inside admin UI",
+              "type": "string",
+              "const": "json"
+            },
+            "config": {
+              "description": "UI type of config page inside admin UI",
+              "type": "string",
+              "enum": [
+                "html",
+                "json",
+                "materialize",
+                "none"
+              ]
+            },
+            "tab": {
+              "description": "UI type of tab inside admin UI",
+              "type": "string",
+              "enum": [
+                "html",
+                "json",
+                "materialize"
+              ]
+            }
+          }
+        },
+        "automaticUpgrade": {
+          "description": "Automatically upgrade the adapter in the configured semver range. Best practice is to leave this as none and let the user opt-in.",
+          "type": "string",
+          "enum": [
+            "none",
+            "patch",
+            "minor",
+            "major"
+          ]
+        },
+        "deviceWidgets": {
+          "description": "This structure defines the widgets for \"devices\" adapter",
+          "type": "object",
+          "required": [
+            "components"
+          ],
+          "properties": {
+            "url": {
+              "description": "Link to the file with components relative to `admin/dm-widgets` in admin or `${adapterName}` in web. Default is customDevices.js",
+              "type": "string",
+              "default": "customDevices.js"
+            },
+            "iconsManifest": {
+              "description": "Link to the file with the icons of the adapter for the devices app (e.g. icons.json), relative to `admin/dm-widgets`",
+              "type": "string"
+            },
+            "components": {
+              "description": "Description of the components (widgets). It could be multiple widgets in one adapter",
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "label",
+                  "icon"
+                ],
+                "properties": {
+                  "name": {
+                    "description": "Name of the class",
+                    "type": "string"
+                  },
+                  "label": {
+                    "description": "Title",
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "$ref": "#/definitions/multilingual"
+                      }
+                    ]
+                  },
+                  "description": {
+                    "description": "Description",
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "$ref": "#/definitions/multilingual"
+                      }
+                    ]
+                  },
+                  "icon": {
+                    "description": "Icon as a link to picture imageName.png relative to the admin folder or base64",
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "services": {
+              "description": "Names of background components, exported by the `Components` module of the plugin like the widgets. The devices app renders each of them once, next to the category and whichever category is shown, with the widgets of this adapter in all categories that the user may see",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "docs": {
+          "description": "The structure like {\"en\": \"docs/en/README.md\", \"de\": [\"docs/de/README.md\", \"docs/de/README1.md\"]} that describes the documentation if not in README.md",
+          "type": "object",
+          "required": [
+            "en"
+          ],
+          "patternProperties": {
+            "en|de|ru|pt|nl|fr|it|es|pl|uk|zh-cn": {
+              "type": [
+                "string",
+                "array"
+              ],
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "authors": {
+          "description": "Array of authors as string",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "license": {
+          "description": "DEPRECATED: Use 'common.licenseInformation' instead, move the current 'common.license' attribute to package.json instead!",
+          "$ref": "#/definitions/license"
+        },
+        "licenseInformation": {
+          "type": "object",
+          "properties": {
+            "license": {
+              "$ref": "#/definitions/license"
+            },
+            "type": {
+              "description": "Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license.",
+              "type": "string",
+              "enum": [
+                "free",
+                "paid",
+                "commercial",
+                "limited"
+              ]
+            },
+            "link": {
+              "description": "Hyperlink, where information about the license can be found. For non-free licenses the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information. This is required if the license type is different from 'free'. For 'free' licenses an optional link to the license file can be placed here.",
+              "type": "string",
+              "pattern": "^https://.+$"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "paid",
+                  "commercial",
+                  "limited"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "link"
+            ]
+          }
+        },
+        "javascriptRules": {
+          "type": "object",
+          "properties": {
+            "i18n": {
+              "description": "Translation for the rule block",
+              "anyOf": [
+                {
+                  "description": "Translations will be loaded from javascriptRules.url and i18n/<LANG>.json",
+                  "const": true
+                },
+                {
+                  "description": "Define translations here",
+                  "type": "object",
+                  "patternProperties": {
+                    ".+": {
+                      "$ref": "#/definitions/multilingual"
+                    }
+                  }
+                }
+              ]
+            },
+            "type": {
+              "description": "Define type='module' if rules written with TypeScript",
+              "type": "string",
+              "enum": [
+                "module"
+              ]
+            },
+            "url": {
+              "description": "Link to module, like 'rules/customRuleBlocks.js'. That means it will loaded from admin/rules directory of the adapter",
+              "type": "string"
+            },
+            "name": {
+              "description": "Name of the module, like 'ActionTelegram'",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "url",
+            "name"
+          ]
+        },
+        "type": {
+          "description": "Type of the adapter",
+          "type": "string",
+          "enum": [
+            "alarm",
+            "climate-control",
+            "communication",
+            "date-and-time",
+            "energy",
+            "garden",
+            "general",
+            "geoposition",
+            "hardware",
+            "health",
+            "household",
+            "infrastructure",
+            "iot-systems",
+            "lighting",
+            "logic",
+            "messaging",
+            "metering",
+            "misc-data",
+            "multimedia",
+            "network",
+            "protocols",
+            "storage",
+            "utility",
+            "vehicle",
+            "visualization",
+            "visualization-icons",
+            "visualization-widgets",
+            "weather"
+          ]
+        },
+        "install": {
+          "description": "The adapter will be executed once additionally after installation and the `install` event will be emitted during this run. This allows for executing one time installation code.",
+          "type": "boolean"
+        },
+        "unsafePerm": {
+          "description": "if the package must be installed with \"npm --unsafe-perm\" parameter",
+          "type": "boolean"
+        },
+        "plugins": {
+          "description": "ioBroker plugins to be used",
+          "type": "object"
+        },
+        "adminColumns": {
+          "description": "Custom attributes, that must be shown in admin in the object browser. Like: [{\"name\": {\"en\": \"KNX address\"}, \"path\": \"native.address\", \"width\": 100, \"align\": \"left\"}, {\"name\": \"DPT\", \"path\": \"native.dpt\", \"width\": 100, \"align\": \"right\", \"type\": \"number\", \"edit\": true, \"objTypes\": [\"state\", \"channel\"]}]. type is a type of the attribute (e.g. string, number, boolean) and only needed if edit is enabled. objTypes is a list of the object types, that could have such attribute. Used only in edit mode too.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "path",
+              "width",
+              "align"
+            ],
+            "properties": {
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/definitions/multilingual"
+                  }
+                ]
+              },
+              "path": {
+                "type": "string"
+              },
+              "width": {
+                "type": "number",
+                "minimum": 0
+              },
+              "align": {
+                "type": "string",
+                "enum": [
+                  "left",
+                  "right",
+                  "center",
+                  "justify"
+                ]
+              },
+              "type": {
+                "type": "string"
+              },
+              "edit": {
+                "type": "boolean"
+              },
+              "objTypes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "adminTab": {
+          "description": "Adds a Tab which can be shown in admin adapter",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "icon": {
+              "description": "Icon of the TAB in the admin menu: a file name relative to the \"admin\" folder, a URL or a base64 data URL (\"data:image/...\"). If not set, the adapter icon is shown.",
+              "type": "string"
+            },
+            "ignoreConfigUpdate": {
+              "description": "Do not update config TAB if configuration changed (to enable configure settings in TAB)",
+              "type": "boolean"
+            },
+            "link": {
+              "description": "Link for iframe or JSON config file in the TAB. You can use parameters replacement like this: \"https://%ip%:%port%\". IP will be replaced with host IP. \"port\" will be extracted from native.port.",
+              "type": "string"
+            },
+            "name": {
+              "description": "Name of TAB (multilingual object) in admin",
+              "$ref": "#/definitions/multilingual"
+            },
+            "order": {
+              "description": "Position of the TAB in the admin menu. The built-in tabs use 1 to 120, a TAB without order gets 200. 0 counts as not set. Once the user has sorted the menu, the stored order wins.",
+              "type": "number"
+            },
+            "proxy": {
+              "description": "If true, admin shows the TAB through its own proxy (/proxy/<instance>/) instead of opening the own port of the instance directly. The target is native.bind, native.port and native.secure of the instance. The TAB is then reachable on the address of admin, protected by its login, and only for members of system.group.administrator.",
+              "type": "boolean"
+            },
+            "singleton": {
+              "description": "If true, only one TAB for all instances will be shown.",
+              "type": "boolean"
+            },
+            "supportsLoadingMessage": {
+              "description": "If true, the page sends an 'iobLoaded' event when loaded",
+              "type": "boolean"
+            }
+          }
+        },
+        "controller": {
+          "description": "Only used by js-controller",
+          "type": "boolean"
+        },
+        "allowInit": {
+          "description": "allow for \"scheduled\" adapter to be called \"not in the time schedule\", if settings changed or adapter started. Or allow scheduled adapter start once after configuration changed and then by schedule.",
+          "type": "boolean"
+        },
+        "availableModes": {
+          "description": "values for common.mode if more than one mode is possible",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "none",
+              "daemon",
+              "schedule",
+              "once",
+              "extension"
+            ]
+          }
+        },
+        "blockly": {
+          "description": "if adapter has custom blocks for blockly (admin/blockly.js required)",
+          "type": "boolean"
+        },
+        "connectionType": {
+          "description": "Type of connection to device",
+          "type": "string",
+          "enum": [
+            "none",
+            "local",
+            "cloud"
+          ]
+        },
+        "compact": {
+          "description": "If compact mode supported. Not available for adapters with platform \"Python\"",
+          "type": "boolean"
+        },
+        "dataFolder": {
+          "description": "Folder relative to iobroker-data where the adapter stores the data. This folder will be backed up and restored automatically. You can use variable '%INSTANCE%' in it",
+          "type": "string"
+        },
+        "dataSource": {
+          "description": "How the data will be received from device",
+          "type": "string",
+          "enum": [
+            "none",
+            "poll",
+            "push",
+            "assumption"
+          ]
+        },
+        "declareUsedResources": {
+          "description": "Who lists the exclusive resources (serial ports, TCP/UDP ports, ...) of the instances in the used resources registry. true: the adapter declares them itself via registerUsedResource(). Not set: js-controller derives them from native.port / native.bind. false: nobody, the instances have no entries - use this when native.port is not a port the adapter listens on",
+          "type": "boolean"
+        },
+        "dependencies": {
+          "description": "Array like [{\"js-controller\": \">=2.0.0\"}] that describes which ioBroker modules are required for this adapter on the same host",
+          "type": "array",
+          "items": {
+            "type": [
+              "object",
+              "string"
+            ]
+          }
+        },
+        "enabled": {
+          "description": "Value should be false so new instances are disabled by default",
+          "type": "boolean"
+        },
+        "eraseOnUpload": {
+          "description": "erase all previous data in the directory before upload",
+          "type": "boolean",
+          "default": true
+        },
+        "extIcon": {
+          "description": "Link to external icon for uninstalled adapters. Normally on GitHub",
+          "type": "string"
+        },
+        "getHistory": {
+          "description": "if adapter supports getHistory message. (Up from controller v5, please use `common.supportedMessages.getHistory`)",
+          "type": "boolean"
+        },
+        "globalDependencies": {
+          "description": "Array like [{\"admin\": \">=2.0.0\"}] that describes which ioBroker modules are required for this adapter on one of the hosts",
+          "type": "array",
+          "items": {
+            "type": [
+              "object",
+              "string"
+            ]
+          }
+        },
+        "ifInstalledDependencies": {
+          "description": "Object like {\"admin\": \">=2.0.0\", \"javascript\": \">=3.0.0\"} that describes which versions of ioBroker modules are required for this adapter on one of the hosts, but only if this adapter is installed",
+          "type": "object",
+          "patternProperties": {
+            ".+": {
+              "type": "string"
+            }
+          }
+        },
+        "icon": {
+          "description": "name of the local icon (should be located in subdirectory \"admin\")",
+          "type": "string"
+        },
+        "keywords": {
+          "description": "Similar to keywords in package.json, but can be defined in many languages.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "localLinks": {
+          "description": "Link to the web service of this adapter. E.g {\"_default\": \"http://localhost:5984/_utils\"} for button in admin",
+          "type": "object",
+          "patternProperties": {
+            ".+": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "DEPRECATED: Please use structure {link, color, pro, cloud, intro, icon, name, order} instead of string"
+                },
+                {
+                  "properties": {
+                    "link": {
+                      "type": "string",
+                      "description": "Link to the web service of this adapter, like: %web_protocol%://%ip%:%web_port%/vis-2/edit.html"
+                    },
+                    "color": {
+                      "type": "string"
+                    },
+                    "pro": {
+                      "anyOf": [
+                        {
+                          "type": "boolean",
+                          "description": "DEPRECATED: Please use link template as string instead of boolean"
+                        },
+                        {
+                          "description": "Link to the adapter, like: vis-2/index.html according to \"https://iobroker.pro/\"",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "cloud": {
+                      "description": "Link to the adapter, like: vis-2/index.html according to \"https://iobroker.net/\"",
+                      "type": "string"
+                    },
+                    "intro": {
+                      "description": "If this link should be shown on the intro tab in admin",
+                      "type": "boolean"
+                    },
+                    "icon": {
+                      "description": "Link to icon, like \"vis-2/img/favicon.png\"",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "Name of the link. Could be multi-language",
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "$ref": "#/definitions/multilingual"
+                        }
+                      ]
+                    },
+                    "order": {
+                      "description": "Used on \"intro\" and cloud tabs to sort the links",
+                      "type": "number"
+                    },
+                    "description": {
+                      "description": "Description of the link. Could be multi-language",
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "$ref": "#/definitions/multilingual"
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "link"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "loglevel": {
+          "description": "Default Loglevel after instance creation",
+          "type": "string",
+          "enum": [
+            "silly",
+            "debug",
+            "info",
+            "warn",
+            "error"
+          ]
+        },
+        "logTransporter": {
+          "description": "If this adapter receives logs from other hosts and adapters (e.g. to store them somewhere)",
+          "type": "boolean"
+        },
+        "main": {
+          "description": "Name of the start file. DEPRECATED: For controller >= 3.3 please use package.json main.",
+          "type": "string"
+        },
+        "materialize": {
+          "description": "If adapter supports > admin3 (materialize style) DEPRECATED: For admin version >= 5 please use the property 'adminUI'",
+          "type": "boolean"
+        },
+        "materializeTab": {
+          "description": "If adapter supports > admin3 for tab (materialize style) DEPRECATED: For admin version >= 5 please use the property 'adminUI'",
+          "type": "boolean"
+        },
+        "mode": {
+          "description": "Execution mode of the adapter",
+          "type": "string",
+          "enum": [
+            "none",
+            "daemon",
+            "schedule",
+            "once",
+            "extension"
+          ]
+        },
+        "noConfig": {
+          "description": "Do not show configuration dialog for instance DEPRECATED: For admin version >= 5 please use adminUI.config = \"none\"",
+          "type": "boolean"
+        },
+        "noIntro": {
+          "description": "never show instances of this adapter on Intro/Overview screen in admin (like icons, widgets)",
+          "type": "boolean"
+        },
+        "noRepository": {
+          "description": "If adapter delivered with initial installation or has own repository",
+          "type": "boolean"
+        },
+        "nogit": {
+          "description": "If true, no install from github directly is possible",
+          "type": "boolean"
+        },
+        "nondeletable": {
+          "description": "This adapter cannot be deleted or updated. It will be updated together with controller.",
+          "type": "boolean"
+        },
+        "onlyWWW": {
+          "description": "Say to controller, that adapter has only html files and no main.js, like rickshaw",
+          "type": "boolean"
+        },
+        "osDependencies": {
+          "description": "OS packages which should be installed on adapter installation",
+          "type": "object",
+          "additionalProperties": false,
+          "patternProperties": {
+            "linux|darwin|win32": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "os": {
+          "description": "String or array of supported operation systems, e.g [\"linux\", \"darwin\"]",
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "linux",
+                "darwin",
+                "win32"
+              ]
+            },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "linux",
+                  "darwin",
+                  "win32"
+                ]
+              }
+            }
+          ]
+        },
+        "preserveSettings": {
+          "description": "String (or array) with names of attributes in common of instance, which will not be deleted. E.g. \"history\", so by setState('system.adapter.mqtt.0\", {..}) the field common.history will not be deleted even if new object does not have this field. To delete the attribute it must be explicitly done with common:{history: null}.",
+          "type": [
+            "string",
+            "array"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "restartAdapters": {
+          "description": "Array with names of adapter that must be restarted after this adapter is installed, e.g. [\"vis\"]",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "restartSchedule": {
+          "description": "CRON schedule to restart mode daemon adapters",
+          "type": "string"
+        },
+        "schedule": {
+          "description": "CRON schedule if adapter runs in mode schedule",
+          "type": "string"
+        },
+        "serviceStates": {
+          "description": "If adapter can deliver additional states. If true, the path adapter/lib/states.js (or given path as string) will be called and it give following parameters function (objects, states, instance, config, callback). The function must deliver the array of points with values like function (err, result) { result = [{id: 'id1', val: 1}, {id: 'id2', val: 2}]}",
+          "type": [
+            "boolean",
+            "string"
+          ]
+        },
+        "singletonHost": {
+          "description": "Adapter can be installed only once on one host",
+          "type": "boolean"
+        },
+        "singleton": {
+          "description": "Adapter can be installed only once in whole system",
+          "type": "boolean"
+        },
+        "stopBeforeUpdate": {
+          "description": "If adapter must be stopped before update",
+          "type": "boolean"
+        },
+        "stopTimeout": {
+          "description": "timeout in ms to wait, till adapter shut down",
+          "type": "number",
+          "default": 500,
+          "minimum": 0,
+          "multipleOf": 1
+        },
+        "subscribable": {
+          "description": "Variables of this adapter must be subscribed with sendTo to enable updates",
+          "type": "boolean"
+        },
+        "supportCustoms": {
+          "description": "If the adapter supports settings for every state. It requires file jsonCustom.json in admin and \"common.adminUI\":{\"custom\":\"json\"}. Sample can be found in ioBroker.history",
+          "type": "boolean"
+        },
+        "supportStopInstance": {
+          "description": "If adapter supports signal stopInstance (messagebox required). Use number if you need more than 1000 ms for stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM). (Up from controller v5, please use `common.supportedMessages.stopInstance`)",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 1000
+            }
+          ]
+        },
+        "visWidgets": {
+          "description": "Overview of vis 2 widgets provided by the adapter, define the name of the provided sets as keys",
+          "minProperties": 1,
+          "type": "object",
+          "patternProperties": {
+            ".+": {
+              "description": "The key represents the name of a provided widget set",
+              "required": [
+                "name",
+                "url",
+                "components",
+                "i18n"
+              ],
+              "type": "object",
+              "properties": {
+                "i18n": {
+                  "description": "Translation for the widget",
+                  "anyOf": [
+                    {
+                      "description": "Translations will be loaded from visWidgets.<SET_NAME>.url and i18n/<LANG>.json",
+                      "const": true
+                    },
+                    {
+                      "description": "Translations will be loaded from customComponent.js with name ./translations",
+                      "const": "component"
+                    },
+                    {
+                      "description": "Define translations here",
+                      "type": "object",
+                      "patternProperties": {
+                        ".+": {
+                          "$ref": "#/definitions/multilingual"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "name": {
+                  "description": "Name of the widget set",
+                  "type": "string"
+                },
+                "url": {
+                  "description": "Relative path ('http://ip:port/vis/widgets/' + url) or full url to load component from",
+                  "type": "string"
+                },
+                "components": {
+                  "description": "Names of widgets which have to be shown, normally equal to the content of 'modulefederation.config.js'",
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "bundlerType": {
+                  "description": "Bundler type of the widget set. Currently only 'module' is supported, if the widget was written with TypeScript. If the widget was written with JavaScript, let it empty.",
+                  "type": "string",
+                  "enum": [
+                    "module"
+                  ]
+                },
+                "ignoreInVersions": {
+                  "description": "The vis widget does not support the listed major versions of vis",
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "multipleOf": 1
+                  }
+                },
+                "services": {
+                  "description": "Names of background components of the set, exposed by its module federation like the components. vis-2 renders each of them once in the runtime, next to the views and whichever view is shown, with the widgets of the set in all views of the project that the user may see",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "visIconSets": {
+          "description": "Overview of vis 2 SVG icon sets provided by the adapter, define the name of the provided sets as keys",
+          "minProperties": 1,
+          "type": "object",
+          "patternProperties": {
+            ".+": {
+              "description": "The key represents the name of a provided icon set",
+              "required": [
+                "url"
+              ],
+              "type": "object",
+              "properties": {
+                "url": {
+                  "description": "Relative path ('http://ip:port/vis/widgets/' + url) or full url to load JSON file from",
+                  "type": "string"
+                },
+                "ignoreInVersions": {
+                  "description": "The vis icon set does not support the listed major versions of vis",
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "multipleOf": 1
+                  }
+                },
+                "name": {
+                  "description": "Name of the icon set",
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "$ref": "#/definitions/multilingual"
+                    }
+                  ]
+                },
+                "icon": {
+                  "description": "Base 64 icon of the widget set, data:image/svg+xml;base64,...",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "webByVersion": {
+          "description": "Show version as prefix in web adapter (usually - ip:port/material, webByVersion - ip:port/1.2.3/material)",
+          "type": "boolean"
+        },
+        "webComponents": {
+          "description": "Web components of the adapter (see @iobroker/web-components): their manifest files (.json), relative to the admin folder, which admin and web serve as /adapter/<name>/. A manifest names the ES module of its element; vis-2, devices and admin read the manifests and load a module only when they show its element. An ES module that exports its manifest is accepted too",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "webExtendable": {
+          "description": "If web server in this adapter can be extended with plugin/extensions like proxy, simple-api",
+          "type": "boolean"
+        },
+        "webExtension": {
+          "description": "Relative filename to connect the web extension. E.g. in simple-api \"lib/simpleapi.js\" relative to the adapter root directory. Additionally is native.webInstance required to say where this extension will be included. Empty means, it must run as own web service. \"*\" means every web server must include it.",
+          "type": "string"
+        },
+        "webPreSettings": {
+          "description": "Object of parameters that must be included into info.js by webServer adapter. (Example material)",
+          "type": "object"
+        },
+        "webservers": {
+          "description": "Array of web server's instances that should serve content from the adapters www folder",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "welcomeScreen": {
+          "description": "DEPRECATED: Please use common.localLinks instead. Array of pages, that should be shown on the \"web\" index.html page. [\"vis/edit.html\", \"vis/index.html\"] or [{\"link\": \"vis/edit.html\", \"name\": \"Vis editor\", \"img\": \"vis/img/edit.png\", \"color\": \"blue\"}, \"vis/index.html\"]",
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "object"
+            ]
+          }
+        },
+        "welcomeScreenPro": {
+          "description": "DEPRECATED: Please use common.localLinks instead. Array of pages used on access via ioBroker cloud, that should be shown on the \"web\" index.html page. [\"vis/edit.html\", \"vis/index.html\"] or [{\"link\": \"vis/edit.html\", \"name\": \"Vis editor\", \"img\": \"vis/img/edit.png\", \"color\": \"blue\"}, \"vis/index.html\"]",
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "object"
+            ]
+          }
+        },
+        "wwwDontUpload": {
+          "description": "Do not upload the www directory into DB. Used only for admin.",
+          "type": "boolean"
+        },
+        "tier": {
+          "description": "Lower tiers are started before higher tiers instances, TIER 1: LOGIC, TIER 2: APIs & other data, TIER 3: not fastly needed data, like BackItUp, Visualization, etc.",
+          "type": "number",
+          "minimum": 1,
+          "maximum": 3,
+          "default": 3
+        },
+        "messages": {
+          "description": "Messages can be shown on adapter installation, update and instance creation",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title",
+              "text",
+              "buttons"
+            ],
+            "properties": {
+              "condition": {
+                "description": "Message will only be shown if condition matches",
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                  "operand": {
+                    "description": "Operand to connect multiple rules",
+                    "enum": [
+                      "or",
+                      "and"
+                    ],
+                    "default": "and"
+                  },
+                  "rules": {
+                    "description": "Rules which need to be true, e.g. [\"oldVersion<2.0.0\", \"newVersion>=2.0.0\"]",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "title": {
+                "description": "Title of the shown message",
+                "$ref": "#/definitions/multilingual"
+              },
+              "text": {
+                "description": "Text of the shown message",
+                "$ref": "#/definitions/multilingual"
+              },
+              "link": {
+                "description": "You can define a hyperlink, which will be shown, define its text with `linkText`",
+                "type": "string"
+              },
+              "level": {
+                "description": "The importance of the message",
+                "enum": [
+                  "info",
+                  "warn",
+                  "error"
+                ],
+                "default": "warn"
+              },
+              "linkText": {
+                "description": "If a link is defined and should be embedded in text, you can define the text here",
+                "$ref": "#/definitions/multilingual"
+              },
+              "buttons": {
+                "description": "Predefined buttons of the message window",
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "ok",
+                    "agree",
+                    "cancel"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "nodeProcessParams": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "$comment": "The if conditions are written out instead of referenced: JetBrains IDEs do not resolve a $ref inside if, treat the condition as always true and apply then to every adapter",
+          "if": {
+            "properties": {
+              "compact": {
+                "const": true
+              }
+            },
+            "required": [
+              "compact"
+            ]
+          },
+          "then": {
+            "$ref": "#/definitions/disallowNodeProcessParams"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "platform": {
+                "const": "Python"
+              }
+            },
+            "required": [
+              "platform"
+            ]
+          },
+          "then": {
+            "$ref": "#/definitions/pythonRestrictions"
+          }
+        }
+      ]
+    },
+    "objects": {
+      "description": "Objects which will be created for the adapter",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/iobrokerObject"
+      }
+    },
+    "instanceObjects": {
+      "description": "Objects which will be created for each instance",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/iobrokerObject"
+      }
+    },
+    "notifications": {
+      "description": "Register notifications for the built-in notification system",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "scope",
+          "name",
+          "description",
+          "categories"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "scope": {
+            "type": "string"
+          },
+          "name": {
+            "description": "Name which will be shown to the user",
+            "$ref": "#/definitions/multilingual"
+          },
+          "description": {
+            "description": "Description which will be shown to the user",
+            "$ref": "#/definitions/multilingual"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "category",
+                "name",
+                "severity",
+                "description",
+                "regex",
+                "limit"
+              ],
+              "properties": {
+                "category": {
+                  "type": "string"
+                },
+                "name": {
+                  "$ref": "#/definitions/multilingual"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "info",
+                    "notify",
+                    "alert"
+                  ],
+                  "description": "`info` will only be shown by admin, while `notify` might also be used by messaging adapters, `alert` ensures both"
+                },
+                "description": {
+                  "$ref": "#/definitions/multilingual"
+                },
+                "regex": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "limit": {
+                  "type": "number",
+                  "description": "Maximum amount of notifications to collect of this type"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "native": {
+      "description": "Predefined attributes which are accessible in index_m.html and at runtime via adapter.config.<attribute>, e.g. {\"port\": 1234, \"password\": \"secret\"}",
+      "type": "object"
+    },
+    "protectedNative": {
+      "description": "Array of config attributes which will only be accessible by the own adapter, e.g. [\"password\"]",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "encryptedNative": {
+      "description": "Array of config attributes which will be automatically encrypted when stored via Admin configuration page and automatically decrypted at adapter runtime, e.g. [\"password\", \"token\"]",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
